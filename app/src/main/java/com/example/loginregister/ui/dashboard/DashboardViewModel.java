@@ -1,4 +1,4 @@
-package com.example.apvalley.ui.dashboard;
+package com.example.loginregister.ui.dashboard;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;

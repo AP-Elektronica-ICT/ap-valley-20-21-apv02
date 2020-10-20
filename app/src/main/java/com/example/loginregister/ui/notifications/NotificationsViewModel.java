@@ -1,4 +1,4 @@
-package com.example.apvalley.ui.notifications;
+package com.example.loginregister.ui.notifications;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
