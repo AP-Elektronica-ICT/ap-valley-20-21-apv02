@@ -1,4 +1,4 @@
-package com.example.apvalley;
+package com.example.loginregister;
 
 import android.os.Bundle;
 

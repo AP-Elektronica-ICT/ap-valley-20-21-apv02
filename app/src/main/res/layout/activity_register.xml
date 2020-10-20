@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".register"
+    android:background="@drawable/achtergrondoptie">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="140dp"
+        android:layout_marginRight="140dp"
+        android:layout_marginStart="140dp"
+        android:orientation="vertical">
+
+        <EditText
+            android:id="@+id/UnameRegis"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="username"
+            android:textColor="@color/black"
+            android:textColorHint="@color/black"
+            android:inputType="text"
+
+            />
+
+        <EditText
+            android:id="@+id/EmailRegister"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:hint="e_mail"
+            android:textColor="@color/black"
+            android:textColorHint="@color/black"
+            android:inputType="textEmailAddress"
+
+            />
+
+        <EditText
+            android:id="@+id/PhoneRegister"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:hint="phone number"
+            android:textColor="@color/black"
+            android:textColorHint="@color/black"
+            android:inputType="textEmailAddress"
+            tools:ignore="TextFields" />
+
+
+        <EditText
+            android:id="@+id/PasswordRegister"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:hint="password"
+            android:textColorHint="@color/black"
+            android:inputType="textPassword"
+
+            />
+        <EditText
+            android:id="@+id/PasswordRepeatRegister"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:hint="repeat password"
+            android:textColorHint="@color/black"
+            android:inputType="textPassword"
+
+            />
+
+        <TextView
+            android:id="@+id/Forgot_passw"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="by creating an accoung you agree to our terms and conditions and privacy policy"
+            android:textColor="@color/black"
+            android:layout_gravity="center_horizontal"/>
+
+
+        <Button
+            android:id="@+id/RegisterButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:text="register"
+            />
+
+        <TextView
+            android:id="@+id/AlreadyHaveAccount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="already have an account"
+            android:textColor="#FFFFFF"
+            android:layout_gravity="center_horizontal"
+            android:onClick="Login"/>
+
+
+    </LinearLayout>
+
+
+
+
+</RelativeLayout>
+
+

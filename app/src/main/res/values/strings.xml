@@ -1,6 +1,8 @@
 <resources>
-    <string name="app_name">ApValley</string>
+    <string name="app_name">loginRegister</string>
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
+    <string name="send_e_mail">send e-mail</string>
+    <string name="e_mail">e-mail</string>
 </resources>

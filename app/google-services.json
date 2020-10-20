@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "742027041158",
+    "firebase_url": "https://igrow-cb04d.firebaseio.com",
+    "project_id": "igrow-cb04d",
+    "storage_bucket": "igrow-cb04d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:742027041158:android:cd35fb29cc785c066a7407",
+        "android_client_info": {
+          "package_name": "com.example.loginregister"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "742027041158-l497hfvttrlo11pl6enupbgncqg5g219.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAkQMfqYrfzUii_F5Gmgf7_m2Ypv_8BHl4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "742027041158-l497hfvttrlo11pl6enupbgncqg5g219.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
