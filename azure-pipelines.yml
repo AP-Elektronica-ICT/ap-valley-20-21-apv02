@@ -12,9 +12,15 @@ pool:
 steps:
 - task: Gradle@2
   inputs:
-    workingDirectory: ''
+    workingDirectory: './ap-valley-20-21-apv02/gradlew'
     gradleWrapperFile: 'gradlew'
     gradleOptions: '-Xmx3072m'
     publishJUnitResults: false
     testResultsFiles: '**/TEST-*.xml'
     tasks: 'assembleDebug'
+- bash: './ap-valley-20-21-apv02/scriptBuild.sh'    
+- task: GooglePlayRelease@2
+  inputs:
+    apkFile: '**/app-debug.apk'
+    serviceEndpoint: 'yourGooglePlayServiceConnectionName'
+    track: 'internal'
