@@ -1,6 +1,7 @@
 package com.example.loginregister;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -16,7 +17,10 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.login.Login;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
@@ -42,7 +46,7 @@ public class login extends AppCompatActivity implements View.OnClickListener {
     FirebaseAuth mAuth;
     //SignInButton signInButton;
     ImageButton signInButton;
-   // GoogleSignInClient mGoogleSignInClient;
+    GoogleSignInClient mGoogleSignInClient;
     String TAG = "MainActivity";
     private int RC_SIGN_IN = 1;
     FirebaseFirestore mStore;
@@ -65,7 +69,7 @@ public class login extends AppCompatActivity implements View.OnClickListener {
 
 
 
-/*
+
         // Configure Google Sign In
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
@@ -82,7 +86,7 @@ public class login extends AppCompatActivity implements View.OnClickListener {
                 signIn();
             }
         });
-*/
+
 
 
         // voor als ge al ingelogd zijt --> direct naar mainactivity --> naar onstart doen
@@ -144,7 +148,7 @@ public class login extends AppCompatActivity implements View.OnClickListener {
         startActivity(new Intent(getApplicationContext(), forgotpassword.class));
 
     }
-    /*
+
 
     private  void signIn(){
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
@@ -165,10 +169,10 @@ public class login extends AppCompatActivity implements View.OnClickListener {
         try {
             GoogleSignInAccount acc = completedTask.getResult(ApiException.class);
             FirebaseGoogleAuth(acc);
-            Toast.makeText(Login.this, "Google Sign in Works!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(login.this, "Google Sign in Works!", Toast.LENGTH_SHORT).show();
         }
         catch (ApiException e){
-            Toast.makeText(Login.this, "Google Sign in Works!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(login.this, "Google Sign in Works!", Toast.LENGTH_SHORT).show();
             FirebaseGoogleAuth(null);
 
         }
@@ -235,7 +239,7 @@ public class login extends AppCompatActivity implements View.OnClickListener {
 
     }
 
-     */
+
 
     @Override
     public void onClick(View v) {
