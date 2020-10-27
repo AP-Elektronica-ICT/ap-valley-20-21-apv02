@@ -12,7 +12,7 @@ pool:
 steps:
 - task: Gradle@2
   inputs:
-    workingDirectory: './ap-valley-20-21-apv02/gradlew'
+    workingDirectory: '$(system.defaultWorkingDirectory)/ap-valley-20-21-apv02/gradlew'
     gradleWrapperFile: 'gradlew'
     gradleOptions: '-Xmx3072m'
     publishJUnitResults: false
