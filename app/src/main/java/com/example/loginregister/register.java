@@ -39,6 +39,7 @@ public class register extends AppCompatActivity implements View.OnClickListener 
     FirebaseFirestore mStore;
     String userID;
 
+    /*
     @Override
     protected void onStart() {
         super.onStart();
@@ -49,6 +50,7 @@ public class register extends AppCompatActivity implements View.OnClickListener 
 
         }
     }
+     */
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,7 +109,7 @@ public class register extends AppCompatActivity implements View.OnClickListener 
                             userID = mAuth.getCurrentUser().getUid();
 
                             //selecteren van de kolom waar je wilt opslagen
-                            DocumentReference documentReference = mStore.collection("usersTest").document(userID);
+                            DocumentReference documentReference = mStore.collection("Users").document(userID);
 
                             //data die we willen wegschrijven
                             Map<String, Object> user = new HashMap<>();

@@ -5,4 +5,6 @@
     <string name="title_notifications">Notifications</string>
     <string name="send_e_mail">send e-mail</string>
     <string name="e_mail">e-mail</string>
+    <string name="main_title">My Growbox</string>
+    <string name="sub_title">This is thyme. I use it for on my steaks or pizzas.</string>
 </resources>
