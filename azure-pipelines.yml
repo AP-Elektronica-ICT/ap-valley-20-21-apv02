@@ -18,4 +18,4 @@ steps:
     publishJUnitResults: false
     testResultsFiles: '**/TEST-*.xml'
     tasks: 'assembleDebug'
-- bash: './ap-valley-20-21-apv02/scriptBuild.sh'
+- bash: 'ap-valley-20-21-apv02/scriptBuild.sh'
