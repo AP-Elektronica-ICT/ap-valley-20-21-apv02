@@ -18,9 +18,4 @@ steps:
     publishJUnitResults: false
     testResultsFiles: '**/TEST-*.xml'
     tasks: 'assembleDebug'
-- bash: './ap-valley-20-21-apv02/scriptBuild.sh'    
-- task: GooglePlayRelease@2
-  inputs:
-    apkFile: '**/app-debug.apk'
-    serviceEndpoint: 'yourGooglePlayServiceConnectionName'
-    track: 'internal'
+- bash: './ap-valley-20-21-apv02/scriptBuild.sh'
