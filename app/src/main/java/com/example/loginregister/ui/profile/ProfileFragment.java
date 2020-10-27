@@ -53,7 +53,7 @@ public class ProfileFragment extends Fragment {
         mStore = FirebaseFirestore.getInstance();
         userID = mAuth.getCurrentUser().getUid();
 
-        DocumentReference documentReference = mStore.collection("usersTest").document(userID);
+        DocumentReference documentReference = mStore.collection("Users").document(userID);
         documentReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
