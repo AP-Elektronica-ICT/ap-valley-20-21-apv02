@@ -39,6 +39,7 @@ public class register extends AppCompatActivity implements View.OnClickListener 
     FirebaseFirestore mStore;
     String userID;
 
+    /*
     @Override
     protected void onStart() {
         super.onStart();
@@ -49,6 +50,7 @@ public class register extends AppCompatActivity implements View.OnClickListener 
 
         }
     }
+     */
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
