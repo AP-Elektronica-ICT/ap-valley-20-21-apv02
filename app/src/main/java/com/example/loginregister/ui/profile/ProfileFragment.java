@@ -136,37 +136,7 @@ public class ProfileFragment extends Fragment {
             }
         });
 
-        /*
-        Query query = databaseReference.orderByChild("email").equalTo(muser.getEmail());
-        query.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                // check until required data get
-                for (DataSnapshot ds : snapshot.getChildren()){
-                    String _naam =""+ ds.child("uname").getValue().toString();
-                    String _email =""+ ds.child("email").getValue().toString();
-                    String _gsm =""+ ds.child("gsm").getValue().toString();
-                    String _foto =""+ ds.child("image").getValue().toString();
 
-                    naam.setText(_naam);
-                    mail.setText(_email);
-                    gsm.setText(_gsm);
-                    try {
-                        Picasso.get().load(_foto).into(mprofilePic);
-                    }
-                    catch (Exception e){
-                        Picasso.get().load(R.drawable.ic_settings);
-                    }
-
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
- */
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -175,27 +145,6 @@ public class ProfileFragment extends Fragment {
 
             }
         });
-
-
-/*        reff= FirebaseDatabase.getInstance().getReference().child("usersTest").child("1");
-        reff.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                String _naam=dataSnapshot.child("naam").getValue().toString();
-                String _gsm=dataSnapshot.child("gsm").getValue().toString();
-                String _mail=dataSnapshot.child("mail").getValue().toString();
-                naam.setText(_naam);
-                gsm.setText(_gsm);
-                mail.setText(_mail);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });*/
-
-
 
         return view;
     }
