@@ -48,7 +48,7 @@ public class login extends AppCompatActivity implements View.OnClickListener {
     ImageButton signInButton;
     GoogleSignInClient mGoogleSignInClient;
     String TAG = "MainActivity";
-    private int RC_SIGN_IN = 1;
+    private static int RC_SIGN_IN = 1;
     FirebaseFirestore mStore;
     String userID;
 
