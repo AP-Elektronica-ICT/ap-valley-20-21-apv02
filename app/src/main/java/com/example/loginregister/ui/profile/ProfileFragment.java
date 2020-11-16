@@ -30,6 +30,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.loginregister.MainActivity;
 import com.example.loginregister.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -61,6 +62,8 @@ import static android.app.Activity.RESULT_OK;
 
 public class ProfileFragment extends Fragment {
 
+    Button btnVeranderFoto;
+    ImageView ProfielFoto;
     TextView naam, gsm, mail;
     DatabaseReference reff;
     FirebaseUser muser;
