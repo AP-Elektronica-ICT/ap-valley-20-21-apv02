@@ -117,6 +117,7 @@ public class register extends AppCompatActivity implements View.OnClickListener 
                             user.put("email", email);
                             user.put("phone", phoneNumber);
                             user.put("image", "");
+                            user.put("coverImage","");
 
                             documentReference.set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
