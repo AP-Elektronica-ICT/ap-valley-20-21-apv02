@@ -9,7 +9,15 @@
 
     <ListView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/listView"
+        android:layout_height="wrap_content"
+        android:id="@+id/idListView"
         />
+
+    <Button
+        android:id="@+id/ButtonList"
+        android:layout_width="238dp"
+        android:layout_height="60dp"
+        android:background="@color/grey"
+        android:text="@string/button_text_row"
+        android:layout_gravity="center_horizontal"/>
 </LinearLayout>
