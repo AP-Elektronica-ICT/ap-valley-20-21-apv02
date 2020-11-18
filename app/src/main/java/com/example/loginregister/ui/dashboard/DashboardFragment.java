@@ -28,33 +28,15 @@ public class DashboardFragment extends Fragment {
     String mBeschrijving[] = {"Tijm", "Rozemarijn"};
     int image[] = {R.drawable.fotogroeibox, R.drawable.fotogroeibox};
 
-    //SearchView searchView;
-    //ArrayAdapter<String> adapter;
-    //String[] data = {"Groeibox1","Groeibox2","Groeibox3"};
-
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_dashboard, container, false);
 
         lv = (ListView) view.findViewById(R.id.idListView);
-        //adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1,data);
-        //lv.setAdapter(adapter);
-        MijnAdapter adapter = new MijnAdapter(getContext(),mTitel,mBeschrijving,image);
 
-        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                switch (position){
-                    case 0:
-                        Toast.makeText(getContext(), "Groeibox 1", Toast.LENGTH_SHORT).show();
-                        break;
-                    default:
-                        Toast.makeText(getContext(), "Groeibox 2", Toast.LENGTH_SHORT).show();
-                        break;
-                }
-            }
-        });
-
+        MijnAdapter adapter = new MijnAdapter(getActivity(),mTitel,mBeschrijving,image);
+        lv.setAdapter(adapter);
+        
         return view;
     }
 
@@ -75,7 +57,7 @@ public class DashboardFragment extends Fragment {
         @NonNull
         @Override
         public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent){
-            LayoutInflater layoutInflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            LayoutInflater layoutInflater = (LayoutInflater)getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View rij = layoutInflater.inflate(R.layout.row_list_home, parent, false);
             ImageView images = rij.findViewById(R.id.image);
             TextView mijnTitel = rij.findViewById(R.id.title_main1);
