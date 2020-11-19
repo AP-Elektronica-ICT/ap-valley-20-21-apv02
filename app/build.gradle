@@ -71,6 +71,9 @@ dependencies {
     //circular imageview
     implementation 'de.hdodenhof:circleimageview:3.1.0'
 
+    //QR-code scanner dependency
+    implementation 'com.google.android.gms:play-services-vision:20.1.0'
+    implementation 'me.dm7.barcodescanner:zxing:1.9.13'
 
     //firestore
     implementation 'com.google.firebase:firebase-firestore:21.4.2'

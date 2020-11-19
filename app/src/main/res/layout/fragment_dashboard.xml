@@ -14,7 +14,7 @@
         />
 
     <Button
-        android:id="@+id/ButtonList"
+        android:id="@+id/scan"
         android:layout_width="238dp"
         android:layout_height="60dp"
         android:background="@color/grey"
