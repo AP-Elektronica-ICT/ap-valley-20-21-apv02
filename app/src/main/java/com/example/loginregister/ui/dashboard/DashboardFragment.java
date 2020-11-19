@@ -28,18 +28,34 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.loginregister.R;
 import com.example.loginregister.ScanActivity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class DashboardFragment extends Fragment {
     public static final int CAMERA_PERMISSION_CODE = 100;
 
     private Button scan;
+    private int Count=0;
 
     ListView lv;
-    String mTitel[] = {"Groeibox 1","Groeibox 2"};
-    String mBeschrijving[] = {"Tijm", "Rozemarijn"};
-    int image[] = {R.drawable.fotogroeibox, R.drawable.fotogroeibox};
+    List<String> mTitel = new ArrayList<String>();
+    List<String> mBeschrijving = new ArrayList<String>();
+    List<Integer> image = new ArrayList<Integer>();
+    //public String mTitel[] = {"Groeibox 1","Groeibox 2"};
+    //public String mBeschrijving[] = {"Tijm", "Rozemarijn"};
+    //public int image[] = {R.drawable.fotogroeibox, R.drawable.fotogroeibox};
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
+        mTitel.add("Groeibox1");
+        mTitel.add("Groeibox2");
+
+        mBeschrijving.add("Tijm");
+        mBeschrijving.add("Rozemarijn");
+
+        image.add(R.drawable.fotogroeibox);
+        image.add(R.drawable.fotogroeibox);
 
         View view = inflater.inflate(R.layout.fragment_dashboard, container, false);
 
@@ -66,6 +82,17 @@ public class DashboardFragment extends Fragment {
             }
         });
 
+        if(Count>0){
+            //Wanneer er van de Activity naar het fragement een bericht gestuurd wordt, wordt er een groeibox toegevoegd
+            String strtext=getArguments().getString("message");
+            if(strtext!=""){
+                mTitel.add(strtext);
+                mBeschrijving.add("Default beschrijving");
+                image.add(R.drawable.fotogroeibox);
+            }
+        }
+        Count++;
+
         return view;
     }
 
@@ -91,11 +118,13 @@ public class DashboardFragment extends Fragment {
 
     class MijnAdapter extends ArrayAdapter<String>{
         Context context;
-        String rTitel[];
-        String rBeschrijving[];
-        int rImgs[];
+        List<String> rTitel;
+        List<String> rBeschrijving;
+        List<Integer> rImgs;
 
-        MijnAdapter (Context c, String titel[], String beschrijving[], int imgs[]){
+        //MijnAdapter (Context c, String titel[], String beschrijving[], int imgs[]){
+
+        MijnAdapter (Context c, List<String> titel, List<String> beschrijving, List<Integer> imgs){
             super(c, R.layout.row_list_home, R.id.title_main1, titel);
             this.context = c;
             this.rTitel= titel;
@@ -112,9 +141,9 @@ public class DashboardFragment extends Fragment {
             TextView mijnTitel = rij.findViewById(R.id.title_main1);
             TextView mijnBeschrijving = rij.findViewById(R.id.title_sub1);
 
-            images.setImageResource(rImgs[position]);
-            mijnTitel.setText(rTitel[position]);
-            mijnBeschrijving.setText(rBeschrijving[position]);
+            images.setImageResource(rImgs.get(position));
+            mijnTitel.setText(rTitel.get(position));
+            mijnBeschrijving.setText(rBeschrijving.get(position));
 
             return rij;
         }

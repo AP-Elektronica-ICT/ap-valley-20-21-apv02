@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.FragmentManager;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
@@ -16,6 +17,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.loginregister.ui.dashboard.DashboardFragment;
 import com.google.android.gms.vision.CameraSource;
 import com.google.android.gms.vision.Detector;
 import com.google.android.gms.vision.barcode.Barcode;
@@ -32,6 +34,7 @@ public class ScanActivity extends AppCompatActivity {
     private BarcodeDetector barcodeDetector;
 
     //private Button camera;
+    private Button addGrowbox;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +43,11 @@ public class ScanActivity extends AppCompatActivity {
 
         surfaceView = findViewById(R.id.camera);
         textView = findViewById(R.id.textScan);
+
         //camera = findViewById(R.id.ScanCamera);
+        addGrowbox = findViewById(R.id.AddGrowbox);
+
+        addGrowbox.setVisibility(View.INVISIBLE);
 
         barcodeDetector = new BarcodeDetector.Builder(getApplicationContext()).setBarcodeFormats(Barcode.QR_CODE).build();
         cameraSource = new CameraSource.Builder(getApplicationContext(),barcodeDetector).setRequestedPreviewSize(640,480).build();
@@ -90,9 +97,26 @@ public class ScanActivity extends AppCompatActivity {
                         @Override
                         public void run() {
                             textView.setText(qrcode.valueAt(0).displayValue);
+                            addGrowbox.setVisibility(View.VISIBLE);
                         }
                     });
                 }
+            }
+        });
+
+        addGrowbox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle bundle=new Bundle();
+                String valueToegevoegd = textView.toString();
+                bundle.putString("message", valueToegevoegd);
+                //set Fragmentclass Arguments
+                DashboardFragment fragobj=new DashboardFragment();
+                fragobj.setArguments(bundle);
+
+                FragmentManager fm= getSupportFragmentManager();
+                DashboardFragment fragment = new DashboardFragment();
+                fm.beginTransaction().replace(R.id.scanActivity,fragment).commit();
             }
         });
     }
