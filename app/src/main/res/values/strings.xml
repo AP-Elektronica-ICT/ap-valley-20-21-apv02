@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">loginRegister</string>
+    <string name="app_name">iGrow</string>
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
@@ -8,4 +8,6 @@
     <string name="title_main">My Growbox</string>
     <string name="title_sub">This is thyme. I use it for on my steaks or pizzas.</string>
     <string name="button_text_row">Add new growbox</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
