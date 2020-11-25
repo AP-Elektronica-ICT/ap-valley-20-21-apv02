@@ -119,10 +119,11 @@ public class GrowSchedules extends Fragment {
                 switch (position) {
                     case 0:
                         Log.d("greetz", "clicked");
-                        showYesOrNo("ALERT");
+                        showYesOrNo("ALERT", position);
                         break;
                     case 1:
                         Toast.makeText(getContext(), mDescription.get(1), Toast.LENGTH_LONG);
+                        showYesOrNo("ALERT", position);
                         break;
                     case 2:
                         Toast.makeText(getContext(), mDescription.get(2), Toast.LENGTH_LONG);
@@ -185,12 +186,12 @@ public class GrowSchedules extends Fragment {
         }
     }
 
-    private void showYesOrNo(final String key) {
+    private void showYesOrNo(final String key, int position) {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle(key);
         //set layout of dialog
-        builder.setMessage("Are You sure you want to start a new grow?");
+        builder.setMessage("Are You sure you want to start a new grow of " + mTitle.get(position) + "?" );
         LinearLayout linearLayout = new LinearLayout(getActivity());
         linearLayout.setOrientation(LinearLayout.VERTICAL);
         linearLayout.setPadding(10, 10, 10, 10);
@@ -204,6 +205,8 @@ public class GrowSchedules extends Fragment {
             public void onClick(DialogInterface dialog, int which) {
                 //input text from edit text
                 Log.d("actie:", "start groeien");
+
+                // hier moet job schedular komen
             }
         });
         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
