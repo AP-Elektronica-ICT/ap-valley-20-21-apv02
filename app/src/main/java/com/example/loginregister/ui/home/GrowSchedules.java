@@ -11,10 +11,14 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+
 import com.example.loginregister.R;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,9 +28,10 @@ public class GrowSchedules extends Fragment {
 
     ListView listView;
     List<String> mTitle = new ArrayList<>();
-   // String mTitle[] = {"Facebook", "Whatsapp", "Twitter", "Instagram", "Youtube"};
-    String mDescription[] = {"Facebook Description", "Whatsapp Description", "Twitter Description", "Instagram Description", "Youtube Description"};
-    int images[] = {R.drawable.com_facebook_button_icon, R.drawable.com_facebook_button_icon, R.drawable.com_facebook_button_icon, R.drawable.com_facebook_button_icon, R.drawable.com_facebook_button_icon};
+    List<String> mDescription = new ArrayList<>();
+    List<Integer> images = new ArrayList<>();
+
+    private DatabaseReference mDatabase;
     public GrowSchedules() {
         // Required empty public constructor
     }
@@ -35,8 +40,10 @@ public class GrowSchedules extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+
         // onderstaand van firebase halen!
-        //--> bij selecteren een altert laten opkomen --> bevestiging hiervan start nieuwe groei 
+        //--> bij selecteren een altert laten opkomen --> bevestiging hiervan start nieuwe groei
         mTitle.add("Mango");
         mTitle.add("Apple");
         mTitle.add("Banana");
@@ -45,6 +52,26 @@ public class GrowSchedules extends Fragment {
         mTitle.add("Apple");
         mTitle.add("Banana");
         mTitle.add("Grapes");
+
+        mDescription.add("mango beschrijving");
+        mDescription.add("apple beschrijving");
+        mDescription.add("banana beschrijving");
+        mDescription.add("grapes beschrijving");
+        mDescription.add("mango beschrijving");
+        mDescription.add("apple beschrijving");
+        mDescription.add("banana beschrijving");
+        mDescription.add("grapes beschrijving");
+
+        images.add(R.drawable.com_facebook_button_icon);
+        images.add(R.drawable.com_facebook_button_icon);
+        images.add(R.drawable.com_facebook_button_icon);
+        images.add(R.drawable.com_facebook_button_icon);
+        images.add(R.drawable.com_facebook_button_icon);
+        images.add(R.drawable.com_facebook_button_icon);
+        images.add(R.drawable.com_facebook_button_icon);
+        images.add(R.drawable.com_facebook_button_icon);
+
+
 
     }
 
@@ -69,19 +96,19 @@ public class GrowSchedules extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (position ==  0) {
-                    Toast.makeText(getContext(), "Facebook Description", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "mango beschrijving", Toast.LENGTH_SHORT).show();
                 }
                 if (position ==  0) {
-                    Toast.makeText(getContext(), "Whatsapp Description", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "apple beschrijving", Toast.LENGTH_SHORT).show();
                 }
                 if (position ==  0) {
-                    Toast.makeText(getContext(), "Twitter Description", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "banana beschrijving", Toast.LENGTH_SHORT).show();
                 }
                 if (position ==  0) {
-                    Toast.makeText(getContext(), "Instagram Description", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "grapes beschrijving", Toast.LENGTH_SHORT).show();
                 }
                 if (position ==  0) {
-                    Toast.makeText(getContext(), "Youtube Description", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "grapes beschrijving", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -95,10 +122,10 @@ public class GrowSchedules extends Fragment {
 
         Context context;
         List<String> rTitle;
-        String rDescription[];
-        int rImgs[];
+        List<String> rDescription;
+        List<Integer> rImgs;
 
-        MyAdapter (Context c, List<String> title, String description[], int imgs[]) {
+        MyAdapter (Context c, List<String> title, List<String> description, List<Integer> imgs) {
             super(c, R.layout.row_list_grow, R.id.title_main1, title);
             this.context = c;
             this.rTitle = title;
@@ -117,9 +144,9 @@ public class GrowSchedules extends Fragment {
             TextView myDescription = row.findViewById(R.id.info);
 
             // now set our resources on views
-            images.setImageResource(rImgs[position]);
+            images.setImageResource(rImgs.get(position));
             myTitle.setText(rTitle.get(position));
-            myDescription.setText(rDescription[position]);
+            myDescription.setText(rDescription.get(position));
             return row;
         }
     }
