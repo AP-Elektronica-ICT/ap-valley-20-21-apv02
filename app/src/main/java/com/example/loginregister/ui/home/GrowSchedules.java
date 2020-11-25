@@ -1,6 +1,8 @@
 package com.example.loginregister.ui.home;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -9,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -43,10 +46,12 @@ public class GrowSchedules extends Fragment {
     boolean ok = false;
 
     FirebaseFirestore mStore;
+
     public GrowSchedules() {
         // Required empty public constructor
 
     }
+
     boolean jos = true;
 
     @Override
@@ -65,29 +70,29 @@ public class GrowSchedules extends Fragment {
         images.add(R.drawable.com_facebook_button_icon);
         images.add(R.drawable.com_facebook_button_icon);
         images.add(R.drawable.com_facebook_button_icon);
-            mStore = FirebaseFirestore.getInstance();
-            mStore.collection("GrowSchedules").document("Fruit").collection("0").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        mStore = FirebaseFirestore.getInstance();
+        mStore.collection("GrowSchedules").document("Fruit").collection("0").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
 
-                @Override
-                public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                    if (task.isSuccessful()) {
-                        List<String> list = new ArrayList<>();
-                        for (QueryDocumentSnapshot document : task.getResult()) {
-                            list.add(document.getId().toString());
-                            mTitle.add(document.getString("naam"));
-                            mDescription.add(document.getString("beschrijving"));
-                        }
-                        listView = (ListView) listView.findViewById(R.id.listview);
-                        MyAdapter adapter = new MyAdapter(getActivity(), mTitle, mDescription, images);
-                        listView.setAdapter(adapter);
-
-                        Log.d("grow it", list.toString());
-                    } else {
-                        Log.d("wassup", "wassjp");
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    List<String> list = new ArrayList<>();
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        list.add(document.getId().toString());
+                        mTitle.add(document.getString("naam"));
+                        mDescription.add(document.getString("beschrijving"));
                     }
+                    listView = (ListView) listView.findViewById(R.id.listview);
+                    MyAdapter adapter = new MyAdapter(getActivity(), mTitle, mDescription, images);
+                    listView.setAdapter(adapter);
 
+                    Log.d("grow it", list.toString());
+                } else {
+                    Log.d("wassup", "wassjp");
                 }
-            });
+
+            }
+        });
 
     }
 
@@ -111,9 +116,10 @@ public class GrowSchedules extends Fragment {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                switch (position){
+                switch (position) {
                     case 0:
-                        Log.d("greetz","clicked");
+                        Log.d("greetz", "clicked");
+                        showYesOrNo("ALERT");
                         break;
                     case 1:
                         Toast.makeText(getContext(), mDescription.get(1), Toast.LENGTH_LONG);
@@ -146,11 +152,6 @@ public class GrowSchedules extends Fragment {
     }
 
 
-
-
-
-
-
     class MyAdapter extends ArrayAdapter<String> {
 
         Context context;
@@ -158,7 +159,7 @@ public class GrowSchedules extends Fragment {
         List<String> rDescription;
         List<Integer> rImgs;
 
-        MyAdapter (Context c, List<String> title, List<String> description, List<Integer> imgs) {
+        MyAdapter(Context c, List<String> title, List<String> description, List<Integer> imgs) {
             super(c, R.layout.row_list_grow, R.id.title_main1, title);
             this.context = c;
             this.rTitle = title;
@@ -170,7 +171,7 @@ public class GrowSchedules extends Fragment {
         @NonNull
         @Override
         public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-            LayoutInflater layoutInflater = (LayoutInflater)getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            LayoutInflater layoutInflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View row = layoutInflater.inflate(R.layout.row_list_grow, parent, false);
             ImageView images = row.findViewById(R.id.image);
             TextView myTitle = row.findViewById(R.id.title);
@@ -183,4 +184,39 @@ public class GrowSchedules extends Fragment {
             return row;
         }
     }
+
+    private void showYesOrNo(final String key) {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle(key);
+        //set layout of dialog
+        builder.setMessage("Are You sure you want to start a new grow?");
+        LinearLayout linearLayout = new LinearLayout(getActivity());
+        linearLayout.setOrientation(LinearLayout.VERTICAL);
+        linearLayout.setPadding(10, 10, 10, 10);
+
+        //add edit text
+
+        builder.setView(linearLayout);
+
+        builder.setPositiveButton("Start", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                //input text from edit text
+                Log.d("actie:", "start groeien");
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        //create and show dialog
+        builder.create();
+        builder.show();
+
+
+    }
+
 }
