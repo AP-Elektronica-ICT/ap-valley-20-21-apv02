@@ -88,7 +88,7 @@ public class GrowSchedules extends Fragment {
 
                 }
             });
-            
+
     }
 
 
@@ -111,20 +111,31 @@ public class GrowSchedules extends Fragment {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (position ==  0) {
-                    Toast.makeText(getContext(), "mango beschrijving", Toast.LENGTH_SHORT).show();
-                }
-                if (position ==  0) {
-                    Toast.makeText(getContext(), "apple beschrijving", Toast.LENGTH_SHORT).show();
-                }
-                if (position ==  0) {
-                    Toast.makeText(getContext(), "banana beschrijving", Toast.LENGTH_SHORT).show();
-                }
-                if (position ==  0) {
-                    Toast.makeText(getContext(), "grapes beschrijving", Toast.LENGTH_SHORT).show();
-                }
-                if (position ==  0) {
-                    Toast.makeText(getContext(), "grapes beschrijving", Toast.LENGTH_SHORT).show();
+                switch (position){
+                    case 0:
+                        Log.d("greetz","clicked");
+                        break;
+                    case 1:
+                        Toast.makeText(getContext(), mDescription.get(1), Toast.LENGTH_LONG);
+                        break;
+                    case 2:
+                        Toast.makeText(getContext(), mDescription.get(2), Toast.LENGTH_LONG);
+                        break;
+                    case 3:
+                        Toast.makeText(getContext(), mDescription.get(3), Toast.LENGTH_LONG);
+                        break;
+                    case 4:
+                        Toast.makeText(getContext(), mDescription.get(4), Toast.LENGTH_LONG);
+                        break;
+                    case 5:
+                        Toast.makeText(getContext(), mDescription.get(5), Toast.LENGTH_LONG);
+                        break;
+                    case 6:
+                        Toast.makeText(getContext(), mDescription.get(6), Toast.LENGTH_LONG);
+                        break;
+                    case 7:
+                        Toast.makeText(getContext(), mDescription.get(7), Toast.LENGTH_LONG);
+                        break;
                 }
             }
         });
