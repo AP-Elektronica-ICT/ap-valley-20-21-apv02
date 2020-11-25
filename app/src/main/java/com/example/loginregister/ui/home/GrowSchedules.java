@@ -2,6 +2,7 @@ package com.example.loginregister.ui.home;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,8 +18,13 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.loginregister.R;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,40 +33,29 @@ import java.util.List;
 public class GrowSchedules extends Fragment {
 
     ListView listView;
+    FirebaseDatabase firebaseDatabase;
+    DatabaseReference databaseReference;
+
     List<String> mTitle = new ArrayList<>();
     List<String> mDescription = new ArrayList<>();
     List<Integer> images = new ArrayList<>();
+    String titel;
+    boolean ok = false;
 
-    private DatabaseReference mDatabase;
+    FirebaseFirestore mStore;
     public GrowSchedules() {
         // Required empty public constructor
+
     }
+    boolean jos = true;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mDatabase = FirebaseDatabase.getInstance().getReference();
 
         // onderstaand van firebase halen!
         //--> bij selecteren een altert laten opkomen --> bevestiging hiervan start nieuwe groei
-        mTitle.add("Mango");
-        mTitle.add("Apple");
-        mTitle.add("Banana");
-        mTitle.add("Grapes");
-        mTitle.add("Mango");
-        mTitle.add("Apple");
-        mTitle.add("Banana");
-        mTitle.add("Grapes");
-
-        mDescription.add("mango beschrijving");
-        mDescription.add("apple beschrijving");
-        mDescription.add("banana beschrijving");
-        mDescription.add("grapes beschrijving");
-        mDescription.add("mango beschrijving");
-        mDescription.add("apple beschrijving");
-        mDescription.add("banana beschrijving");
-        mDescription.add("grapes beschrijving");
 
         images.add(R.drawable.com_facebook_button_icon);
         images.add(R.drawable.com_facebook_button_icon);
@@ -70,9 +65,30 @@ public class GrowSchedules extends Fragment {
         images.add(R.drawable.com_facebook_button_icon);
         images.add(R.drawable.com_facebook_button_icon);
         images.add(R.drawable.com_facebook_button_icon);
+            mStore = FirebaseFirestore.getInstance();
+            mStore.collection("GrowSchedules").document("Fruit").collection("0").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
 
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    if (task.isSuccessful()) {
+                        List<String> list = new ArrayList<>();
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            list.add(document.getId().toString());
+                            mTitle.add(document.getString("naam"));
+                            mDescription.add(document.getString("beschrijving"));
+                        }
+                        listView = (ListView) listView.findViewById(R.id.listview);
+                        MyAdapter adapter = new MyAdapter(getActivity(), mTitle, mDescription, images);
+                        listView.setAdapter(adapter);
 
+                        Log.d("grow it", list.toString());
+                    } else {
+                        Log.d("wassup", "wassjp");
+                    }
 
+                }
+            });
+            
     }
 
 
@@ -117,6 +133,12 @@ public class GrowSchedules extends Fragment {
         // Inflate the layout for this fragment
         return view;
     }
+
+
+
+
+
+
 
     class MyAdapter extends ArrayAdapter<String> {
 
