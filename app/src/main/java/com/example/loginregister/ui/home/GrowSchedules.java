@@ -46,8 +46,8 @@ public class GrowSchedules extends Fragment {
 
     List<String> mTitle = new ArrayList<>();
     List<String> mDescription = new ArrayList<>();
- //   List<Integer> images = new ArrayList<>();
     List<String> images = new ArrayList<>();
+    List<String> mDescriptionlong = new ArrayList<>();
 
     FirebaseFirestore mStore;
 
@@ -63,19 +63,7 @@ public class GrowSchedules extends Fragment {
         super.onCreate(savedInstanceState);
 
 
-        // onderstaand van firebase halen!
-        //--> bij selecteren een altert laten opkomen --> bevestiging hiervan start nieuwe groei
-/*
-        images.add(R.drawable.com_facebook_button_icon);
-        images.add(R.drawable.com_facebook_button_icon);
-        images.add(R.drawable.com_facebook_button_icon);
-        images.add(R.drawable.com_facebook_button_icon);
-        images.add(R.drawable.com_facebook_button_icon);
-        images.add(R.drawable.com_facebook_button_icon);
-        images.add(R.drawable.com_facebook_button_icon);
-        images.add(R.drawable.com_facebook_button_icon);
-
- */
+        // inladen van lists van firebase
         mStore = FirebaseFirestore.getInstance();
         mStore.collection("GrowSchedules").document("Fruit").collection("0").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
 
@@ -88,6 +76,7 @@ public class GrowSchedules extends Fragment {
                         mTitle.add(document.getString("naam"));
                         mDescription.add(document.getString("beschrijving"));
                         images.add(document.getString("url"));
+                        mDescriptionlong.add(document.getString("beschrijvinglang"));
                     }
                     listView = (ListView) listView.findViewById(R.id.listview);
                     MyAdapter adapter = new MyAdapter(getActivity(), mTitle, mDescription, images);
@@ -108,18 +97,11 @@ public class GrowSchedules extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-
+        // clickable list --> op itemclick gaat alert open
         View view = inflater.inflate(R.layout.fragment_grow_schedules, container, false);
-
         listView = view.findViewById(R.id.listview);
-        // now create an adapter class
-
         MyAdapter adapter = new MyAdapter(getActivity(), mTitle, mDescription, images);
         listView.setAdapter(adapter);
-        // there is my mistake...
-        // now again check this..
-
-        // now set item click on list view
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -134,21 +116,27 @@ public class GrowSchedules extends Fragment {
                         break;
                     case 2:
                         Toast.makeText(getContext(), mDescription.get(2), Toast.LENGTH_LONG);
+                        showYesOrNo("ALERT", position);
                         break;
                     case 3:
                         Toast.makeText(getContext(), mDescription.get(3), Toast.LENGTH_LONG);
+                        showYesOrNo("ALERT", position);
                         break;
                     case 4:
                         Toast.makeText(getContext(), mDescription.get(4), Toast.LENGTH_LONG);
+                        showYesOrNo("ALERT", position);
                         break;
                     case 5:
                         Toast.makeText(getContext(), mDescription.get(5), Toast.LENGTH_LONG);
+                        showYesOrNo("ALERT", position);
                         break;
                     case 6:
                         Toast.makeText(getContext(), mDescription.get(6), Toast.LENGTH_LONG);
+                        showYesOrNo("ALERT", position);
                         break;
                     case 7:
                         Toast.makeText(getContext(), mDescription.get(7), Toast.LENGTH_LONG);
+                        showYesOrNo("ALERT", position);
                         break;
                 }
             }
@@ -174,6 +162,7 @@ public class GrowSchedules extends Fragment {
             this.rDescription = description;
             this.rImgs = imgs;
 
+
         }
 
         @NonNull
@@ -194,12 +183,13 @@ public class GrowSchedules extends Fragment {
         }
     }
 
+    // alert dialog over zeker zijn
     private void showYesOrNo(final String key, int position) {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle(key);
         //set layout of dialog
-        builder.setMessage("Are You sure you want to start a new grow of " + mTitle.get(position) + "?" );
+        builder.setMessage("Are You sure you want to start a new grow of " + mTitle.get(position) + "? " + mDescriptionlong.get(position));
         LinearLayout linearLayout = new LinearLayout(getActivity());
         linearLayout.setOrientation(LinearLayout.VERTICAL);
         linearLayout.setPadding(10, 10, 10, 10);
@@ -208,7 +198,7 @@ public class GrowSchedules extends Fragment {
 
         builder.setView(linearLayout);
 
-        builder.setPositiveButton("Start", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton("Next", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 //input text from edit text
@@ -230,6 +220,7 @@ public class GrowSchedules extends Fragment {
 
     }
 
+    // aantal planten ingeven
     private void showNuberOfPlants(int position) {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
