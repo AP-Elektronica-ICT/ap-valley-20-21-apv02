@@ -1,16 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/achtergrondoptie"
     tools:context=".ui.home.HomeFragment">
 
     <Button
-        android:id="@+id/schedule_button"
+        android:id="@+id/navigation_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Schedule Job" />
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="137dp"
+        android:layout_marginTop="424dp"
+        android:textColor="@color/black"
+        android:backgroundTint="@color/white"
+        android:text="GroeiSchema's" />
+
     <Button
         android:id="@+id/cancel_button"
         android:layout_width="wrap_content"
@@ -18,9 +27,9 @@
         android:text="Cancel Job" />
 
     <Button
-        android:id="@+id/navigation_button"
+        android:id="@+id/schedule_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:text="navigatie grow" />
-</LinearLayout>
+        android:text="Choose grow schedule" />
+</RelativeLayout>
