@@ -13,6 +13,12 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
 import com.example.loginregister.R;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 public class HomeFragment extends Fragment {
     private static final String TAG = "MainActivity";
