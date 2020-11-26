@@ -4,12 +4,16 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.text.InputFilter;
+import android.text.InputType;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -28,6 +32,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,9 +46,8 @@ public class GrowSchedules extends Fragment {
 
     List<String> mTitle = new ArrayList<>();
     List<String> mDescription = new ArrayList<>();
-    List<Integer> images = new ArrayList<>();
-    String titel;
-    boolean ok = false;
+ //   List<Integer> images = new ArrayList<>();
+    List<String> images = new ArrayList<>();
 
     FirebaseFirestore mStore;
 
@@ -61,15 +65,17 @@ public class GrowSchedules extends Fragment {
 
         // onderstaand van firebase halen!
         //--> bij selecteren een altert laten opkomen --> bevestiging hiervan start nieuwe groei
+/*
+        images.add(R.drawable.com_facebook_button_icon);
+        images.add(R.drawable.com_facebook_button_icon);
+        images.add(R.drawable.com_facebook_button_icon);
+        images.add(R.drawable.com_facebook_button_icon);
+        images.add(R.drawable.com_facebook_button_icon);
+        images.add(R.drawable.com_facebook_button_icon);
+        images.add(R.drawable.com_facebook_button_icon);
+        images.add(R.drawable.com_facebook_button_icon);
 
-        images.add(R.drawable.com_facebook_button_icon);
-        images.add(R.drawable.com_facebook_button_icon);
-        images.add(R.drawable.com_facebook_button_icon);
-        images.add(R.drawable.com_facebook_button_icon);
-        images.add(R.drawable.com_facebook_button_icon);
-        images.add(R.drawable.com_facebook_button_icon);
-        images.add(R.drawable.com_facebook_button_icon);
-        images.add(R.drawable.com_facebook_button_icon);
+ */
         mStore = FirebaseFirestore.getInstance();
         mStore.collection("GrowSchedules").document("Fruit").collection("0").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
 
@@ -81,6 +87,7 @@ public class GrowSchedules extends Fragment {
                         list.add(document.getId().toString());
                         mTitle.add(document.getString("naam"));
                         mDescription.add(document.getString("beschrijving"));
+                        images.add(document.getString("url"));
                     }
                     listView = (ListView) listView.findViewById(R.id.listview);
                     MyAdapter adapter = new MyAdapter(getActivity(), mTitle, mDescription, images);
@@ -158,9 +165,9 @@ public class GrowSchedules extends Fragment {
         Context context;
         List<String> rTitle;
         List<String> rDescription;
-        List<Integer> rImgs;
+        List<String> rImgs;
 
-        MyAdapter(Context c, List<String> title, List<String> description, List<Integer> imgs) {
+        MyAdapter(Context c, List<String> title, List<String> description, List<String> imgs) {
             super(c, R.layout.row_list_grow, R.id.title_main1, title);
             this.context = c;
             this.rTitle = title;
@@ -179,7 +186,8 @@ public class GrowSchedules extends Fragment {
             TextView myDescription = row.findViewById(R.id.info);
 
             // now set our resources on views
-            images.setImageResource(rImgs.get(position));
+            Picasso.get().load(rImgs.get(position)).into(images);
+          //  images.setImageResource(rImgs.get(position));
             myTitle.setText(rTitle.get(position));
             myDescription.setText(rDescription.get(position));
             return row;
@@ -204,9 +212,62 @@ public class GrowSchedules extends Fragment {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 //input text from edit text
-                Log.d("actie:", "start groeien");
+                Log.d("actie:", "aantalplaten ingeven");
 
-                // hier moet job schedular komen
+               showNuberOfPlants(position);
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        //create and show dialog
+        builder.create();
+        builder.show();
+
+
+    }
+
+    private void showNuberOfPlants(int position) {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle("Geef het aantal planten");
+        //set layout of dialog
+        builder.setMessage("Hoeveel planten?" );
+        LinearLayout linearLayout = new LinearLayout(getActivity());
+        linearLayout.setOrientation(LinearLayout.VERTICAL);
+        linearLayout.setPadding(10, 10, 10, 10);
+
+        final EditText editText = new EditText(getActivity());
+        editText.setInputType(InputType.TYPE_CLASS_NUMBER);
+        editText.setFilters(new InputFilter[] { new InputFilter.LengthFilter(1) });
+        editText.setHint("Enter nuber of plants"); //edit update name or photo
+        linearLayout.addView(editText);
+
+        builder.setView(linearLayout);
+
+        builder.setPositiveButton("Start", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                //input text from edit text
+
+                String value = editText.getText().toString().trim();
+                int valuenumb =  Integer.parseInt(editText.getText().toString().trim());
+
+                if (!TextUtils.isEmpty(value) && valuenumb < 5){
+
+                    Log.d("actie:", "start groeien");
+
+
+                }
+                else {
+                    Toast.makeText(getActivity(), "please enter number of plants with a maimum of 4", Toast.LENGTH_SHORT).show();
+                    editText.getText().clear();
+                    showNuberOfPlants(position);
+
+                }
             }
         });
         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
