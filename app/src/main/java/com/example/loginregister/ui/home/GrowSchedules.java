@@ -1,6 +1,9 @@
 package com.example.loginregister.ui.home;
 
 import android.app.AlertDialog;
+import android.app.job.JobInfo;
+import android.app.job.JobScheduler;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -37,6 +40,8 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.content.Context.JOB_SCHEDULER_SERVICE;
+
 
 public class GrowSchedules extends Fragment {
 
@@ -48,6 +53,8 @@ public class GrowSchedules extends Fragment {
     List<String> mDescription = new ArrayList<>();
     List<String> images = new ArrayList<>();
     List<String> mDescriptionlong = new ArrayList<>();
+    String[] pumps = {"PUMP1", "PUMP2", "PUMP3", "PUMP4"};
+
 
     FirebaseFirestore mStore;
 
@@ -183,6 +190,8 @@ public class GrowSchedules extends Fragment {
         }
     }
 
+
+    // aparte klasse maken voor Alerts?
     // alert dialog over zeker zijn
     private void showYesOrNo(final String key, int position) {
 
@@ -249,6 +258,7 @@ public class GrowSchedules extends Fragment {
 
                 if (!TextUtils.isEmpty(value) && valuenumb < 5){
 
+                    activateGrowSgeschedule(position, valuenumb);
                     Log.d("actie:", "start groeien");
 
 
@@ -273,5 +283,88 @@ public class GrowSchedules extends Fragment {
 
 
     }
+
+    private void activateGrowSgeschedule(int position, int numbOfPlants){
+        switch (position){
+            case 0:
+                // start aardbeiproces
+                StartAardbeiGroei(numbOfPlants);
+                break;
+            case 1:
+                startiets(numbOfPlants);
+                break;
+            case 2:
+                break;
+            case 4:
+                break;
+            case  5:
+                break;
+            case 6:
+                break;
+            case 7:
+                break;
+        }
+    }
+    FirebaseDatabase database = FirebaseDatabase.getInstance();
+
+
+    private void StartAardbeiGroei(int numbOfPlants){
+
+        // schrijf naar grobox x pad x
+
+        for(int i =0; i<numbOfPlants; i++){
+            DatabaseReference myRefTime = database.getReference("Growbox1/" + pumps[i] + "/Time" );
+            DatabaseReference myRefInter = database.getReference("Growbox1/" + pumps[i] +  "/Interval" );
+            DatabaseReference mRefLightinteval = database.getReference("Growbox1/light/INTERVAL");
+            DatabaseReference mRefLighttime = database.getReference("Growbox1/light/TIME");
+            myRefTime.setValue(5000);
+            myRefInter.setValue(2500);
+            mRefLightinteval.setValue(2500);
+            mRefLighttime.setValue(3000);
+        }
+
+
+    }
+    private void startiets(int numbOfPlants){
+
+        // schrijf naar grobox x pad x
+
+        for(int i =0; i<numbOfPlants; i++){
+            DatabaseReference myRefTime = database.getReference("Growbox1/" + pumps[i] + "/Time" );
+            DatabaseReference myRefInter = database.getReference("Growbox1/" + pumps[i] +  "/Interval" );
+            DatabaseReference mRefLightinteval = database.getReference("Growbox1/light/INTERVAL");
+            DatabaseReference mRefLighttime = database.getReference("Growbox1/light/TIME");
+            myRefTime.setValue(4000);
+            myRefInter.setValue(1500);
+            mRefLightinteval.setValue(4500);
+            mRefLighttime.setValue(5000);
+        }
+
+
+    }
+/// jobschedular nog nodig?
+    public void scheduleJob(View v) {
+        ComponentName componentName = new ComponentName(getActivity(), ExampleJobService.class);
+        JobInfo info = new JobInfo.Builder(123, componentName)
+                .setRequiresCharging(true)
+                .setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY)
+                .setPersisted(true)
+                .setPeriodic(15 * 60 * 1000)
+                .build();
+        JobScheduler scheduler = (JobScheduler) getContext().getSystemService(JOB_SCHEDULER_SERVICE);
+        int resultCode = scheduler.schedule(info);
+        if (resultCode == JobScheduler.RESULT_SUCCESS) {
+            Log.d("start", "Job scheduled");
+        } else {
+            Log.d("message", "Job scheduling failed");
+        }
+    }
+
+    public void cancelJob(View v) {
+        JobScheduler scheduler = (JobScheduler) getContext().getSystemService(JOB_SCHEDULER_SERVICE);
+        scheduler.cancel(123);
+        Log.d("message", "Job cancelled");
+    }
+
 
 }
