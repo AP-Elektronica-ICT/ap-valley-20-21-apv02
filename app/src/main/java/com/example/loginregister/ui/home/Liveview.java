@@ -1,14 +1,18 @@
 package com.example.loginregister.ui.home;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 import android.widget.VideoView;
@@ -33,8 +37,10 @@ public class Liveview extends Fragment {
     VideoView videoView;
 
     Uri videoUri;
+    String imageUri;
     ProgressBar progressBar;
     Button button;
+    ImageView imageView;
 
     private StorageReference mStorageRef;
 
@@ -56,6 +62,7 @@ public class Liveview extends Fragment {
         videoView=view.findViewById(R.id.videoView);
         progressBar=view.findViewById(R.id.progressBar);
 
+        imageView=view.findViewById(R.id.imageView);
 
         mStorageRef = FirebaseStorage.getInstance().getReference();
 
@@ -91,19 +98,20 @@ public class Liveview extends Fragment {
 
 
         button = (Button) view.findViewById(R.id.button);
+        /*
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent myIntent = new Intent(Intent.ACTION_SEND);
-                myIntent.setType("text/plain");
-                String shareBody = "Your body is here";
-                String shareSub = "Your subject";
-                myIntent.putExtra(Intent.EXTRA_SUBJECT, shareBody);
-                myIntent.putExtra(Intent.EXTRA_TEXT, shareBody);
-                startActivity(Intent.createChooser(myIntent, "Share using"));
+
+                imageView.invalidate();
+                BitmapDrawable drawable = (BitmapDrawable) imageView.getDrawable();
+                Bitmap bitmap = drawable.getBitmap();
+                try{
+                    File file=new File(this.getExternalCacheDir());
+                }
             }
         });
-
+        */
         return view;
     }
 }
