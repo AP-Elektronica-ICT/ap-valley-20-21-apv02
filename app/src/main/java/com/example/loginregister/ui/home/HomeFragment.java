@@ -1,6 +1,10 @@
 package com.example.loginregister.ui.home;
 
+import android.app.job.JobInfo;
+import android.app.job.JobScheduler;
+import android.content.ComponentName;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +23,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+
+import static android.content.Context.JOB_SCHEDULER_SERVICE;
 
 public class HomeFragment extends Fragment {
     private static final String TAG = "MainActivity";
@@ -76,7 +82,6 @@ public class HomeFragment extends Fragment {
         });
         return view;
     }
-
 
 
 }
