@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_navigation_home_to_growSchedules"
             app:destination="@id/growSchedules" />
+        <action
+            android:id="@+id/action_navigation_home_to_liveview3"
+            app:destination="@id/liveview3" />
     </fragment>
 
     <fragment
@@ -31,4 +34,9 @@
         android:name="com.example.loginregister.ui.home.GrowSchedules"
         android:label="fragment_grow_schedules"
         tools:layout="@layout/fragment_grow_schedules" />
+    <fragment
+        android:id="@+id/liveview3"
+        android:name="com.example.loginregister.ui.home.Liveview"
+        android:label="fragment_liveview"
+        tools:layout="@layout/fragment_liveview" />
 </navigation>
