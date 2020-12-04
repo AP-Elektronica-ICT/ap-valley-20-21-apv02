@@ -12,6 +12,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.TextUtils;
+import android.util.SparseIntArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -65,7 +66,7 @@ public class ProfileFragment extends Fragment {
 
     Button btnVeranderFoto;
     ImageView ProfielFoto;
-    TextView naam, gsm, mail;
+    TextView naam, gsm, mail, amount;
     DatabaseReference reff;
     FirebaseUser muser;
     FirebaseAuth mAuth;
@@ -102,6 +103,7 @@ public class ProfileFragment extends Fragment {
         mail=view.findViewById(R.id.userEmail_Textview);
         mprofilePic = view.findViewById(R.id.profilePic);
         fab = view.findViewById(R.id.EditProfile);
+        amount=view.findViewById(R.id.txtAmount);
 
         //init arrays of permissions
         cameraPermissions = new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
@@ -127,9 +129,11 @@ public class ProfileFragment extends Fragment {
                 String _gsm=documentSnapshot.getString("phone");
                 String _mail=documentSnapshot.getString("email");
                 String _foto =documentSnapshot.getString("email");
+                String _amount=documentSnapshot.getString("amount");
                 naam.setText(_naam);
                 gsm.setText(_gsm);
                 mail.setText(_mail);
+                amount.setText(_amount.toString());
                 try {
                     Picasso.get().load(_foto).into(mprofilePic);
                 }

@@ -36,13 +36,13 @@ public class Liveview extends Fragment {
 
     VideoView videoView;
 
-    Uri videoUri;
+    Uri videoUri, fotoUri;
     String imageUri;
     ProgressBar progressBar;
     Button button;
     ImageView imageView;
 
-    private StorageReference mStorageRef;
+    private StorageReference mStorageRef, mStorageRef2;
 
     public Liveview() {
         // Required empty public constructor
@@ -98,20 +98,28 @@ public class Liveview extends Fragment {
 
 
         button = (Button) view.findViewById(R.id.button);
-        /*
+
+        mStorageRef2 = FirebaseStorage.getInstance().getReference();
+
+        mStorageRef2.child("foto/foto.JPG").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                fotoUri=uri;
+            }
+        });
+
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                imageView.invalidate();
-                BitmapDrawable drawable = (BitmapDrawable) imageView.getDrawable();
-                Bitmap bitmap = drawable.getBitmap();
-                try{
-                    File file=new File(this.getExternalCacheDir());
-                }
+                Intent intent = new Intent(Intent.ACTION_SEND);
+                intent.setType("image/JPG");
+
+                intent.putExtra(Intent.EXTRA_STREAM, fotoUri);
+                startActivity(Intent.createChooser(intent , "Share"));
             }
         });
-        */
+
         return view;
     }
 }
