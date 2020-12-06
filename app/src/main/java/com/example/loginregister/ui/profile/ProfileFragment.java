@@ -66,7 +66,7 @@ public class ProfileFragment extends Fragment {
 
     Button btnVeranderFoto;
     ImageView ProfielFoto;
-    TextView naam, gsm, mail, amount;
+    TextView naam, gsm, mail, amountBoxes, amountHarvests;
     DatabaseReference reff;
     FirebaseUser muser;
     FirebaseAuth mAuth;
@@ -103,7 +103,8 @@ public class ProfileFragment extends Fragment {
         mail=view.findViewById(R.id.userEmail_Textview);
         mprofilePic = view.findViewById(R.id.profilePic);
         fab = view.findViewById(R.id.EditProfile);
-        amount=view.findViewById(R.id.txtAmount);
+        amountBoxes=view.findViewById(R.id.txtAmountBoxes);
+        amountHarvests=view.findViewById(R.id.txtAmountHarvests);
 
         //init arrays of permissions
         cameraPermissions = new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
@@ -129,11 +130,13 @@ public class ProfileFragment extends Fragment {
                 String _gsm=documentSnapshot.getString("phone");
                 String _mail=documentSnapshot.getString("email");
                 String _foto =documentSnapshot.getString("email");
-                String _amount=documentSnapshot.getString("amount");
+                String _amountBoxes=documentSnapshot.getString("amountBoxes");
+                String _amountHarvests=documentSnapshot.getString("amountHarvests");
                 naam.setText(_naam);
                 gsm.setText(_gsm);
                 mail.setText(_mail);
-                amount.setText(_amount.toString());
+                amountBoxes.setText(_amountBoxes);
+                amountHarvests.setText((_amountHarvests));
                 try {
                     Picasso.get().load(_foto).into(mprofilePic);
                 }
