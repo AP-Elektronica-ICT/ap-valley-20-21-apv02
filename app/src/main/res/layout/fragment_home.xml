@@ -9,19 +9,6 @@
     tools:context=".ui.home.HomeFragment">
 
 
-    <Button
-        android:id="@+id/btnLiveview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginStart="110dp"
-        android:layout_marginTop="291dp"
-        android:backgroundTint="@color/white"
-        android:text="Liveview"
-        android:textColor="@color/black" />
-
     <ImageButton
         android:id="@+id/navigation_button"
         android:layout_width="40dp"
@@ -75,7 +62,7 @@
         android:src="@drawable/fotogroeibox" />
 
     <ImageButton
-        android:id="@+id/LiveViewbutton"
+        android:id="@+id/btnLiveview"
         android:layout_width="95dp"
         android:layout_height="45dp"
         android:layout_alignParentTop="true"
