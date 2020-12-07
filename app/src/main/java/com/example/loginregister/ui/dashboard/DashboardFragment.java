@@ -31,6 +31,7 @@ import com.example.loginregister.ScanActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -226,9 +227,9 @@ public class DashboardFragment extends Fragment {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 //input text from edit text
-                Log.d("actie:", "aantalplaten ingeven");
+                Log.d("actie:", "select grobox x");
 
-                // selected growbox in firebase zetten
+                selectCurrentBox(mTitle.get(position));
             }
         });
         builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -242,6 +243,11 @@ public class DashboardFragment extends Fragment {
         builder.show();
 
 
+    }
+
+    private void selectCurrentBox(String Name){
+        DocumentReference documentReference = mStore.collection("Users").document(userID);
+        documentReference.update("currentGrowbox", Name);
     }
 
 }
