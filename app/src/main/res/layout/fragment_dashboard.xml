@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@drawable/achtergrondoptie"
+    android:backgroundTint="#3677B255"
     tools:context=".ui.dashboard.DashboardFragment">
 
     <ListView
