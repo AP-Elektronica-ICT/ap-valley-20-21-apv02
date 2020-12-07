@@ -1,7 +1,9 @@
 package com.example.loginregister.ui.dashboard;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -9,9 +11,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -79,6 +83,34 @@ public class DashboardFragment extends Fragment {
                     }
                     MyAdapter adapter = new MyAdapter(getActivity(), mTitle, mDescription, images);
                     listView.setAdapter(adapter);
+                    listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                            switch (position) {
+                                case 0:
+                                    Log.d("greetz", "clicked");
+                                    showSelected("ALERT", position);
+                                    break;
+                                case 1:
+                                    Toast.makeText(getContext(), mDescription.get(1), Toast.LENGTH_LONG);
+                                    showSelected("ALERT", position);
+                                    break;
+                                case 2:
+                                    Toast.makeText(getContext(), mDescription.get(2), Toast.LENGTH_LONG);
+                                    showSelected("ALERT", position);
+                                    break;
+                                case 3:
+                                    Toast.makeText(getContext(), mDescription.get(3), Toast.LENGTH_LONG);
+                                    showSelected("ALERT", position);
+                                    break;
+                                case 4:
+                                    Toast.makeText(getContext(), mDescription.get(4), Toast.LENGTH_LONG);
+                                    showSelected("ALERT", position);
+                                    break;
+
+                            }
+                        }
+                    });
 
                     Log.d("geladen", list.toString());
                 } else {
@@ -169,7 +201,6 @@ public class DashboardFragment extends Fragment {
             TextView myTitle = row.findViewById(R.id.title_main1);
             TextView myDescription = row.findViewById(R.id.title_sub1);
 
-            // now set our resources on views
             Picasso.get().load(rImgs.get(position)).into(images);
             //  images.setImageResource(rImgs.get(position));
             myTitle.setText(rTitle.get(position));
@@ -177,5 +208,40 @@ public class DashboardFragment extends Fragment {
             return row;
         }
     }
-   
+    private void showSelected(final String key, int position) {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle(key);
+        //set layout of dialog
+        builder.setMessage("Are You sure you want to select " + mTitle.get(position));
+        LinearLayout linearLayout = new LinearLayout(getActivity());
+        linearLayout.setOrientation(LinearLayout.VERTICAL);
+        linearLayout.setPadding(10, 10, 10, 10);
+
+        //add edit text
+
+        builder.setView(linearLayout);
+
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                //input text from edit text
+                Log.d("actie:", "aantalplaten ingeven");
+
+                // selected growbox in firebase zetten
+            }
+        });
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        //create and show dialog
+        builder.create();
+        builder.show();
+
+
+    }
+
 }
