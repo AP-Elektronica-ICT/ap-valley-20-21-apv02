@@ -1,14 +1,11 @@
 package com.example.loginregister.ui.home;
 
-import android.app.job.JobInfo;
-import android.app.job.JobScheduler;
-import android.content.ComponentName;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -17,29 +14,23 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
 import com.example.loginregister.R;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
-
-import static android.content.Context.JOB_SCHEDULER_SERVICE;
 
 public class HomeFragment extends Fragment {
     private static final String TAG = "MainActivity";
 
     private static final String BACK_STACK_ROOT_TAG = "navigation_home";
 
-    Button cancel, start, navigatie, btnLiveview;
+    //Button cancel, start;
+    Button btnLiveview;
+    ImageButton navigatie;
     NavController navc;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         setHasOptionsMenu(true);
 
-        start = view.findViewById(R.id.schedule_button);
-        cancel = view.findViewById(R.id.cancel_button);
+       // start = view.findViewById(R.id.schedule_button);
+       // cancel = view.findViewById(R.id.cancel_button);
         btnLiveview=view.findViewById(R.id.btnLiveview);
         FragmentManager fragmentManager = getFragmentManager();
         fragmentManager.popBackStack(BACK_STACK_ROOT_TAG, FragmentManager.POP_BACK_STACK_INCLUSIVE);
