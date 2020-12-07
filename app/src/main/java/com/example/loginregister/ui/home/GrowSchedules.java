@@ -276,7 +276,8 @@ public class GrowSchedules extends Fragment {
 
                 if (!TextUtils.isEmpty(value) && valuenumb < 5){
 
-                    activateGrowSgeschedule(position, valuenumb);
+                   // activateGrowSgeschedule(position, valuenumb);
+                    startiets(valuenumb,position);
                     Log.d("actie:", "start groeien");
 
 
@@ -301,7 +302,7 @@ public class GrowSchedules extends Fragment {
 
 
     }
-
+/*
     private void activateGrowSgeschedule(int position, int numbOfPlants){
         switch (position){
             case 0:
@@ -312,10 +313,13 @@ public class GrowSchedules extends Fragment {
                 startiets(numbOfPlants,position);
                 break;
             case 2:
+                startiets(numbOfPlants,position);
                 break;
             case 4:
+                startiets(numbOfPlants,position);
                 break;
             case  5:
+                startiets(numbOfPlants,position);
                 break;
             case 6:
                 break;
@@ -323,6 +327,8 @@ public class GrowSchedules extends Fragment {
                 break;
         }
     }
+    */
+
     FirebaseDatabase database = FirebaseDatabase.getInstance();
 
 
@@ -344,12 +350,6 @@ public class GrowSchedules extends Fragment {
 
     }
     private void startiets(int numbOfPlants, int position){
-
-        // schrijf naar grobox x pad x
-
-
-
-
         for(int i =0; i<numbOfPlants; i++){
             DatabaseReference myRefTime = database.getReference(CurrentName + "/" + pumps[i] + "/Time" );
             DatabaseReference myRefInter = database.getReference(CurrentName + "/" +  pumps[i] +  "/Interval" );
@@ -357,13 +357,11 @@ public class GrowSchedules extends Fragment {
             DatabaseReference mRefLighttime = database.getReference(CurrentName + "/light/TIME");
             DatabaseReference myRefCurrentGrow = database.getReference(CurrentName + "/CurrentGrowSchedule");
             myRefCurrentGrow.setValue(mTitle.get(position));
-            myRefTime.setValue(3000);
-            myRefInter.setValue(500);
-            mRefLightinteval.setValue(400);
-            mRefLighttime.setValue(600);
+            myRefTime.setValue(2000);
+            myRefInter.setValue(200);
+            mRefLightinteval.setValue(200);
+            mRefLighttime.setValue(200);
         }
-
-
     }
 
 
