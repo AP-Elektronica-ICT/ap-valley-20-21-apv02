@@ -20,6 +20,11 @@
     <color name="followersBg">#65DCE5</color>
     <color name="followingBg">#49BEFF</color>
     <color name="grey">#E5E5E5</color>
+    <color name="groeneknoppen">#77B255</color>
+    <color name="messengerkleur">#0083ff</color>
+    <color name="instagramkleur">#f57fc7</color>
+    <color name="redditkleur">#ff3f18</color>
+    <color name="whatsappkleur">#40e85f</color>
 
     <color name="white">#FFFFFF</color>
 

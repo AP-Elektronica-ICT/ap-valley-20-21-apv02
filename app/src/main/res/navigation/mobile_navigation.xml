@@ -38,5 +38,9 @@
         android:id="@+id/liveview3"
         android:name="com.example.loginregister.ui.home.Liveview"
         android:label="fragment_liveview"
-        tools:layout="@layout/fragment_liveview" />
+        tools:layout="@layout/fragment_liveview" >
+        <action
+            android:id="@+id/action_liveview3_to_navigation_home"
+            app:destination="@id/navigation_home" />
+    </fragment>
 </navigation>

@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -20,7 +21,10 @@ import android.widget.VideoView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 import com.example.loginregister.R;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -39,8 +43,11 @@ public class Liveview extends Fragment {
     Uri videoUri, fotoUri;
     String imageUri;
     ProgressBar progressBar;
-    Button button;
-    ImageView imageView;
+    ImageButton button1,button2,button3,button4,button5, pijl;
+    NavController navc;
+
+    private static final String BACK_STACK_ROOT_TAG = "navigation_liveview";
+
 
     private StorageReference mStorageRef, mStorageRef2;
 
@@ -58,11 +65,11 @@ public class Liveview extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_liveview, container, false);
 
+        setHasOptionsMenu(true);
 
         videoView=view.findViewById(R.id.videoView);
         progressBar=view.findViewById(R.id.progressBar);
 
-        imageView=view.findViewById(R.id.imageView);
 
         mStorageRef = FirebaseStorage.getInstance().getReference();
 
@@ -97,7 +104,12 @@ public class Liveview extends Fragment {
         videoView.start();
 
 
-        button = (Button) view.findViewById(R.id.button);
+        button1 = view.findViewById(R.id.imageButton);
+        button2 = view.findViewById(R.id.imageButton2);
+        button3 = view.findViewById(R.id.imageButton8);
+        button4 = view.findViewById(R.id.imageButton4);
+        button5 = view.findViewById(R.id.imageButton9);
+        pijl = view.findViewById(R.id.imgpijl);
 
         mStorageRef2 = FirebaseStorage.getInstance().getReference();
 
@@ -108,7 +120,10 @@ public class Liveview extends Fragment {
             }
         });
 
-        button.setOnClickListener(new View.OnClickListener() {
+
+        //Voorlopig allemaal dezelfde code => wordt nog aangepast !
+
+        button1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
@@ -119,6 +134,72 @@ public class Liveview extends Fragment {
                 startActivity(Intent.createChooser(intent , "Share"));
             }
         });
+        button2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Intent intent = new Intent(Intent.ACTION_SEND);
+                intent.setType("image/JPG");
+
+                intent.putExtra(Intent.EXTRA_STREAM, fotoUri);
+                startActivity(Intent.createChooser(intent , "Share"));
+            }
+        });
+        button3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Intent intent = new Intent(Intent.ACTION_SEND);
+                intent.setType("image/JPG");
+
+                intent.putExtra(Intent.EXTRA_STREAM, fotoUri);
+                startActivity(Intent.createChooser(intent , "Share"));
+            }
+        });
+        button4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Intent intent = new Intent(Intent.ACTION_SEND);
+                intent.setType("image/JPG");
+
+                intent.putExtra(Intent.EXTRA_STREAM, fotoUri);
+                startActivity(Intent.createChooser(intent , "Share"));
+            }
+        });
+        button5.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Intent intent = new Intent(Intent.ACTION_SEND);
+                intent.setType("image/JPG");
+
+                intent.putExtra(Intent.EXTRA_STREAM, fotoUri);
+                startActivity(Intent.createChooser(intent , "Share"));
+            }
+        });
+
+
+        FragmentManager fragmentManager = getFragmentManager();
+        fragmentManager.popBackStack(BACK_STACK_ROOT_TAG, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+
+        pijl.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                HomeFragment homeFragment = new HomeFragment();
+
+                // Add the new tab fragment
+                fragmentManager.beginTransaction()
+                        .replace(R.id.nav_host_fragment, homeFragment)
+                        .addToBackStack(BACK_STACK_ROOT_TAG)
+                        .commit();
+                navc = Navigation.findNavController(view);
+                navc.navigate(R.id.action_liveview3_to_navigation_home);
+
+
+            }
+        });
+
 
         return view;
     }
