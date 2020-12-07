@@ -20,7 +20,7 @@ public class HomeFragment extends Fragment {
     private static final String BACK_STACK_ROOT_TAG = "navigation_home";
 
     //Button cancel, start;
-    
+
     ImageButton navigatie,btnLiveview ;
     NavController navc;
     public View onCreateView(@NonNull LayoutInflater inflater,

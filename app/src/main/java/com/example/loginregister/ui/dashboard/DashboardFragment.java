@@ -4,7 +4,6 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -91,13 +90,7 @@ public class DashboardFragment extends Fragment {
 
 
 
-
-
-
-
-
         scan = (Button) view.findViewById(R.id.scan);
-
         scan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -184,37 +177,5 @@ public class DashboardFragment extends Fragment {
             return row;
         }
     }
-    /*
-    class MijnAdapter extends ArrayAdapter<String>{
-        Context context;
-        List<String> rTitel;
-        List<String> rBeschrijving;
-        List<Integer> rImgs;
-
-
-        MijnAdapter (Context c, List<String> titel, List<String> beschrijving, List<Integer> imgs){
-            super(c, R.layout.row_list_home, R.id.title_main1, titel);
-            this.context = c;
-            this.rTitel= titel;
-            this.rBeschrijving = beschrijving;
-            this.rImgs = imgs;
-        }
-
-        @NonNull
-        @Override
-        public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent){
-            LayoutInflater layoutInflater = (LayoutInflater)getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            View rij = layoutInflater.inflate(R.layout.row_list_home, parent, false);
-            ImageView images = rij.findViewById(R.id.image);
-            TextView mijnTitel = rij.findViewById(R.id.title_main1);
-            TextView mijnBeschrijving = rij.findViewById(R.id.title_sub1);
-
-            images.setImageResource(rImgs.get(position));
-            mijnTitel.setText(rTitel.get(position));
-            mijnBeschrijving.setText(rBeschrijving.get(position));
-
-            return rij;
-        }
-    }
-*/
+   
 }
