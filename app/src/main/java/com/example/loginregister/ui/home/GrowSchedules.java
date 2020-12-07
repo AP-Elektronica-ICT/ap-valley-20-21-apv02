@@ -30,9 +30,14 @@ import androidx.fragment.app.Fragment;
 import com.example.loginregister.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.squareup.picasso.Picasso;
@@ -48,12 +53,14 @@ public class GrowSchedules extends Fragment {
     ListView listView;
     FirebaseDatabase firebaseDatabase;
     DatabaseReference databaseReference;
-
+    String userID;
+    FirebaseAuth mAuth;
     List<String> mTitle = new ArrayList<>();
     List<String> mDescription = new ArrayList<>();
     List<String> images = new ArrayList<>();
     List<String> mDescriptionlong = new ArrayList<>();
     String[] pumps = {"PUMP1", "PUMP2", "PUMP3", "PUMP4"};
+    String CurrentName;
 
 
     FirebaseFirestore mStore;
@@ -68,7 +75,18 @@ public class GrowSchedules extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mAuth = FirebaseAuth.getInstance();
+        mStore = FirebaseFirestore.getInstance();
+        userID = mAuth.getCurrentUser().getUid();
+        DocumentReference documentReference = mStore.collection("Users").document(userID);
+        documentReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
+               CurrentName = documentSnapshot.getString("currentGrowbox");
 
+
+            }
+        });
 
         // inladen van lists van firebase
         mStore = FirebaseFirestore.getInstance();
@@ -288,10 +306,10 @@ public class GrowSchedules extends Fragment {
         switch (position){
             case 0:
                 // start aardbeiproces
-                StartAardbeiGroei(numbOfPlants);
+                startiets(numbOfPlants, position);
                 break;
             case 1:
-                startiets(numbOfPlants);
+                startiets(numbOfPlants,position);
                 break;
             case 2:
                 break;
@@ -325,23 +343,33 @@ public class GrowSchedules extends Fragment {
 
 
     }
-    private void startiets(int numbOfPlants){
+    private void startiets(int numbOfPlants, int position){
 
         // schrijf naar grobox x pad x
 
+
+
+
         for(int i =0; i<numbOfPlants; i++){
-            DatabaseReference myRefTime = database.getReference("Growbox1/" + pumps[i] + "/Time" );
-            DatabaseReference myRefInter = database.getReference("Growbox1/" + pumps[i] +  "/Interval" );
-            DatabaseReference mRefLightinteval = database.getReference("Growbox1/light/INTERVAL");
-            DatabaseReference mRefLighttime = database.getReference("Growbox1/light/TIME");
-            myRefTime.setValue(4000);
-            myRefInter.setValue(1500);
-            mRefLightinteval.setValue(4500);
-            mRefLighttime.setValue(5000);
+            DatabaseReference myRefTime = database.getReference(CurrentName + "/" + pumps[i] + "/Time" );
+            DatabaseReference myRefInter = database.getReference(CurrentName + "/" +  pumps[i] +  "/Interval" );
+            DatabaseReference mRefLightinteval = database.getReference(CurrentName + "/light/INTERVAL");
+            DatabaseReference mRefLighttime = database.getReference(CurrentName + "/light/TIME");
+            DatabaseReference myRefCurrentGrow = database.getReference(CurrentName + "/CurrentGrowSchedule");
+            myRefCurrentGrow.setValue(mTitle.get(position));
+            myRefTime.setValue(3000);
+            myRefInter.setValue(500);
+            mRefLightinteval.setValue(400);
+            mRefLighttime.setValue(600);
         }
 
 
     }
+
+
+
+
+
 /// jobschedular nog nodig?
     public void scheduleJob(View v) {
         ComponentName componentName = new ComponentName(getActivity(), ExampleJobService.class);
