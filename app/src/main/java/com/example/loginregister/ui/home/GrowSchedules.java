@@ -302,53 +302,10 @@ public class GrowSchedules extends Fragment {
 
 
     }
-/*
-    private void activateGrowSgeschedule(int position, int numbOfPlants){
-        switch (position){
-            case 0:
-                // start aardbeiproces
-                startiets(numbOfPlants, position);
-                break;
-            case 1:
-                startiets(numbOfPlants,position);
-                break;
-            case 2:
-                startiets(numbOfPlants,position);
-                break;
-            case 4:
-                startiets(numbOfPlants,position);
-                break;
-            case  5:
-                startiets(numbOfPlants,position);
-                break;
-            case 6:
-                break;
-            case 7:
-                break;
-        }
-    }
-    */
+
 
     FirebaseDatabase database = FirebaseDatabase.getInstance();
 
-
-    private void StartAardbeiGroei(int numbOfPlants){
-
-        // schrijf naar grobox x pad x
-
-        for(int i =0; i<numbOfPlants; i++){
-            DatabaseReference myRefTime = database.getReference("Growbox1/" + pumps[i] + "/Time" );
-            DatabaseReference myRefInter = database.getReference("Growbox1/" + pumps[i] +  "/Interval" );
-            DatabaseReference mRefLightinteval = database.getReference("Growbox1/light/INTERVAL");
-            DatabaseReference mRefLighttime = database.getReference("Growbox1/light/TIME");
-            myRefTime.setValue(5000);
-            myRefInter.setValue(2500);
-            mRefLightinteval.setValue(2500);
-            mRefLighttime.setValue(3000);
-        }
-
-
-    }
     private void startiets(int numbOfPlants, int position){
         for(int i =0; i<numbOfPlants; i++){
             DatabaseReference myRefTime = database.getReference(CurrentName + "/" + pumps[i] + "/Time" );
@@ -363,10 +320,6 @@ public class GrowSchedules extends Fragment {
             mRefLighttime.setValue(200);
         }
     }
-
-
-
-
 
 /// jobschedular nog nodig?
     public void scheduleJob(View v) {
