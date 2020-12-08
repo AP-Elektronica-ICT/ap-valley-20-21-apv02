@@ -5,7 +5,8 @@ xmlns:tools="http://schemas.android.com/tools"
 android:layout_width="match_parent"
 android:layout_height="match_parent"
 android:orientation="vertical"
-android:background="@drawable/achtergrondoptie"
+    android:backgroundTint="#3677B255"
+    android:background="@drawable/achtergrondoptie"
 tools:context=".ui.home.GrowSchedules">
 
 <ListView

@@ -7,16 +7,12 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.text.InputFilter;
-import android.text.InputType;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -56,6 +52,7 @@ public class GrowSchedules extends Fragment {
     String userID;
     FirebaseAuth mAuth;
     List<String> mTitle = new ArrayList<>();
+    int[] mChosenPositions = {0,0,0,0,0};
     List<String> mDescription = new ArrayList<>();
     List<String> images = new ArrayList<>();
     List<String> mDescriptionlong = new ArrayList<>();
@@ -186,8 +183,6 @@ public class GrowSchedules extends Fragment {
             this.rTitle = title;
             this.rDescription = description;
             this.rImgs = imgs;
-
-
         }
 
         @NonNull
@@ -230,64 +225,8 @@ public class GrowSchedules extends Fragment {
             public void onClick(DialogInterface dialog, int which) {
                 //input text from edit text
                 Log.d("actie:", "aantalplaten ingeven");
-
-               showNuberOfPlants(position);
-            }
-        });
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });
-        //create and show dialog
-        builder.create();
-        builder.show();
-
-
-    }
-
-    // aantal planten ingeven
-    private void showNuberOfPlants(int position) {
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle("Geef het aantal planten");
-        //set layout of dialog
-        builder.setMessage("Hoeveel planten?" );
-        LinearLayout linearLayout = new LinearLayout(getActivity());
-        linearLayout.setOrientation(LinearLayout.VERTICAL);
-        linearLayout.setPadding(10, 10, 10, 10);
-
-        final EditText editText = new EditText(getActivity());
-        editText.setInputType(InputType.TYPE_CLASS_NUMBER);
-        editText.setFilters(new InputFilter[] { new InputFilter.LengthFilter(1) });
-        editText.setHint("Enter nuber of plants"); //edit update name or photo
-        linearLayout.addView(editText);
-
-        builder.setView(linearLayout);
-
-        builder.setPositiveButton("Start", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                //input text from edit text
-
-                String value = editText.getText().toString().trim();
-                int valuenumb =  Integer.parseInt(editText.getText().toString().trim());
-
-                if (!TextUtils.isEmpty(value) && valuenumb < 5){
-
-                   // activateGrowSgeschedule(position, valuenumb);
-                    startiets(valuenumb,position);
-                    Log.d("actie:", "start groeien");
-
-
-                }
-                else {
-                    Toast.makeText(getActivity(), "please enter number of plants with a maimum of 4", Toast.LENGTH_SHORT).show();
-                    editText.getText().clear();
-                    showNuberOfPlants(position);
-
-                }
+                ChoosePumps(position);
+              // showNuberOfPlants(position);
             }
         });
         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -304,24 +243,82 @@ public class GrowSchedules extends Fragment {
     }
 
 
+
+
+
+    private void ChoosePumps(int position){
+
+
+        // Set up the alert builder
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setTitle("Duidt aan waar je planten moeten groeien");
+
+// Add a checkbox list
+
+        String[] plants = {"Plant1", "Plant2", "Plant3", "Plant4"};
+        boolean[] checkedItems = {false, false, false, false};
+        builder.setMultiChoiceItems(plants, checkedItems, new DialogInterface.OnMultiChoiceClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+               Log.d("clicked", Integer.toString(which));
+                if (isChecked){
+                   mChosenPositions[which] = which + 1;
+
+                }
+                else if (!isChecked){
+                    mChosenPositions[which] = 0;
+                }
+
+            }
+        });
+
+// Add OK and Cancel buttons
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Startiets(mChosenPositions, position);
+                for(int i = 0; i< mChosenPositions.length; i++){
+                    Log.d("waarde op index: ", Integer.toString(i));
+                    Log.d("waarde: ", Integer.toString(mChosenPositions[i]));
+                }
+            }
+        });
+        builder.setNegativeButton("Cancel", null);
+
+// Create and show the alert dialog
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+    
     FirebaseDatabase database = FirebaseDatabase.getInstance();
-
-    private void startiets(int numbOfPlants, int position){
-        for(int i =0; i<numbOfPlants; i++){
+    private void Startiets(int [] chosenplants, int position){
+        for(int i =0; i<4; i++){
             DatabaseReference myRefTime = database.getReference(CurrentName + "/" + pumps[i] + "/Time" );
             DatabaseReference myRefInter = database.getReference(CurrentName + "/" +  pumps[i] +  "/Interval" );
             DatabaseReference mRefLightinteval = database.getReference(CurrentName + "/light/INTERVAL");
             DatabaseReference mRefLighttime = database.getReference(CurrentName + "/light/TIME");
             DatabaseReference myRefCurrentGrow = database.getReference(CurrentName + "/CurrentGrowSchedule");
             myRefCurrentGrow.setValue(mTitle.get(position));
-            myRefTime.setValue(2000);
-            myRefInter.setValue(200);
-            mRefLightinteval.setValue(200);
-            mRefLighttime.setValue(200);
+            if (mChosenPositions[i] == 0){
+                myRefTime.setValue(0);
+                myRefInter.setValue(0);
+                mRefLightinteval.setValue(0);
+                Log.d("chosen: ", Integer.toString( mChosenPositions[i]));
+            }else if (mChosenPositions[i] != 0){
+                myRefTime.setValue(100);
+                myRefInter.setValue(300);
+                mRefLightinteval.setValue(400);
+                mRefLighttime.setValue(500);
+                Log.d("not chosen: ", Integer.toString( mChosenPositions[i]));
+
+            }
+
+
         }
     }
 
-/// jobschedular nog nodig?
+
+    /// jobschedular nog nodig?
     public void scheduleJob(View v) {
         ComponentName componentName = new ComponentName(getActivity(), ExampleJobService.class);
         JobInfo info = new JobInfo.Builder(123, componentName)
