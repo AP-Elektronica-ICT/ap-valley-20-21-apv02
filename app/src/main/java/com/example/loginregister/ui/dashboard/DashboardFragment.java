@@ -1,18 +1,21 @@
 package com.example.loginregister.ui.dashboard;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,6 +31,7 @@ import com.example.loginregister.ScanActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -80,6 +84,34 @@ public class DashboardFragment extends Fragment {
                     }
                     MyAdapter adapter = new MyAdapter(getActivity(), mTitle, mDescription, images);
                     listView.setAdapter(adapter);
+                    listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                            switch (position) {
+                                case 0:
+                                    Log.d("greetz", "clicked");
+                                    showSelected("ALERT", position);
+                                    break;
+                                case 1:
+                                    Toast.makeText(getContext(), mDescription.get(1), Toast.LENGTH_LONG);
+                                    showSelected("ALERT", position);
+                                    break;
+                                case 2:
+                                    Toast.makeText(getContext(), mDescription.get(2), Toast.LENGTH_LONG);
+                                    showSelected("ALERT", position);
+                                    break;
+                                case 3:
+                                    Toast.makeText(getContext(), mDescription.get(3), Toast.LENGTH_LONG);
+                                    showSelected("ALERT", position);
+                                    break;
+                                case 4:
+                                    Toast.makeText(getContext(), mDescription.get(4), Toast.LENGTH_LONG);
+                                    showSelected("ALERT", position);
+                                    break;
+
+                            }
+                        }
+                    });
 
                     Log.d("geladen", list.toString());
                 } else {
@@ -91,13 +123,7 @@ public class DashboardFragment extends Fragment {
 
 
 
-
-
-
-
-
         scan = (Button) view.findViewById(R.id.scan);
-
         scan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -176,7 +202,6 @@ public class DashboardFragment extends Fragment {
             TextView myTitle = row.findViewById(R.id.title_main1);
             TextView myDescription = row.findViewById(R.id.title_sub1);
 
-            // now set our resources on views
             Picasso.get().load(rImgs.get(position)).into(images);
             //  images.setImageResource(rImgs.get(position));
             myTitle.setText(rTitle.get(position));
@@ -184,37 +209,45 @@ public class DashboardFragment extends Fragment {
             return row;
         }
     }
-    /*
-    class MijnAdapter extends ArrayAdapter<String>{
-        Context context;
-        List<String> rTitel;
-        List<String> rBeschrijving;
-        List<Integer> rImgs;
+    private void showSelected(final String key, int position) {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle(key);
+        //set layout of dialog
+        builder.setMessage("Are You sure you want to select " + mTitle.get(position));
+        LinearLayout linearLayout = new LinearLayout(getActivity());
+        linearLayout.setOrientation(LinearLayout.VERTICAL);
+        linearLayout.setPadding(10, 10, 10, 10);
+
+        //add edit text
+
+        builder.setView(linearLayout);
+
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                //input text from edit text
+                Log.d("actie:", "select grobox x");
+
+                selectCurrentBox(mTitle.get(position));
+            }
+        });
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        //create and show dialog
+        builder.create();
+        builder.show();
 
 
-        MijnAdapter (Context c, List<String> titel, List<String> beschrijving, List<Integer> imgs){
-            super(c, R.layout.row_list_home, R.id.title_main1, titel);
-            this.context = c;
-            this.rTitel= titel;
-            this.rBeschrijving = beschrijving;
-            this.rImgs = imgs;
-        }
-
-        @NonNull
-        @Override
-        public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent){
-            LayoutInflater layoutInflater = (LayoutInflater)getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            View rij = layoutInflater.inflate(R.layout.row_list_home, parent, false);
-            ImageView images = rij.findViewById(R.id.image);
-            TextView mijnTitel = rij.findViewById(R.id.title_main1);
-            TextView mijnBeschrijving = rij.findViewById(R.id.title_sub1);
-
-            images.setImageResource(rImgs.get(position));
-            mijnTitel.setText(rTitel.get(position));
-            mijnBeschrijving.setText(rBeschrijving.get(position));
-
-            return rij;
-        }
     }
-*/
+
+    private void selectCurrentBox(String Name){
+        DocumentReference documentReference = mStore.collection("Users").document(userID);
+        documentReference.update("currentGrowbox", Name);
+    }
+
 }

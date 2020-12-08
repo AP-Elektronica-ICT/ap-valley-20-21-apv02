@@ -30,9 +30,14 @@ import androidx.fragment.app.Fragment;
 import com.example.loginregister.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.squareup.picasso.Picasso;
@@ -48,12 +53,14 @@ public class GrowSchedules extends Fragment {
     ListView listView;
     FirebaseDatabase firebaseDatabase;
     DatabaseReference databaseReference;
-
+    String userID;
+    FirebaseAuth mAuth;
     List<String> mTitle = new ArrayList<>();
     List<String> mDescription = new ArrayList<>();
     List<String> images = new ArrayList<>();
     List<String> mDescriptionlong = new ArrayList<>();
     String[] pumps = {"PUMP1", "PUMP2", "PUMP3", "PUMP4"};
+    String CurrentName;
 
 
     FirebaseFirestore mStore;
@@ -68,7 +75,18 @@ public class GrowSchedules extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mAuth = FirebaseAuth.getInstance();
+        mStore = FirebaseFirestore.getInstance();
+        userID = mAuth.getCurrentUser().getUid();
+        DocumentReference documentReference = mStore.collection("Users").document(userID);
+        documentReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
+               CurrentName = documentSnapshot.getString("currentGrowbox");
 
+
+            }
+        });
 
         // inladen van lists van firebase
         mStore = FirebaseFirestore.getInstance();
@@ -258,7 +276,8 @@ public class GrowSchedules extends Fragment {
 
                 if (!TextUtils.isEmpty(value) && valuenumb < 5){
 
-                    activateGrowSgeschedule(position, valuenumb);
+                   // activateGrowSgeschedule(position, valuenumb);
+                    startiets(valuenumb,position);
                     Log.d("actie:", "start groeien");
 
 
@@ -284,64 +303,24 @@ public class GrowSchedules extends Fragment {
 
     }
 
-    private void activateGrowSgeschedule(int position, int numbOfPlants){
-        switch (position){
-            case 0:
-                // start aardbeiproces
-                StartAardbeiGroei(numbOfPlants);
-                break;
-            case 1:
-                startiets(numbOfPlants);
-                break;
-            case 2:
-                break;
-            case 4:
-                break;
-            case  5:
-                break;
-            case 6:
-                break;
-            case 7:
-                break;
-        }
-    }
+
     FirebaseDatabase database = FirebaseDatabase.getInstance();
 
-
-    private void StartAardbeiGroei(int numbOfPlants){
-
-        // schrijf naar grobox x pad x
-
+    private void startiets(int numbOfPlants, int position){
         for(int i =0; i<numbOfPlants; i++){
-            DatabaseReference myRefTime = database.getReference("Growbox1/" + pumps[i] + "/Time" );
-            DatabaseReference myRefInter = database.getReference("Growbox1/" + pumps[i] +  "/Interval" );
-            DatabaseReference mRefLightinteval = database.getReference("Growbox1/light/INTERVAL");
-            DatabaseReference mRefLighttime = database.getReference("Growbox1/light/TIME");
-            myRefTime.setValue(5000);
-            myRefInter.setValue(2500);
-            mRefLightinteval.setValue(2500);
-            mRefLighttime.setValue(3000);
+            DatabaseReference myRefTime = database.getReference(CurrentName + "/" + pumps[i] + "/Time" );
+            DatabaseReference myRefInter = database.getReference(CurrentName + "/" +  pumps[i] +  "/Interval" );
+            DatabaseReference mRefLightinteval = database.getReference(CurrentName + "/light/INTERVAL");
+            DatabaseReference mRefLighttime = database.getReference(CurrentName + "/light/TIME");
+            DatabaseReference myRefCurrentGrow = database.getReference(CurrentName + "/CurrentGrowSchedule");
+            myRefCurrentGrow.setValue(mTitle.get(position));
+            myRefTime.setValue(2000);
+            myRefInter.setValue(200);
+            mRefLightinteval.setValue(200);
+            mRefLighttime.setValue(200);
         }
-
-
     }
-    private void startiets(int numbOfPlants){
 
-        // schrijf naar grobox x pad x
-
-        for(int i =0; i<numbOfPlants; i++){
-            DatabaseReference myRefTime = database.getReference("Growbox1/" + pumps[i] + "/Time" );
-            DatabaseReference myRefInter = database.getReference("Growbox1/" + pumps[i] +  "/Interval" );
-            DatabaseReference mRefLightinteval = database.getReference("Growbox1/light/INTERVAL");
-            DatabaseReference mRefLighttime = database.getReference("Growbox1/light/TIME");
-            myRefTime.setValue(4000);
-            myRefInter.setValue(1500);
-            mRefLightinteval.setValue(4500);
-            mRefLighttime.setValue(5000);
-        }
-
-
-    }
 /// jobschedular nog nodig?
     public void scheduleJob(View v) {
         ComponentName componentName = new ComponentName(getActivity(), ExampleJobService.class);
