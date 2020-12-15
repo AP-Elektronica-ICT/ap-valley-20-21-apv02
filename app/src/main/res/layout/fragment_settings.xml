@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/backgroundsetting"
+    tools:context=".ui.home.HomeFragment">
+
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="330dp"
+        android:layout_height="339dp"
+        android:layout_alignParentTop="true"
+        android:gravity="center_horizontal"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="143dp"
+        android:background="@drawable/roundedbackground" />
+
+    <TextView
+        android:id="@+id/textView11"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="120dp"
+        android:layout_marginTop="159dp"
+        android:text="SETTINGS"
+        android:textColor="@color/black"
+        android:textSize="30dp" />
+
+    <TextView
+        android:id="@+id/textView12"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/textView"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="23dp"
+        android:layout_marginTop="215dp"
+        android:textStyle="bold"
+        android:text="part"
+        android:textColor="@color/black"
+        android:textSize="20dp" />
+
+    <TextView
+        android:textStyle="bold"
+        android:id="@+id/textView13"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/textView"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="123dp"
+        android:layout_marginTop="215dp"
+        android:text="amount"
+        android:textColor="@color/black"
+        android:textSize="20dp" />
+
+    <TextView
+        android:textStyle="bold"
+        android:id="@+id/textView14"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/textView"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="261dp"
+        android:layout_marginTop="215dp"
+        android:text="+/-"
+        android:textColor="@color/black"
+        android:textSize="20dp" />
+
+    <TextView
+        android:id="@+id/textView15"
+        android:layout_width="58dp"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/textView12"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="256dp"
+        android:text="water supply"
+        android:textColor="@color/black" />
+
+    <TextView
+        android:id="@+id/textView18"
+        android:layout_width="58dp"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/textView13"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="260dp"
+        android:text="8   ml/d"
+        android:textColor="@color/black" />
+    <TextView
+        android:id="@+id/textView19"
+        android:layout_width="58dp"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/textView13"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="334dp"
+        android:text="10 hours"
+        android:textColor="@color/black" />
+
+    <TextView
+        android:id="@+id/textView20"
+        android:layout_width="58dp"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/textView13"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="412dp"
+        android:text="10 hours"
+        android:textColor="@color/black" />
+
+    <TextView
+        android:id="@+id/textView16"
+        android:layout_width="58dp"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/textView12"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="334dp"
+        android:text="light supply"
+        android:textColor="@color/black" />
+
+    <TextView
+        android:id="@+id/textView17"
+        android:layout_width="58dp"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/textView12"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="412dp"
+        android:text="food supply"
+        android:textColor="@color/black" />
+
+    <ImageButton
+        android:id="@+id/waterAdd"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_alignStart="@+id/textView"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="239dp"
+        android:layout_marginTop="265dp"
+        android:src="@drawable/ic_launcher_plus_foreground"
+        android:background="@drawable/plusminbutton" />
+
+    <ImageButton
+        android:id="@+id/waterSub"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_alignStart="@+id/textView"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="284dp"
+        android:layout_marginTop="265dp"
+        android:src="@drawable/ic_launcher_min_foreground"
+        android:background="@drawable/plusminbutton" />
+
+
+
+    <ImageButton
+        android:id="@+id/lightAdd"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_alignStart="@+id/textView"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="239dp"
+        android:layout_marginTop="346dp"
+        android:src="@drawable/ic_launcher_plus_foreground"
+        android:background="@drawable/plusminbutton" />
+
+    <ImageButton
+        android:id="@+id/lightSub"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_alignStart="@+id/textView"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="284dp"
+        android:layout_marginTop="346dp"
+        android:src="@drawable/ic_launcher_min_foreground"
+        android:background="@drawable/plusminbutton" />
+
+
+    <ImageButton
+        android:id="@+id/foodAdd"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_alignStart="@+id/textView"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="239dp"
+        android:layout_marginTop="424dp"
+        android:src="@drawable/ic_launcher_plus_foreground"
+        android:background="@drawable/plusminbutton" />
+
+    <ImageButton
+        android:id="@+id/foodSub"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_alignStart="@+id/textView"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="284dp"
+        android:layout_marginTop="424dp"
+        android:src="@drawable/ic_launcher_min_foreground"
+        android:background="@drawable/plusminbutton" />
+
+
+    <Button
+        android:id="@+id/cancel_button"
+        android:layout_width="152dp"
+        android:layout_height="54dp"
+        android:layout_alignStart="@+id/textView"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="500dp"
+        android:text="CANCEL"
+        android:textColor="@color/black"
+        android:textSize="20dp"
+        android:backgroundTint="#75F95C5C"
+        android:background="@drawable/plusminbutton" />
+
+    <Button
+        android:id="@+id/save_button"
+        android:layout_width="152dp"
+        android:layout_height="54dp"
+        android:layout_alignStart="@+id/textView"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="177dp"
+        android:layout_marginTop="500dp"
+        android:text="SAVE"
+        android:textColor="@color/black"
+        android:textSize="20dp"
+        android:backgroundTint="#6234E818"
+        android:background="@drawable/plusminbutton" />
+
+
+
+</RelativeLayout>

@@ -17,6 +17,7 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
 import com.example.loginregister.R;
+import com.example.loginregister.ui.settings;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -45,7 +46,7 @@ public class HomeFragment extends Fragment {
     FirebaseAuth mAuth;
     FirebaseFirestore mStore;
     String userID;
-    ImageButton navigatie,btnLiveview ;
+    ImageButton navigatie,btnLiveview, btnSettings ;
     NavController navc;
     TextView currentGrowSchedule;
     String GrowboxName, Url,currentGrow,growpogingtot;
@@ -65,6 +66,7 @@ public class HomeFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         setHasOptionsMenu(true);
 
+        btnSettings = view.findViewById(R.id.settings);
         btnLiveview=view.findViewById(R.id.btnLiveview);
         currentGrowSchedule = view.findViewById(R.id.currentGrowSchedule);
         currentGrowImage = view.findViewById(R.id.currentPlantImage);
@@ -168,6 +170,20 @@ public class HomeFragment extends Fragment {
                 navc = Navigation.findNavController(view);
                 navc.navigate(R.id.action_navigation_home_to_growSchedules);
 
+
+            }
+        });
+
+        btnSettings.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                settings settings = new settings();
+                fragmentManager.beginTransaction()
+                        .replace(R.id.nav_host_fragment, settings)
+                        .addToBackStack(BACK_STACK_ROOT_TAG)
+                        .commit();
+                navc = Navigation.findNavController(view);
+                navc.navigate(R.id.action_navigation_home_to_settings2);
 
             }
         });

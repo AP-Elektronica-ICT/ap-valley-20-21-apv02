@@ -11,26 +11,26 @@
 
     <ImageButton
         android:id="@+id/navigation_button"
-        android:layout_width="40dp"
+        android:layout_width="44dp"
         android:layout_height="40dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginStart="292dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="79dp"
+        android:layout_marginStart="279dp"
+        android:layout_marginTop="44dp"
+        android:layout_marginEnd="92dp"
         android:background="@drawable/roundedcornerbutton"
         android:src="@drawable/ic_launcher_edit_foreground" />
 
     <ImageButton
         android:id="@+id/settings"
-        android:layout_width="40dp"
+        android:layout_width="44dp"
         android:layout_height="40dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_marginStart="352dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="44dp"
         android:layout_marginEnd="19dp"
         android:background="@drawable/roundedcornerbutton"
         android:src="@drawable/ic_launcher_settings_foreground" />
@@ -41,8 +41,8 @@
         android:layout_height="40dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="42dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="44dp"
         android:background="@drawable/roundedcornerbutton"
         android:text="TextView"
         android:textAlignment="center"
@@ -56,8 +56,8 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginStart="201dp"
-        android:layout_marginTop="104dp"
+        android:layout_marginStart="228dp"
+        android:layout_marginTop="101dp"
         android:layout_marginEnd="19dp"
         android:src="@drawable/fotogroeibox" />
 
@@ -65,13 +65,102 @@
         android:id="@+id/btnLiveview"
         android:layout_width="95dp"
         android:layout_height="45dp"
+        android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginTop="288dp"
+        android:layout_marginStart="249dp"
+        android:layout_marginTop="273dp"
         android:layout_marginEnd="58dp"
         android:background="@drawable/roundedcornerbutton"
         android:backgroundTint="#77B255"
         android:src="@drawable/ic_launcher_camera_foreground" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="202dp"
+        android:layout_height="150dp"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="156dp"
+        android:background="@drawable/roundedbackground" />
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="87dp"
+        android:layout_height="40dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="159dp"
+        android:textColor="@color/black"
+        android:textSize="14dp"
+        android:text="water Consumption" />
+
+    <TextView
+        android:id="@+id/textView8"
+        android:layout_width="60dp"
+        android:layout_height="20dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="149dp"
+        android:layout_marginTop="168dp"
+        android:textStyle="bold"
+        android:text="2,6 ml/d"
+
+        android:textColor="@color/black"
+
+        android:textSize="14dp" />
+
+    <TextView
+        android:id="@+id/textView9"
+        android:layout_width="60dp"
+        android:layout_height="20dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="147dp"
+        android:layout_marginTop="218dp"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:text="240 Wh/d"
+        android:textSize="14dp" />
+
+    <TextView
+        android:id="@+id/textView10"
+        android:layout_width="60dp"
+        android:layout_height="20dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="147dp"
+        android:layout_marginTop="265dp"
+        android:textStyle="bold"
+        android:text="0,6 µl/d"
+        android:textColor="@color/black"
+
+        android:textSize="14dp" />
+
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="87dp"
+        android:layout_height="40dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="208dp"
+        android:text="power Consumption"
+        android:textSize="14dp"
+
+        android:textColor="@color/black" />
+
+    <TextView
+        android:id="@+id/textView7"
+        android:layout_width="87dp"
+        android:layout_height="40dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="253dp"
+        android:text="food Consumption"
+        android:textColor="@color/black" />
 
 
 </RelativeLayout>

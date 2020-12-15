@@ -16,6 +16,9 @@
         <action
             android:id="@+id/action_navigation_home_to_liveview3"
             app:destination="@id/liveview3" />
+        <action
+            android:id="@+id/action_navigation_home_to_settings2"
+            app:destination="@id/settings2" />
     </fragment>
 
     <fragment
@@ -41,6 +44,14 @@
         tools:layout="@layout/fragment_liveview" >
         <action
             android:id="@+id/action_liveview3_to_navigation_home"
+            app:destination="@id/navigation_home" />
+    </fragment>
+    <fragment
+        android:id="@+id/settings2"
+        android:name="com.example.loginregister.ui.settings"
+        android:label="settings" >
+        <action
+            android:id="@+id/action_settings2_to_navigation_home"
             app:destination="@id/navigation_home" />
     </fragment>
 </navigation>
