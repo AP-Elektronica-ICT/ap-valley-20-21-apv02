@@ -17,6 +17,7 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
 import com.example.loginregister.R;
+import com.example.loginregister.ui.settings;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -169,6 +170,20 @@ public class HomeFragment extends Fragment {
                 navc = Navigation.findNavController(view);
                 navc.navigate(R.id.action_navigation_home_to_growSchedules);
 
+
+            }
+        });
+
+        btnSettings.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                settings settings = new settings();
+                fragmentManager.beginTransaction()
+                        .replace(R.id.nav_host_fragment, settings)
+                        .addToBackStack(BACK_STACK_ROOT_TAG)
+                        .commit();
+                navc = Navigation.findNavController(view);
+                navc.navigate(R.id.action_navigation_home_to_settings2);
 
             }
         });
