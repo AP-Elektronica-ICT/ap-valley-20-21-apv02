@@ -105,7 +105,8 @@
         android:layout_marginStart="149dp"
         android:layout_marginTop="168dp"
         android:textStyle="bold"
-        android:text="240 Wh/d"
+        android:text="2,6 ml/d"
+
         android:textColor="@color/black"
 
         android:textSize="14dp" />
@@ -119,9 +120,8 @@
         android:layout_marginStart="147dp"
         android:layout_marginTop="218dp"
         android:textStyle="bold"
-        android:text="2,6 ml/d"
         android:textColor="@color/black"
-
+        android:text="240 Wh/d"
         android:textSize="14dp" />
 
     <TextView
