@@ -45,7 +45,7 @@ public class HomeFragment extends Fragment {
     FirebaseAuth mAuth;
     FirebaseFirestore mStore;
     String userID;
-    ImageButton navigatie,btnLiveview ;
+    ImageButton navigatie,btnLiveview, btnSettings ;
     NavController navc;
     TextView currentGrowSchedule;
     String GrowboxName, Url,currentGrow,growpogingtot;
@@ -65,6 +65,7 @@ public class HomeFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         setHasOptionsMenu(true);
 
+        btnSettings = view.findViewById(R.id.settings);
         btnLiveview=view.findViewById(R.id.btnLiveview);
         currentGrowSchedule = view.findViewById(R.id.currentGrowSchedule);
         currentGrowImage = view.findViewById(R.id.currentPlantImage);
