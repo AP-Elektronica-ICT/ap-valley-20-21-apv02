@@ -125,7 +125,7 @@ public class HomeFragment extends Fragment {
                                     @Override
                                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                         growpogingtot = dataSnapshot.getValue(String.class);
-                                        Log.d("growpogingtot", growpogingtot);
+                                        //Log.d("growpogingtot", growpogingtot);
 
                                         if(naam == growpogingtot){
                                             Url = document.getString("url");

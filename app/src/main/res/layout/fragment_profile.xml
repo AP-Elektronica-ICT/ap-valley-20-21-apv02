@@ -48,13 +48,13 @@
 
 
         <TextView
-            android:id="@+id/tv_address"
+            android:id="@+id/adress_textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/username_Textview"
             android:layout_centerHorizontal="true"
             android:fontFamily="sans-serif"
-            android:text="Antwerp,  Belgium"
+            android:text="Searching"
             android:textAllCaps="true"
             android:textColor="@color/address"
             android:textSize="14sp" />
