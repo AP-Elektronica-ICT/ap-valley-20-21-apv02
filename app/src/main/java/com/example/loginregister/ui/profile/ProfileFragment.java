@@ -38,6 +38,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.loginregister.MainActivity;
 import com.example.loginregister.R;
+import com.facebook.login.Login;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -536,6 +537,11 @@ public class ProfileFragment extends Fragment {
         startActivityForResult(galleryIntent,IMAGE_PICK_GALLERY_CODE);
 
 
+    }
+
+    public void logout(View view) {
+        FirebaseAuth.getInstance().signOut();//logout
+        startActivity(new Intent(getActivity(), Login.class));
     }
 
 }
