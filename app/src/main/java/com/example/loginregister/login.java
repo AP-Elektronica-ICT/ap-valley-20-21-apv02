@@ -158,10 +158,11 @@ public class login extends AppCompatActivity implements View.OnClickListener {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == RC_SIGN_IN){
-            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
-            handleSignInResult(task);
+        if(resultCode != RESULT_CANCELED) {
+            if (requestCode == RC_SIGN_IN) {
+                Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+                handleSignInResult(task);
+            }
         }
     }
 
@@ -172,8 +173,8 @@ public class login extends AppCompatActivity implements View.OnClickListener {
             Toast.makeText(login.this, "Google Sign in Works!", Toast.LENGTH_SHORT).show();
         }
         catch (ApiException e){
-            Toast.makeText(login.this, "Google Sign in Works!", Toast.LENGTH_SHORT).show();
-            FirebaseGoogleAuth(null);
+            Toast.makeText(login.this, "Signing FAiled", Toast.LENGTH_SHORT).show();
+          //  FirebaseGoogleAuth(null);
 
         }
 
@@ -196,7 +197,6 @@ public class login extends AppCompatActivity implements View.OnClickListener {
         });
 
     }
-
 
 
     // krijgen van user info --> naar profile verplaatsen?
