@@ -16,6 +16,7 @@ import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+import com.facebook.FacebookSdk;
 
 import com.facebook.login.Login;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -158,12 +159,12 @@ public class login extends AppCompatActivity implements View.OnClickListener {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(resultCode != RESULT_CANCELED) {
+
             if (requestCode == RC_SIGN_IN) {
                 Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
                 handleSignInResult(task);
             }
-        }
+
     }
 
     private void handleSignInResult( Task<GoogleSignInAccount> completedTask){
