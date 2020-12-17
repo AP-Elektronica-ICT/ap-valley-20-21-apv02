@@ -1,12 +1,16 @@
 package com.example.loginregister.ui.profile;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -34,6 +38,9 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.loginregister.MainActivity;
 import com.example.loginregister.R;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -55,10 +62,15 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.concurrent.Executor;
 
 import io.grpc.Context;
+
+
+import java.util.List;
+import java.util.Locale;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -66,7 +78,9 @@ public class ProfileFragment extends Fragment {
 
     Button btnVeranderFoto;
     ImageView ProfielFoto;
-    TextView naam, gsm, mail, amountBoxes, amountHarvests;
+    TextView naam, gsm, mail, amountBoxes, amountHarvests, mAddress;
+
+
     DatabaseReference reff;
     FirebaseUser muser;
     FirebaseAuth mAuth;
@@ -81,16 +95,21 @@ public class ProfileFragment extends Fragment {
     FloatingActionButton fab;
     ProgressDialog pd;
 
-    private static final int CAMERA_REQUEST_CODE =100;
-    private static final int STORAGE_REQUEST_CODE =200;
-    private static final int IMAGE_PICK_GALLERY_CODE =300;
-    private static final int IMAGE_PICK_CAMERA__CODE =400;
+    FusedLocationProviderClient fusedLocationProviderClient;
+
+    private static final int CAMERA_REQUEST_CODE = 100;
+    private static final int STORAGE_REQUEST_CODE = 200;
+    private static final int IMAGE_PICK_GALLERY_CODE = 300;
+    private static final int IMAGE_PICK_CAMERA__CODE = 400;
 
     String cameraPermissions[];
     String storagePermissions[];
 
 
-      public ProfileFragment(){};
+    public ProfileFragment() {
+    }
+
+    ;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -98,13 +117,14 @@ public class ProfileFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
 
-        naam= view.findViewById(R.id.username_Textview);
-        gsm= view.findViewById(R.id.phonenumber_Textview);
-        mail=view.findViewById(R.id.userEmail_Textview);
+        naam = view.findViewById(R.id.username_Textview);
+        gsm = view.findViewById(R.id.phonenumber_Textview);
+        mail = view.findViewById(R.id.userEmail_Textview);
         mprofilePic = view.findViewById(R.id.profilePic);
         fab = view.findViewById(R.id.EditProfile);
-        amountBoxes=view.findViewById(R.id.txtAmountBoxes);
-        amountHarvests=view.findViewById(R.id.txtAmountHarvests);
+        amountBoxes = view.findViewById(R.id.txtAmountBoxes);
+        amountHarvests = view.findViewById(R.id.txtAmountHarvests);
+        mAddress = view.findViewById(R.id.adress_textView);
 
         //init arrays of permissions
         cameraPermissions = new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
@@ -114,24 +134,34 @@ public class ProfileFragment extends Fragment {
         muser = FirebaseAuth.getInstance().getCurrentUser();
         mAuth = FirebaseAuth.getInstance();
         mStore = FirebaseFirestore.getInstance();
-       // databaseReference = firebaseDatabase.getReference("Users");
+        // databaseReference = firebaseDatabase.getReference("Users");
 
         userID = mAuth.getCurrentUser().getUid();
 
         pd = new ProgressDialog(getActivity());
 
 
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getActivity());
+
+        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            getlocation();
+
+        } else {
+            //no permission
+            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 44);
+        }
+
         //Code stef die reeds werkt --> betere optie mogelijk
         DocumentReference documentReference = mStore.collection("Users").document(userID);
         documentReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
-                String _naam=documentSnapshot.getString("uname");
-                String _gsm=documentSnapshot.getString("phone");
-                String _mail=documentSnapshot.getString("email");
-                String _foto =documentSnapshot.getString("email");
-                String _amountBoxes=documentSnapshot.getString("amountBoxes");
-                String _amountHarvests=documentSnapshot.getString("amountHarvests");
+                String _naam = documentSnapshot.getString("uname");
+                String _gsm = documentSnapshot.getString("phone");
+                String _mail = documentSnapshot.getString("email");
+                String _foto = documentSnapshot.getString("email");
+                String _amountBoxes = documentSnapshot.getString("amountBoxes");
+                String _amountHarvests = documentSnapshot.getString("amountHarvests");
                 naam.setText(_naam);
                 gsm.setText(_gsm);
                 mail.setText(_mail);
@@ -139,8 +169,7 @@ public class ProfileFragment extends Fragment {
                 amountHarvests.setText((_amountHarvests));
                 try {
                     Picasso.get().load(_foto).into(mprofilePic);
-                }
-                catch (Exception a){
+                } catch (Exception a) {
                     Picasso.get().load(R.drawable.ic_settings);
                 }
             }
@@ -157,6 +186,32 @@ public class ProfileFragment extends Fragment {
         });
 
         return view;
+    }
+
+    @SuppressLint("MissingPermission")
+    private void getlocation() {
+            fusedLocationProviderClient.getLastLocation().addOnCompleteListener(new OnCompleteListener<Location>() {
+                @Override
+                public void onComplete(@NonNull Task<Location> task) {
+                    Location location = task.getResult();
+                    if (location != null){
+
+
+                        try {
+                            Geocoder geocoder = new Geocoder(getActivity(), Locale.getDefault());
+
+                            List<Address> addresses = geocoder.getFromLocation(
+                                    location.getLatitude(), location.getLongitude(), 1
+                            );
+                            mAddress.setText(addresses.get(0).getLocality() +"," + addresses.get(0).getCountryName());
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                }
+            });
+
     }
 
     private boolean checkStoragePermission(){
