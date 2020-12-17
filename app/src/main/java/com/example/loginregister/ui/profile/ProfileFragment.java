@@ -38,6 +38,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.loginregister.MainActivity;
 import com.example.loginregister.R;
+import com.example.loginregister.login;
 import com.facebook.login.Login;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -77,7 +78,7 @@ import static android.app.Activity.RESULT_OK;
 
 public class ProfileFragment extends Fragment {
 
-    Button btnVeranderFoto;
+    Button btnVeranderFoto, mLogout;
     ImageView ProfielFoto;
     TextView naam, gsm, mail, amountBoxes, amountHarvests, mAddress;
 
@@ -110,7 +111,7 @@ public class ProfileFragment extends Fragment {
     public ProfileFragment() {
     }
 
-    ;
+
 
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -126,6 +127,7 @@ public class ProfileFragment extends Fragment {
         amountBoxes = view.findViewById(R.id.txtAmountBoxes);
         amountHarvests = view.findViewById(R.id.txtAmountHarvests);
         mAddress = view.findViewById(R.id.adress_textView);
+        mLogout = view.findViewById(R.id.logout_button);
 
         //init arrays of permissions
         cameraPermissions = new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
@@ -177,6 +179,12 @@ public class ProfileFragment extends Fragment {
         });
 
 
+        mLogout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alertsignout();
+            }
+        });
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -541,7 +549,51 @@ public class ProfileFragment extends Fragment {
 
     public void logout(View view) {
         FirebaseAuth.getInstance().signOut();//logout
-        startActivity(new Intent(getActivity(), Login.class));
+        startActivity(new Intent(getActivity(), login.class));
+    }
+
+    public void alertsignout()
+    {
+        AlertDialog.Builder alertDialog2 = new
+                AlertDialog.Builder(
+                getActivity());
+
+        // Setting Dialog Title
+        alertDialog2.setTitle("Confirm SignOut");
+
+        // Setting Dialog Message
+        alertDialog2.setMessage("Are you sure you want to Signout?");
+
+        // Setting Positive "Yes" Btn
+        alertDialog2.setPositiveButton("YES",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Write your code here to execute after dialog
+                        FirebaseAuth.getInstance().signOut();
+                        Intent i = new Intent(getActivity(),
+                                login.class);
+                        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK |
+                                Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(i);
+                    }
+                });
+
+        // Setting Negative "NO" Btn
+        alertDialog2.setNegativeButton("NO",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Write your code here to execute after dialog
+                        Toast.makeText(getContext(),
+                                "You clicked on NO", Toast.LENGTH_SHORT)
+                                .show();
+                        dialog.cancel();
+                    }
+                });
+
+        // Showing Alert Dialog
+        alertDialog2.show();
+
+
     }
 
 }
