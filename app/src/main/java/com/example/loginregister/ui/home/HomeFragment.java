@@ -77,6 +77,8 @@ public class HomeFragment extends Fragment {
         mAuth = FirebaseAuth.getInstance();
         mStore = FirebaseFirestore.getInstance();
         userID = mAuth.getCurrentUser().getUid();
+
+
         DocumentReference documentReference = mStore.collection("Users").document(userID);
         documentReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
@@ -86,20 +88,18 @@ public class HomeFragment extends Fragment {
                 myRefTime.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                         currentGrow = dataSnapshot.getValue(String.class);
+                        currentGrow = dataSnapshot.getValue(String.class);
                         //Log.d("actie",currentGrow);
                         currentGrowSchedule.setText(currentGrow);
                     }
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError databaseError) {
+                        }
+                    });
 
-                    }
-                });
-
-            }
-        });
-
+                }
+            });
 
 
         mStore = FirebaseFirestore.getInstance();

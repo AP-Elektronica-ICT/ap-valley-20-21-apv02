@@ -16,6 +16,7 @@ import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+import com.facebook.FacebookSdk;
 
 import com.facebook.login.Login;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -159,10 +160,11 @@ public class login extends AppCompatActivity implements View.OnClickListener {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == RC_SIGN_IN){
-            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
-            handleSignInResult(task);
-        }
+            if (requestCode == RC_SIGN_IN) {
+                Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+                handleSignInResult(task);
+            }
+
     }
 
     private void handleSignInResult( Task<GoogleSignInAccount> completedTask){
@@ -172,8 +174,8 @@ public class login extends AppCompatActivity implements View.OnClickListener {
             Toast.makeText(login.this, "Google Sign in Works!", Toast.LENGTH_SHORT).show();
         }
         catch (ApiException e){
-            Toast.makeText(login.this, "Google Sign in Works!", Toast.LENGTH_SHORT).show();
-            FirebaseGoogleAuth(null);
+            Toast.makeText(login.this, "Signing FAiled", Toast.LENGTH_SHORT).show();
+          //  FirebaseGoogleAuth(null);
 
         }
 
@@ -198,7 +200,6 @@ public class login extends AppCompatActivity implements View.OnClickListener {
     }
 
 
-
     // krijgen van user info --> naar profile verplaatsen?
     private void updateUI(FirebaseUser fUser){
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(getApplicationContext());
@@ -209,17 +210,26 @@ public class login extends AppCompatActivity implements View.OnClickListener {
             String personEmail = account.getEmail();
             String personId = account.getId();
             Uri personPhoto = account.getPhotoUrl();
+
             userID = mAuth.getCurrentUser().getUid();
-            DocumentReference documentReference = mStore.collection("usersTest").document(userID);
+            DocumentReference documentReference = mStore.collection("Users").document(userID);
             //data die we willen wegschrijven
             Map<String, Object> user = new HashMap<>();
             user.put("uname", personName);
             user.put("email", personEmail);
+            user.put("phone", "/");
+            user.put("image", "");
+            user.put("coverImage","");
+            user.put("amountBoxes","0");
+            user.put("amountHarvests","0");
+            user.put("currentGrowbox","None");
             //  user.put("phone", phoneNumber);
             documentReference.set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
                 @Override
                 public void onSuccess(Void aVoid) {
                     Log.d("TAG","user profile created for " +userID);
+                    startActivity(new Intent(getApplicationContext(), MainActivity.class));
+
                 }
             });
 
@@ -229,7 +239,6 @@ public class login extends AppCompatActivity implements View.OnClickListener {
                     Log.d("TAG","user profile creation in database failed");
                 }
             });
-            startActivity(new Intent(getApplicationContext(), MainActivity.class));
 
             Toast.makeText(login.this, userID, Toast.LENGTH_SHORT).show();
 
