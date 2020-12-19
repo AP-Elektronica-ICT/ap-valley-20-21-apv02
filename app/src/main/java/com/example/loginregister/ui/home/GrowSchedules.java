@@ -253,7 +253,7 @@ public class GrowSchedules extends Fragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setTitle("Duidt aan waar je planten moeten groeien");
 
-// Add a checkbox list
+         // Add a checkbox list
 
         String[] plants = {"Plant1", "Plant2", "Plant3", "Plant4"};
         boolean[] checkedItems = {false, false, false, false};

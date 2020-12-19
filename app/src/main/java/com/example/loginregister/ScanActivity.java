@@ -26,8 +26,11 @@ import com.google.android.gms.vision.barcode.Barcode;
 import com.google.android.gms.vision.barcode.BarcodeDetector;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
@@ -36,6 +39,8 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.storage.StorageReference;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import static java.lang.Integer.parseInt;
 import static java.util.logging.Logger.global;
@@ -138,8 +143,7 @@ public class ScanActivity extends AppCompatActivity {
                 //set Fragmentclass Arguments
                 DashboardFragment fragobj=new DashboardFragment();
                 fragobj.setArguments(bundle);
-                int amount = getAmountGrowboxes();
-                Log.d("aantal", String.valueOf(amount));
+
                 FragmentManager fm= getSupportFragmentManager();
                 DashboardFragment fragment = new DashboardFragment();
                 fm.beginTransaction().replace(R.id.scanActivity,fragment).commit();
@@ -147,20 +151,86 @@ public class ScanActivity extends AppCompatActivity {
         });
     }
 
-private int getAmountGrowboxes(){
-    final int[] amount = new int[1];
+    // growbox toevoegen in de database -->
+
+    private void setAddGrowbox(String naam){
+        int amount = getAmountGrowboxes();
+        amount++;
+        String aantal = String.valueOf(amount);
+        String [] _data = getGrowboxdata(naam);
+        // onderstaande moet van realtime growbox worden gehaald
+        Map<String, Object> box = new HashMap<>();
+        box.put("naam", _data[0]);
+        box.put("url", _data[2]);
+        box.put("growing", _data[1]);
+        DocumentReference documentReference = mStore.collection("Users").document(userID);
+        documentReference.collection("0").document(aantal).set(box);
+
+    }
+
+
+    // verkrijgen van het aantal growboxes van de user
+    private int getAmountGrowboxes(){
+        final int[] amount = new int[1];
         DocumentReference documentReference = mStore.collection("Users").document(userID);
         documentReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException error) {
-               String _amountBoxes = documentSnapshot.getString("amountBoxes");
-              amount[0] = Integer.parseInt(_amountBoxes);
+                String _amountBoxes = documentSnapshot.getString("amountBoxes");
+                amount[0] = Integer.parseInt(_amountBoxes);
+
+            }
+        });
+        return amount[0];
+    }
+
+    // verkrijgen info growbox die gescant is --> krijgen van de realtime database.
+    private String[] getGrowboxdata(String naam){
+        final String[] _naam = new String[1];
+        final String[] _currentGrow = new String[1];
+        final String[] _url = new String[1];
+        final String[] _data = new String[3];
+
+        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference().child(naam).child("naam");
+        mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+               _data[0] =  dataSnapshot.getValue(String.class);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
         });
 
+        mDatabase = FirebaseDatabase.getInstance().getReference().child(naam).child("CurrentGrowShedule");
+        mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                _data[1] =  dataSnapshot.getValue(String.class);
+            }
 
-    return amount[0];
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        mDatabase = FirebaseDatabase.getInstance().getReference().child(naam).child("url");
+        mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                _data[2] =  dataSnapshot.getValue(String.class);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        return _data;
     }
 
 }
