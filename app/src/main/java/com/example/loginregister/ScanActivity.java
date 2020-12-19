@@ -140,10 +140,11 @@ public class ScanActivity extends AppCompatActivity {
                 Bundle bundle=new Bundle();
                 String valueToegevoegd = textView.toString();
                 bundle.putString("message", valueToegevoegd);
+                setAddGrowbox(valueToegevoegd);
+                
                 //set Fragmentclass Arguments
                 DashboardFragment fragobj=new DashboardFragment();
                 fragobj.setArguments(bundle);
-
                 FragmentManager fm= getSupportFragmentManager();
                 DashboardFragment fragment = new DashboardFragment();
                 fm.beginTransaction().replace(R.id.scanActivity,fragment).commit();
