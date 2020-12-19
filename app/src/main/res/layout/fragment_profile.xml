@@ -62,11 +62,14 @@
             android:textColor="@color/address"
             android:textSize="14sp" />
 
-        <Button
+        <ImageButton
             android:id="@+id/logout_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Button" />
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="5dp"
+            android:background="@null"
+            android:src="@drawable/ic_launcher_logout_foreground" />
 
     </RelativeLayout>
 

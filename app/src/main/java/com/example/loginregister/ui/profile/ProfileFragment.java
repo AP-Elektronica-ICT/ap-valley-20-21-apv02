@@ -22,6 +22,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -78,7 +79,8 @@ import static android.app.Activity.RESULT_OK;
 
 public class ProfileFragment extends Fragment {
 
-    Button btnVeranderFoto, mLogout;
+    Button btnVeranderFoto;
+    ImageButton mLogout;
     ImageView ProfielFoto;
     TextView naam, gsm, mail, amountBoxes, amountHarvests, mAddress;
 
