@@ -146,6 +146,9 @@ public class ScanActivity extends AppCompatActivity {
                 fragobj.setArguments(bundle);
                 FragmentManager fm= getSupportFragmentManager();
                 DashboardFragment fragment = new DashboardFragment();
+                surfaceView.setVisibility(View.INVISIBLE);
+                textView.setVisibility(View.INVISIBLE);
+                addGrowbox.setVisibility(View.INVISIBLE);
                 fm.beginTransaction().replace(R.id.scanActivity,fragment).commit();
             }
         });
