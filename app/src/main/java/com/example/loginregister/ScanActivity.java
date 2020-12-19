@@ -1,6 +1,7 @@
 package com.example.loginregister;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -9,6 +10,7 @@ import androidx.fragment.app.FragmentManager;
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.SparseArray;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -22,8 +24,21 @@ import com.google.android.gms.vision.CameraSource;
 import com.google.android.gms.vision.Detector;
 import com.google.android.gms.vision.barcode.Barcode;
 import com.google.android.gms.vision.barcode.BarcodeDetector;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.storage.StorageReference;
 
 import java.io.IOException;
+
+import static java.lang.Integer.parseInt;
+import static java.util.logging.Logger.global;
 
 public class ScanActivity extends AppCompatActivity {
     //public static final int CAMERA_PERMISSION_CODE = 100;
@@ -35,6 +50,16 @@ public class ScanActivity extends AppCompatActivity {
 
     //private Button camera;
     private Button addGrowbox;
+
+    // firebaseshizzle
+    DatabaseReference reff;
+    FirebaseUser muser;
+    FirebaseAuth mAuth;
+    FirebaseFirestore mStore;
+    FirebaseDatabase firebaseDatabase;
+    DatabaseReference databaseReference;
+    StorageReference storageReference;
+    String userID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,12 +77,12 @@ public class ScanActivity extends AppCompatActivity {
         barcodeDetector = new BarcodeDetector.Builder(getApplicationContext()).setBarcodeFormats(Barcode.QR_CODE).build();
         cameraSource = new CameraSource.Builder(getApplicationContext(),barcodeDetector).setRequestedPreviewSize(640,480).build();
 
-        /*camera.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                checkPermission(Manifest.permission.CAMERA, CAMERA_PERMISSION_CODE);
-            }
-        });*/
+        muser = FirebaseAuth.getInstance().getCurrentUser();
+        mAuth = FirebaseAuth.getInstance();
+        mStore = FirebaseFirestore.getInstance();
+
+
+
 
         surfaceView.getHolder().addCallback(new SurfaceHolder.Callback() {
             @Override
@@ -113,7 +138,8 @@ public class ScanActivity extends AppCompatActivity {
                 //set Fragmentclass Arguments
                 DashboardFragment fragobj=new DashboardFragment();
                 fragobj.setArguments(bundle);
-
+                int amount = getAmountGrowboxes();
+                Log.d("aantal", String.valueOf(amount));
                 FragmentManager fm= getSupportFragmentManager();
                 DashboardFragment fragment = new DashboardFragment();
                 fm.beginTransaction().replace(R.id.scanActivity,fragment).commit();
@@ -121,17 +147,20 @@ public class ScanActivity extends AppCompatActivity {
         });
     }
 
+private int getAmountGrowboxes(){
+    final int[] amount = new int[1];
+        DocumentReference documentReference = mStore.collection("Users").document(userID);
+        documentReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException error) {
+               String _amountBoxes = documentSnapshot.getString("amountBoxes");
+              amount[0] = Integer.parseInt(_amountBoxes);
 
-/*
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if(requestCode == CAMERA_PERMISSION_CODE){
-            if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
-                Toast.makeText(ScanActivity.this,"Permission Granted",Toast.LENGTH_SHORT).show();
-            }else{
-                Toast.makeText(ScanActivity.this,"Permission Denied",Toast.LENGTH_SHORT).show();
             }
-        }
-    }*/
+        });
+
+
+    return amount[0];
+    }
+
 }
