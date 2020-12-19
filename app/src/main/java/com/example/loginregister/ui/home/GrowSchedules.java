@@ -225,7 +225,7 @@ public class GrowSchedules extends Fragment {
             public void onClick(DialogInterface dialog, int which) {
                 //input text from edit text
                 Log.d("actie:", "aantalplaten ingeven");
-                ChoosePumps(position);
+                ChoosePumps(position, mTitle.get(position));
               // showNuberOfPlants(position);
             }
         });
@@ -246,7 +246,7 @@ public class GrowSchedules extends Fragment {
 
 
 
-    private void ChoosePumps(int position){
+    private void ChoosePumps(int position, String plant){
 
 
         // Set up the alert builder
@@ -276,7 +276,7 @@ public class GrowSchedules extends Fragment {
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                Startiets(mChosenPositions, position);
+                Startiets(mChosenPositions, position, plant);
                 for(int i = 0; i< mChosenPositions.length; i++){
                     Log.d("waarde op index: ", Integer.toString(i));
                     Log.d("waarde: ", Integer.toString(mChosenPositions[i]));
@@ -291,7 +291,7 @@ public class GrowSchedules extends Fragment {
     }
     
     FirebaseDatabase database = FirebaseDatabase.getInstance();
-    private void Startiets(int [] chosenplants, int position){
+    private void Startiets(int [] chosenplants, int position, String plant){
         for(int i =0; i<4; i++){
             DatabaseReference myRefTime = database.getReference(CurrentName + "/" + pumps[i] + "/Time" );
             DatabaseReference myRefInter = database.getReference(CurrentName + "/" +  pumps[i] +  "/Interval" );
@@ -309,6 +309,7 @@ public class GrowSchedules extends Fragment {
                 myRefInter.setValue(300);
                 mRefLightinteval.setValue(400);
                 mRefLighttime.setValue(500);
+                myRefCurrentGrow.setValue(plant);
                 Log.d("not chosen: ", Integer.toString( mChosenPositions[i]));
 
             }

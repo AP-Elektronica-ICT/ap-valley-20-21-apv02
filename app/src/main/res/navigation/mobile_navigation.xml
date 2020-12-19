@@ -54,4 +54,9 @@
             android:id="@+id/action_settings2_to_navigation_home"
             app:destination="@id/navigation_home" />
     </fragment>
+    <activity
+        android:id="@+id/scanActivity2"
+        android:name="com.example.loginregister.ScanActivity"
+        android:label="activity_scan"
+        tools:layout="@layout/activity_scan" />
 </navigation>
