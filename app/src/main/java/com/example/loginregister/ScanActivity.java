@@ -82,10 +82,10 @@ public class ScanActivity extends AppCompatActivity {
         barcodeDetector = new BarcodeDetector.Builder(getApplicationContext()).setBarcodeFormats(Barcode.QR_CODE).build();
         cameraSource = new CameraSource.Builder(getApplicationContext(),barcodeDetector).setRequestedPreviewSize(640,480).build();
 
-        muser = FirebaseAuth.getInstance().getCurrentUser();
         mAuth = FirebaseAuth.getInstance();
         mStore = FirebaseFirestore.getInstance();
-
+        muser = FirebaseAuth.getInstance().getCurrentUser();
+        userID = muser.getUid();
 
 
 
@@ -138,10 +138,9 @@ public class ScanActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Bundle bundle=new Bundle();
-                String valueToegevoegd = textView.toString();
-                bundle.putString("message", valueToegevoegd);
+                String valueToegevoegd = textView.getText().toString();
                 setAddGrowbox(valueToegevoegd);
-                
+
                 //set Fragmentclass Arguments
                 DashboardFragment fragobj=new DashboardFragment();
                 fragobj.setArguments(bundle);
@@ -155,6 +154,7 @@ public class ScanActivity extends AppCompatActivity {
     // growbox toevoegen in de database -->
 
     private void setAddGrowbox(String naam){
+        Log.d("naam", naam);
         int amount = getAmountGrowboxes();
         amount++;
         String aantal = String.valueOf(amount);
