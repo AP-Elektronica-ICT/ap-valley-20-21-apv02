@@ -4,15 +4,16 @@ plugins {
 }
 
 android {
-    signingConfigs {
+    compileSdkVersion 29
+    /*signingConfigs {
         upload {
-            storeFile file('C:\\Users\\Stef Martens\\Desktop\\keystore\\uploud-keystore2.jks')
+            //storeFile file('C:\\Users\\Stef Martens\\Desktop\\keystore\\uploud-keystore2.jks')
             storePassword 'stefstef'
             keyAlias 'upload'
             keyPassword 'stefstef2'
         }
-    }
-    compileSdkVersion 29
+    }*/
+
 
     defaultConfig {
         applicationId 'com.Igrow.eersterelease'
