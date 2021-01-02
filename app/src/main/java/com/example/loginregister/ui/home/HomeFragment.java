@@ -1,5 +1,6 @@
 package com.example.loginregister.ui.home;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,6 +17,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
+import com.example.loginregister.IgrowIntroActivity;
 import com.example.loginregister.R;
 import com.example.loginregister.ui.settings;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -84,9 +86,12 @@ public class HomeFragment extends Fragment {
             @Override
             public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
                 GrowboxName = documentSnapshot.getString("currentGrowbox");
-                if (GrowboxName == "None") {
+                if (GrowboxName.equals("None")) {
                     // None zal enkel voorkomen wanneer de user zich nog niet heeft aangemeld
                     // in dat geval zullen we een welcome shizzle laten afspelen alvorens we naar de Homefragment gaan
+                    Intent intent = new Intent(getContext(), IgrowIntroActivity.class);
+                    startActivity(intent);
+                    Log.d(TAG, "growboxname is none");
 
                 } else {
                     DatabaseReference myRefTime = database.getReference(GrowboxName + "/CurrentGrowSchedule");
@@ -94,7 +99,6 @@ public class HomeFragment extends Fragment {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                             currentGrow = dataSnapshot.getValue(String.class);
-                            //Log.d("actie",currentGrow);
                             currentGrowSchedule.setText(currentGrow);
                         }
 
@@ -126,12 +130,19 @@ public class HomeFragment extends Fragment {
                             @Override
                             public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
                                 GrowboxName =documentSnapshot.getString("currentGrowbox");
+                                if (GrowboxName == "None") {
+                                    // None zal enkel voorkomen wanneer de user zich nog niet heeft aangemeld
+                                    // in dat geval zullen we een welcome shizzle laten afspelen alvorens we naar de Homefragment gaan
+                                    Intent intent = new Intent(getContext(), IgrowIntroActivity.class);
+                                    startActivity(intent);
+                                    Log.d("heeeeeelp", "growboxname is none");
+
+                                }
                                 DatabaseReference myRefTime = database.getReference(GrowboxName + "/CurrentGrowSchedule");
                                 myRefTime.addValueEventListener(new ValueEventListener() {
                                     @Override
                                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                         growpogingtot = dataSnapshot.getValue(String.class);
-                                        //Log.d("growpogingtot", growpogingtot);
 
                                         if(naam == growpogingtot){
                                             Url = document.getString("url");

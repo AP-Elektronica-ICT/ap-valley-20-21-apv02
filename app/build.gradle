@@ -87,4 +87,8 @@ dependencies {
 
     //firestore
     implementation 'com.google.firebase:firebase-firestore:21.4.2'
+
+    //intro slides
+    implementation 'com.heinrichreimersoftware:material-intro:2.0.0'
+
 }
