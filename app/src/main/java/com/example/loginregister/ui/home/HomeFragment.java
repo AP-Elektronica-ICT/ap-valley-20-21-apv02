@@ -83,20 +83,26 @@ public class HomeFragment extends Fragment {
         documentReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
-                GrowboxName =documentSnapshot.getString("currentGrowbox");
-                DatabaseReference myRefTime = database.getReference(GrowboxName + "/CurrentGrowSchedule");
-                myRefTime.addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        currentGrow = dataSnapshot.getValue(String.class);
-                        //Log.d("actie",currentGrow);
-                        currentGrowSchedule.setText(currentGrow);
-                    }
+                GrowboxName = documentSnapshot.getString("currentGrowbox");
+                if (GrowboxName == "None") {
+                    // None zal enkel voorkomen wanneer de user zich nog niet heeft aangemeld
+                    // in dat geval zullen we een welcome shizzle laten afspelen alvorens we naar de Homefragment gaan
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                } else {
+                    DatabaseReference myRefTime = database.getReference(GrowboxName + "/CurrentGrowSchedule");
+                    myRefTime.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            currentGrow = dataSnapshot.getValue(String.class);
+                            //Log.d("actie",currentGrow);
+                            currentGrowSchedule.setText(currentGrow);
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
                         }
                     });
+                }
 
                 }
             });
