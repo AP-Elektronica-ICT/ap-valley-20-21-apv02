@@ -1,6 +1,7 @@
 package com.example.loginregister;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -9,6 +10,7 @@ import androidx.fragment.app.FragmentManager;
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.SparseArray;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -22,8 +24,26 @@ import com.google.android.gms.vision.CameraSource;
 import com.google.android.gms.vision.Detector;
 import com.google.android.gms.vision.barcode.Barcode;
 import com.google.android.gms.vision.barcode.BarcodeDetector;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.storage.StorageReference;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+
+import static java.lang.Integer.parseInt;
+import static java.util.logging.Logger.global;
 
 public class ScanActivity extends AppCompatActivity {
     //public static final int CAMERA_PERMISSION_CODE = 100;
@@ -36,6 +56,17 @@ public class ScanActivity extends AppCompatActivity {
     //private Button camera;
     private Button addGrowbox;
 
+    // firebaseshizzle
+    DatabaseReference reff;
+    FirebaseUser muser;
+    FirebaseAuth mAuth;
+    FirebaseFirestore mStore;
+    FirebaseDatabase firebaseDatabase;
+    DatabaseReference databaseReference;
+    StorageReference storageReference;
+    String userID, _naam, _growing, _url;
+    int amount;
+    Map<String, Object> box = new HashMap<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,12 +83,12 @@ public class ScanActivity extends AppCompatActivity {
         barcodeDetector = new BarcodeDetector.Builder(getApplicationContext()).setBarcodeFormats(Barcode.QR_CODE).build();
         cameraSource = new CameraSource.Builder(getApplicationContext(),barcodeDetector).setRequestedPreviewSize(640,480).build();
 
-        /*camera.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                checkPermission(Manifest.permission.CAMERA, CAMERA_PERMISSION_CODE);
-            }
-        });*/
+        mAuth = FirebaseAuth.getInstance();
+        mStore = FirebaseFirestore.getInstance();
+        muser = FirebaseAuth.getInstance().getCurrentUser();
+        userID = muser.getUid();
+
+
 
         surfaceView.getHolder().addCallback(new SurfaceHolder.Callback() {
             @Override
@@ -108,30 +139,121 @@ public class ScanActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Bundle bundle=new Bundle();
-                String valueToegevoegd = textView.toString();
-                bundle.putString("message", valueToegevoegd);
+                String valueToegevoegd = textView.getText().toString();
+                setAddGrowbox(valueToegevoegd);
+
                 //set Fragmentclass Arguments
                 DashboardFragment fragobj=new DashboardFragment();
                 fragobj.setArguments(bundle);
-
                 FragmentManager fm= getSupportFragmentManager();
                 DashboardFragment fragment = new DashboardFragment();
+                surfaceView.setVisibility(View.INVISIBLE);
+                textView.setVisibility(View.INVISIBLE);
+                addGrowbox.setVisibility(View.INVISIBLE);
                 fm.beginTransaction().replace(R.id.scanActivity,fragment).commit();
             }
         });
     }
 
+    // growbox toevoegen in de database -->
 
-/*
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if(requestCode == CAMERA_PERMISSION_CODE){
-            if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
-                Toast.makeText(ScanActivity.this,"Permission Granted",Toast.LENGTH_SHORT).show();
-            }else{
-                Toast.makeText(ScanActivity.this,"Permission Denied",Toast.LENGTH_SHORT).show();
+    private void setAddGrowbox(String naam){
+
+        Log.d("naam", naam);
+        DocumentReference documentReference = mStore.collection("Growboxes").document(naam);
+
+        documentReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+                 _naam = value.getString("naam");
+                _growing = value.getString("growing");
+                _url = value.getString("url");
+                int amount = getAmountGrowboxes();
+                amount++;
+                String aantal = String.valueOf(amount);
+                // onderstaande moet van realtime growbox worden gehaald
+
+                box.put("naam",_naam);
+                box.put("url", _url);
+                box.put("growing", _growing);
+                DocumentReference documentref = mStore.collection("Users").document(userID);
+                documentref.collection("0").document(aantal).set(box);
+
             }
-        }
-    }*/
+        });
+
+
+
+
+
+
+    }
+
+
+    // verkrijgen van het aantal growboxes van de user
+    private int getAmountGrowboxes(){
+
+        DocumentReference documentReference = mStore.collection("Users").document(userID);
+        documentReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException error) {
+                String _amountBoxes = documentSnapshot.getString("amountBoxes");
+                amount = Integer.parseInt(_amountBoxes);
+
+            }
+        });
+        Log.d("amountboxes", String.valueOf(amount));
+        return amount;
+    }
+
+    // verkrijgen info growbox die gescant is --> krijgen van de realtime database.
+    private String[] getGrowboxdata(String naam){
+        final String[] _naam = new String[1];
+        final String[] _currentGrow = new String[1];
+        final String[] _url = new String[1];
+        final String[] _data = new String[3];
+
+        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference().child(naam).child("naam");
+        mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+               _data[0] =  dataSnapshot.getValue(String.class);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        mDatabase = FirebaseDatabase.getInstance().getReference().child(naam).child("CurrentGrowShedule");
+        mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                _data[1] =  dataSnapshot.getValue(String.class);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        mDatabase = FirebaseDatabase.getInstance().getReference().child(naam).child("url");
+        mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                _data[2] =  dataSnapshot.getValue(String.class);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        return _data;
+    }
+
+
 }
