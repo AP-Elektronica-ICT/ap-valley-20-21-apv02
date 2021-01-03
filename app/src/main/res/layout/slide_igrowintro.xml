@@ -4,53 +4,52 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@drawable/achtergrondoptie">
 
 
-    <ImageView
-        android:id="@id/mi_image"
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@id/lol"
+        android:layout_width="153dp"
         android:layout_height="wrap_content"
-        android:adjustViewBounds="true"
-        android:gravity="center"
-        android:paddingLeft="?actionBarSize"
-        android:paddingRight="?actionBarSize"
-        app:layout_constraintBottom_toTopOf="@+id/mi_title"
+        android:layout_marginTop="284dp"
+        android:layout_marginStart="20dp"
+        android:fontFamily="sans-serif-medium"
+        android:text="Welcome"
+        android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+        android:textSize="35dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.12"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="ContentDescription,MissingConstraints"
-        tools:src="@android:drawable/sym_action_call" />
-
-    <TextView
-        android:id="@id/mi_title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="37dp"
-        android:fontFamily="sans-serif-medium"
-        android:gravity="center"
-        android:text="Lorem ipsum"
-        android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/mi_description"
         tools:ignore="MissingConstraints" />
 
-    <TextView
-        android:id="@id/mi_description"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="64dp"
-        android:fontFamily="sans-serif-medium"
-        android:gravity="center"
-        android:text="Lorem ipsum dolor sit amet, consectetur, adipisci velit, …"
-        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
-        android:textSize="15sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+    <ImageButton
+        android:id="@+id/lol"
+        android:layout_width="237dp"
+        android:layout_height="94dp"
+        android:layout_marginStart="69dp"
+        android:layout_marginTop="130dp"
+        android:background="@drawable/igrowbutton"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/mi_image"
+        app:layout_constraintTop_toTopOf="parent"
+        />
+
+
+    <TextView
+        android:id="@+id/eenbeschrijving"
+        android:layout_width="263dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="363dp"
+        android:layout_marginStart="24dp"
+        android:fontFamily="sans-serif-medium"
+        android:text="We're glad you are here,let's get started. "
+        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+        android:textSize="22dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.108"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         tools:ignore="MissingConstraints,UnusedAttribute" />
 
 

@@ -59,7 +59,9 @@ public class DashboardFragment extends Fragment {
         // Required empty public constructor
 
     }
-
+    public static DashboardFragment newInstance() {
+        return new DashboardFragment();
+    }
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_dashboard, container, false);
@@ -202,11 +204,20 @@ public class DashboardFragment extends Fragment {
             TextView myTitle = row.findViewById(R.id.title_main1);
             TextView myDescription = row.findViewById(R.id.title_sub1);
 
-            Picasso.get().load(rImgs.get(position)).into(images);
-            //  images.setImageResource(rImgs.get(position));
-            myTitle.setText(rTitle.get(position));
-            myDescription.setText(rDescription.get(position));
-            return row;
+            if(rImgs == null){
+                Picasso.get().load(rImgs.get(position)).into(images);
+                //  images.setImageResource(rImgs.get(position));
+                myTitle.setText(rTitle.get(position));
+                myDescription.setText(rDescription.get(position));
+                return row;
+            }else {
+                Picasso.get().load("https://mensbrugghe.files.wordpress.com/2010/07/dsc09172.jpg?w=600");
+                //  images.setImageResource(rImgs.get(position));
+                myTitle.setText("aars");
+                myDescription.setText("open aars");
+                return row;
+            }
+
         }
     }
     private void showSelected(final String key, int position) {
