@@ -64,8 +64,9 @@ public class ScanActivity extends AppCompatActivity {
     FirebaseDatabase firebaseDatabase;
     DatabaseReference databaseReference;
     StorageReference storageReference;
-    String userID;
-
+    String userID, _naam, _growing, _url;
+    int amount;
+    Map<String, Object> box = new HashMap<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -157,35 +158,52 @@ public class ScanActivity extends AppCompatActivity {
     // growbox toevoegen in de database -->
 
     private void setAddGrowbox(String naam){
+
         Log.d("naam", naam);
-        int amount = getAmountGrowboxes();
-        amount++;
-        String aantal = String.valueOf(amount);
-        String [] _data = getGrowboxdata(naam);
-        // onderstaande moet van realtime growbox worden gehaald
-        Map<String, Object> box = new HashMap<>();
-        box.put("naam", _data[0]);
-        box.put("url", _data[2]);
-        box.put("growing", _data[1]);
-        DocumentReference documentReference = mStore.collection("Users").document(userID);
-        documentReference.collection("0").document(aantal).set(box);
+        DocumentReference documentReference = mStore.collection("Growboxes").document(naam);
+
+        documentReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+                 _naam = value.getString("naam");
+                _growing = value.getString("growing");
+                _url = value.getString("url");
+                int amount = getAmountGrowboxes();
+                amount++;
+                String aantal = String.valueOf(amount);
+                // onderstaande moet van realtime growbox worden gehaald
+
+                box.put("naam",_naam);
+                box.put("url", _url);
+                box.put("growing", _growing);
+                DocumentReference documentref = mStore.collection("Users").document(userID);
+                documentref.collection("0").document(aantal).set(box);
+
+            }
+        });
+
+
+
+
+
 
     }
 
 
     // verkrijgen van het aantal growboxes van de user
     private int getAmountGrowboxes(){
-        final int[] amount = new int[1];
+
         DocumentReference documentReference = mStore.collection("Users").document(userID);
         documentReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException error) {
                 String _amountBoxes = documentSnapshot.getString("amountBoxes");
-                amount[0] = Integer.parseInt(_amountBoxes);
+                amount = Integer.parseInt(_amountBoxes);
 
             }
         });
-        return amount[0];
+        Log.d("amountboxes", String.valueOf(amount));
+        return amount;
     }
 
     // verkrijgen info growbox die gescant is --> krijgen van de realtime database.
@@ -236,5 +254,6 @@ public class ScanActivity extends AppCompatActivity {
 
         return _data;
     }
+
 
 }
