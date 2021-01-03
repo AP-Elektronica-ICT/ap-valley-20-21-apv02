@@ -204,19 +204,13 @@ public class DashboardFragment extends Fragment {
             TextView myTitle = row.findViewById(R.id.title_main1);
             TextView myDescription = row.findViewById(R.id.title_sub1);
 
-            if(rImgs == null){
+
                 Picasso.get().load(rImgs.get(position)).into(images);
                 //  images.setImageResource(rImgs.get(position));
                 myTitle.setText(rTitle.get(position));
                 myDescription.setText(rDescription.get(position));
                 return row;
-            }else {
-                Picasso.get().load("https://mensbrugghe.files.wordpress.com/2010/07/dsc09172.jpg?w=600");
-                //  images.setImageResource(rImgs.get(position));
-                myTitle.setText("aars");
-                myDescription.setText("open aars");
-                return row;
-            }
+
 
         }
     }
