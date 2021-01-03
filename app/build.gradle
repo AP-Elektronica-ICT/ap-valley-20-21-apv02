@@ -38,6 +38,7 @@ android {
     }
 }
 
+
 dependencies {
     implementation 'com.github.markushi:circlebutton:1.1'
     implementation 'androidx.appcompat:appcompat:1.1.0'
@@ -88,4 +89,7 @@ dependencies {
 
     //firestore
     implementation 'com.google.firebase:firebase-firestore:21.4.2'
+
+    //charts
+    implementation 'com.github.AnyChart:AnyChart-Android:1.1.2'
 }

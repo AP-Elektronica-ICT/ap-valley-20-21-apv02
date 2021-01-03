@@ -162,5 +162,43 @@
         android:text="food Consumption"
         android:textColor="@color/black" />
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        tools:context=".MainActivity"
+        android:layout_marginTop="350sp"
+        android:layout_marginBottom="40sp"
+        android:layout_marginLeft="20sp"
+        android:layout_marginRight="20sp"
+        >
+
+        <com.anychart.AnyChartView
+
+            android:id="@+id/any_chart_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+        </com.anychart.AnyChartView>
+
+        <ProgressBar
+            android:id="@+id/progressBar2"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+       <!-- <com.github.mikephil.charting.charts.BarChart
+            android:id="@+id/barchart"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+            -->
+
+    </RelativeLayout>
 
 </RelativeLayout>
