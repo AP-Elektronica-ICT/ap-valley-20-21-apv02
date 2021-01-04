@@ -127,6 +127,8 @@ public class register extends AppCompatActivity implements View.OnClickListener 
                                 }
                             });
 
+                            documentReference.set(documentReference.collection("0"));
+
                             documentReference.set(user).addOnFailureListener(new OnFailureListener() {
                                 @Override
                                 public void onFailure(@NonNull Exception e) {

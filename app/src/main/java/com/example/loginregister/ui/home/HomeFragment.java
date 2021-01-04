@@ -1,5 +1,6 @@
 package com.example.loginregister.ui.home;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -30,6 +31,7 @@ import com.anychart.data.Set;
 import com.anychart.enums.MarkerType;
 import com.anychart.enums.TooltipPositionMode;
 import com.anychart.graphics.vector.Stroke;
+import com.example.loginregister.IgrowIntroActivity;
 import com.example.loginregister.R;
 import com.example.loginregister.ui.settings;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -303,20 +305,28 @@ public class HomeFragment extends Fragment {
         documentReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
-                GrowboxName =documentSnapshot.getString("currentGrowbox");
-                DatabaseReference myRefTime = database.getReference(GrowboxName + "/CurrentGrowSchedule");
-                myRefTime.addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        currentGrow = dataSnapshot.getValue(String.class);
-                        //Log.d("actie",currentGrow);
-                        currentGrowSchedule.setText(currentGrow);
-                    }
+                GrowboxName = documentSnapshot.getString("currentGrowbox");
+                if (GrowboxName.equals("None")) {
+                    // None zal enkel voorkomen wanneer de user zich nog niet heeft aangemeld
+                    // in dat geval zullen we een welcome shizzle laten afspelen alvorens we naar de Homefragment gaan
+                    Intent intent = new Intent(getContext(), IgrowIntroActivity.class);
+                    startActivity(intent);
+                    Log.d(TAG, "growboxname is none");
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                } else {
+                    DatabaseReference myRefTime = database.getReference(GrowboxName + "/CurrentGrowSchedule");
+                    myRefTime.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            currentGrow = dataSnapshot.getValue(String.class);
+                            currentGrowSchedule.setText(currentGrow);
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
                         }
                     });
+                }
 
                 }
             });
@@ -340,12 +350,19 @@ public class HomeFragment extends Fragment {
                             @Override
                             public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
                                 GrowboxName =documentSnapshot.getString("currentGrowbox");
+                                if (GrowboxName == "None") {
+                                    // None zal enkel voorkomen wanneer de user zich nog niet heeft aangemeld
+                                    // in dat geval zullen we een welcome shizzle laten afspelen alvorens we naar de Homefragment gaan
+                                    Intent intent = new Intent(getContext(), IgrowIntroActivity.class);
+                                    startActivity(intent);
+                                    Log.d("heeeeeelp", "growboxname is none");
+
+                                }
                                 DatabaseReference myRefTime = database.getReference(GrowboxName + "/CurrentGrowSchedule");
                                 myRefTime.addValueEventListener(new ValueEventListener() {
                                     @Override
                                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                         growpogingtot = dataSnapshot.getValue(String.class);
-                                        //Log.d("growpogingtot", growpogingtot);
 
                                         if(naam == growpogingtot){
                                             Url = document.getString("url");
