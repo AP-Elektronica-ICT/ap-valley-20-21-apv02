@@ -190,7 +190,7 @@ public class ScanActivity extends AppCompatActivity {
                         _email = value.getString("email");
 
                         DocumentReference dr = mStore.collection("Users").document(userID);
-                        userd.put("amountboxes", aantal);
+                        userd.put("amountBoxes", aantal);
                         userd.put("currentGrowbox", _naam);
                         userd.put("uname", _uname);
                         userd.put("amountHarvests", _amountH);

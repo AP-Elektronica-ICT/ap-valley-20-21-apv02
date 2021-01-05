@@ -39,7 +39,9 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static android.content.Context.JOB_SCHEDULER_SERVICE;
 
@@ -298,6 +300,16 @@ public class GrowSchedules extends Fragment {
             DatabaseReference mRefLightinteval = database.getReference(CurrentName + "/light/INTERVAL");
             DatabaseReference mRefLighttime = database.getReference(CurrentName + "/light/TIME");
             DatabaseReference myRefCurrentGrow = database.getReference(CurrentName + "/CurrentGrowSchedule");
+            
+            DocumentReference dr = mStore.collection("Growboxes").document(CurrentName);
+            Map<String, Object> box = new HashMap<>();
+            box.put("growing", mTitle);
+            box.put("naam", CurrentName);
+            box.put("url", "https://www.thespruceeats.com/thmb/qsrUxBu670oOJd26FgEPk0mFToU=/3333x3333/smart/filters:no_upscale()/various-fresh-herbs-907728974-cc6c2be53aac46de9e6a4b47a0e630e4.jpg");
+            dr.set(box);
+
+
+
             myRefCurrentGrow.setValue(mTitle.get(position));
             if (mChosenPositions[i] == 0){
                 myRefTime.setValue(0);
