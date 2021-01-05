@@ -189,21 +189,23 @@ public class ScanActivity extends AppCompatActivity {
                         _image = value.getString("image");
                         _email = value.getString("email");
 
+                        DocumentReference dr = mStore.collection("Users").document(userID);
+                        userd.put("amountboxes", aantal);
+                        userd.put("currentGrowbox", _naam);
+                        userd.put("uname", _uname);
+                        userd.put("amountHarvests", _amountH);
+                        userd.put("phone", _phone);
+                        userd.put("image", _image);
+                        userd.put("email", _email);
+                        userd.put("coverImage", _Coverimage);
+                        dr.set(userd);
+
                     }
                 });
 
                 documentref.collection("0").document(aantal).set(box);
 
-                DocumentReference dr = mStore.collection("Users").document(userID);
-                userd.put("amountboxes", aantal);
-                userd.put("currentGrowbox", _naam);
-                userd.put("uname", _uname);
-                userd.put("amountHarvests", _amountH);
-                userd.put("phone", _phone);
-                userd.put("image", _image);
-                userd.put("email", _email);
-                userd.put("coverImage", _Coverimage);
-                dr.set(userd);
+
 
             }
         });
