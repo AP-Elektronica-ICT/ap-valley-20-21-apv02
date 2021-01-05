@@ -64,9 +64,10 @@ public class ScanActivity extends AppCompatActivity {
     FirebaseDatabase firebaseDatabase;
     DatabaseReference databaseReference;
     StorageReference storageReference;
-    String userID, _naam, _growing, _url;
+    String userID, _naam, _growing, _url,_uname,_phone,_image,_email,_currentGrow,_Coverimage,_amountH,_amountB;
     int amount;
     Map<String, Object> box = new HashMap<>();
+    Map<String, Object> userd = new HashMap<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -159,13 +160,12 @@ public class ScanActivity extends AppCompatActivity {
 
     private void setAddGrowbox(String naam){
 
-        Log.d("naam", naam);
-        DocumentReference documentReference = mStore.collection("Growboxes").document(naam);
 
+        DocumentReference documentReference = mStore.collection("Growboxes").document(naam);
         documentReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
-                 _naam = value.getString("naam");
+                _naam = value.getString("naam");
                 _growing = value.getString("growing");
                 _url = value.getString("url");
                 int amount = getAmountGrowboxes();
@@ -177,7 +177,31 @@ public class ScanActivity extends AppCompatActivity {
                 box.put("url", _url);
                 box.put("growing", _growing);
                 DocumentReference documentref = mStore.collection("Users").document(userID);
+
+                documentref.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+                        _uname = value.getString("uname");
+                        _amountH = value.getString("amountHarvests");
+                        _Coverimage = value.getString("coverImage");
+                        _phone = value.getString("phone");
+                        _image = value.getString("image");
+                        _email = value.getString("email");
+
+                    }
+                });
+
                 documentref.collection("0").document(aantal).set(box);
+
+                userd.put("amountboxes", aantal);
+                userd.put("currentGrowbox", _naam);
+                userd.put("uname", _uname);
+                userd.put("amountHarvests", _amountH);
+                userd.put("phone", _phone);
+                userd.put("image", _image);
+                userd.put("email", _email);
+                userd.put("coverImage", _Coverimage);
+                documentref.set(userd);
 
             }
         });
