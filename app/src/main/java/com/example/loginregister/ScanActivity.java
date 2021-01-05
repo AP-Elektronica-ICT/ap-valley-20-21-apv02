@@ -161,6 +161,7 @@ public class ScanActivity extends AppCompatActivity {
     private void setAddGrowbox(String naam){
 
 
+
         DocumentReference documentReference = mStore.collection("Growboxes").document(naam);
         documentReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
@@ -193,6 +194,7 @@ public class ScanActivity extends AppCompatActivity {
 
                 documentref.collection("0").document(aantal).set(box);
 
+                DocumentReference dr = mStore.collection("Users").document(userID);
                 userd.put("amountboxes", aantal);
                 userd.put("currentGrowbox", _naam);
                 userd.put("uname", _uname);
@@ -201,7 +203,7 @@ public class ScanActivity extends AppCompatActivity {
                 userd.put("image", _image);
                 userd.put("email", _email);
                 userd.put("coverImage", _Coverimage);
-                documentref.set(userd);
+                dr.set(userd);
 
             }
         });
