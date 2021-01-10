@@ -76,6 +76,7 @@ import java.util.List;
 import java.util.Locale;
 
 import static android.app.Activity.RESULT_OK;
+import static com.google.firebase.storage.FirebaseStorage.getInstance;
 
 public class ProfileFragment extends Fragment {
 
@@ -142,6 +143,7 @@ public class ProfileFragment extends Fragment {
         // databaseReference = firebaseDatabase.getReference("Users");
 
         userID = mAuth.getCurrentUser().getUid();
+        storageReference = getInstance().getReference(); //fbase stor ref
 
         pd = new ProgressDialog(getActivity());
 
@@ -164,7 +166,7 @@ public class ProfileFragment extends Fragment {
                 String _naam = documentSnapshot.getString("uname");
                 String _gsm = documentSnapshot.getString("phone");
                 String _mail = documentSnapshot.getString("email");
-                String _foto = documentSnapshot.getString("email");
+                String _foto = documentSnapshot.getString("image");
                 String _amountBoxes = documentSnapshot.getString("amountBoxes");
                 String _amountHarvests = documentSnapshot.getString("amountHarvests");
                 naam.setText(_naam);
@@ -476,7 +478,7 @@ public class ProfileFragment extends Fragment {
 
     }
 
-    private void uploadProfileCoverphoto(Uri uri) {
+    private void uploadProfileCoverphoto(final Uri uri) {
 
 
         //path and name of image t be stored in firebase storage
@@ -498,13 +500,13 @@ public class ProfileFragment extends Fragment {
                             //add/update url in users database
                             HashMap<String, Object> results = new HashMap<>();
                             results.put("image", downloadUti.toString());
-                            DocumentReference documentReference = mStore.collection("usersTest").document(userID);
+                            DocumentReference documentReference = mStore.collection("Users").document(userID);
                             documentReference.update("image", downloadUti.toString());
 
                         }
                         else {
                             //error
-                            Toast.makeText(getActivity(), "Some error occured", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext(), "Some error occured", Toast.LENGTH_SHORT).show();
 
 
                         }
@@ -514,7 +516,7 @@ public class ProfileFragment extends Fragment {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         pd.dismiss();
-                        Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
 
                     }
                 });

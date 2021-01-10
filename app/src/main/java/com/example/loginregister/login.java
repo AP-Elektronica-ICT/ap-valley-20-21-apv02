@@ -177,7 +177,7 @@ public class login extends AppCompatActivity implements View.OnClickListener {
         }
         catch (ApiException e){
             Toast.makeText(login.this, "Signing FAiled", Toast.LENGTH_SHORT).show();
-          //  FirebaseGoogleAuth(null);
+             FirebaseGoogleAuth(null);
 
         }
 
