@@ -15,6 +15,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.InputType;
 import android.text.TextUtils;
 import android.util.SparseIntArray;
 import android.view.LayoutInflater;
@@ -68,6 +69,7 @@ import com.squareup.picasso.Picasso;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.concurrent.Executor;
+import java.util.regex.Pattern;
 
 import io.grpc.Context;
 import jp.wasabeef.picasso.transformations.CropCircleTransformation;
@@ -75,6 +77,7 @@ import jp.wasabeef.picasso.transformations.CropCircleTransformation;
 
 import java.util.List;
 import java.util.Locale;
+import java.util.regex.Matcher;
 
 import static android.app.Activity.RESULT_OK;
 import static com.google.firebase.storage.FirebaseStorage.getInstance;
@@ -302,6 +305,7 @@ public class ProfileFragment extends Fragment {
                     case 3:
                         //edit email
                         pd.setMessage("updating mail");
+                        showNamePhoneUpdateDialog("email");
 
                         break;
                     default:
@@ -318,8 +322,10 @@ public class ProfileFragment extends Fragment {
 
     private void showNamePhoneUpdateDialog(final String key) {
 
+      String emailRegEx = "^[A-Za-z0-9._%+\\-]+@[A-Za-z0-9.\\-]+\\.[A-Za-z]{2,4}$";
+
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle("update"+ key);
+        builder.setTitle("update "+ key);
         //set layout of dialog
         LinearLayout linearLayout = new LinearLayout(getActivity());
         linearLayout.setOrientation(LinearLayout.VERTICAL);
@@ -327,6 +333,9 @@ public class ProfileFragment extends Fragment {
 
         //add edit text
         final EditText editText = new EditText(getActivity());
+        if (key == "phone"){
+            editText.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+        }
         editText.setHint("Enter"+key); //edit update name or photo
         linearLayout.addView(editText);
 
@@ -335,6 +344,9 @@ public class ProfileFragment extends Fragment {
         builder.setPositiveButton("update", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                //validation
+
+
                 //input text from edit text
                 String value = editText.getText().toString().trim();
 
@@ -482,8 +494,6 @@ public class ProfileFragment extends Fragment {
     }
 
     private void uploadProfileCoverphoto(final Uri uri) {
-
-
         //path and name of image t be stored in firebase storage
         String filePathandName = storagePath+ "" + "image" + "_"+ userID;
 

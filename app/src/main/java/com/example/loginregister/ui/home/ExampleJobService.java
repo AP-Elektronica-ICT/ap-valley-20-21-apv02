@@ -10,6 +10,8 @@ public class ExampleJobService extends JobService {
     @Override
     public boolean onStartJob(JobParameters params) {
         Log.d(TAG, "Job started");
+        //hier moet eig alles worden gestard --> alles van laatste alert moet worden doorgestuurd via parameter naar hier
+        // ook denken aan parameters van jobschedular
         doBackgroundWork(params);
         return true;
     }
