@@ -70,6 +70,7 @@ import java.util.HashMap;
 import java.util.concurrent.Executor;
 
 import io.grpc.Context;
+import jp.wasabeef.picasso.transformations.CropCircleTransformation;
 
 
 import java.util.List;
@@ -175,7 +176,9 @@ public class ProfileFragment extends Fragment {
                 amountBoxes.setText(_amountBoxes);
                 amountHarvests.setText((_amountHarvests));
                 try {
-                    Picasso.get().load(_foto).into(mprofilePic);
+                    Picasso.get().load(_foto).fit().transform(new CropCircleTransformation()).centerCrop().rotate(90).into(mprofilePic);
+                   // Picasso.get().load(_foto).into(mprofilePic);
+
                 } catch (Exception a) {
                     Picasso.get().load(R.drawable.ic_settings);
                 }
