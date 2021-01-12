@@ -341,7 +341,7 @@ public class GrowSchedules extends Fragment {
                 .setRequiresCharging(true)
                 .setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY)
                 .setPersisted(true)
-                .setPeriodic(15 * 60 * 1000)
+                .setPeriodic(15 * 60 * 1000) //omzetten naar 1 week
                 .build();
         JobScheduler scheduler = (JobScheduler) getContext().getSystemService(JOB_SCHEDULER_SERVICE);
         int resultCode = scheduler.schedule(info);
