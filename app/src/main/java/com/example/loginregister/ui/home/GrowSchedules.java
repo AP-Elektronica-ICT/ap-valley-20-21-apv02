@@ -295,14 +295,6 @@ public class GrowSchedules extends Fragment {
     
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     private void Startiets(int [] chosenplants, int position, String plant){
-        DocumentReference dr = mStore.collection("Growboxes").document(CurrentName);
-        Map<String, Object> box = new HashMap<>();
-        box.put("growing", mTitle);
-        box.put("naam", CurrentName);
-        box.put("url", "https://www.thespruceeats.com/thmb/qsrUxBu670oOJd26FgEPk0mFToU=/3333x3333/smart/filters:no_upscale()/various-fresh-herbs-907728974-cc6c2be53aac46de9e6a4b47a0e630e4.jpg");
-        dr.set(box);
-
-
         for(int i =0; i<4; i++){
             DatabaseReference myRefTime = database.getReference(CurrentName + "/" + pumps[i] + "/Time" );
             DatabaseReference myRefInter = database.getReference(CurrentName + "/" +  pumps[i] +  "/Interval" );

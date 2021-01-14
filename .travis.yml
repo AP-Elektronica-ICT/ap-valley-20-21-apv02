@@ -1,0 +1,28 @@
+language: android
+addons:
+  apt:
+  packages:
+  - w3m
+env:
+  global:
+  - ANDROID_TARGET=android-22
+  - ANDROID_ABI=armeabi-v7a
+  - ADB_INSTALL_TIMEOUT=12
+jdk:
+- oraclejdk8
+android:
+  components:
+  - tools
+  - platform-tools
+  - build-tools-28.0.3
+  - extra-google-m2repository
+  - extra-android-m2repository
+  - android-22
+  - android-28
+  licenses:
+  - android-sdk-license-.+
+script:
+- "./gradlew clean build"
+before_install:
+- openssl aes-256-cbc -K $encrypted_842df44736a9_key -iv $encrypted_842df44736a9_iv
+  -in uploud-keystore2.jks.enc -out uploud-keystore2.jks -d
