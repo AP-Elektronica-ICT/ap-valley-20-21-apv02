@@ -166,7 +166,7 @@ public class ScanActivity extends AppCompatActivity {
             @Override
             public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
                 _naam = value.getString("naam");
-              //  _growing = value.getString("growing");
+                _growing = value.getString("growing");
               //    _growing= "iets";
                 _url = value.getString("url");
                 int amount = getAmountGrowboxes();
@@ -176,7 +176,8 @@ public class ScanActivity extends AppCompatActivity {
 
                 box.put("naam",_naam);
                 box.put("url", _url);
-              //  box.put("growing", _growing);
+                box.put("growing", _growing);
+
                 DocumentReference documentref = mStore.collection("Users").document(userID);
 
                 documentref.addSnapshotListener(new EventListener<DocumentSnapshot>() {
