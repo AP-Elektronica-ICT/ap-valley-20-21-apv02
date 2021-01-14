@@ -7,6 +7,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -229,6 +230,7 @@ public class GrowSchedules extends Fragment {
                 Log.d("actie:", "aantalplaten ingeven");
                 ChoosePumps(position, mTitle.get(position));
               // showNuberOfPlants(position);
+
             }
         });
         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -249,7 +251,6 @@ public class GrowSchedules extends Fragment {
 
 
     private void ChoosePumps(int position, String plant){
-
 
         // Set up the alert builder
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
@@ -279,7 +280,6 @@ public class GrowSchedules extends Fragment {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 Startiets(mChosenPositions, position, plant);
-                scheduleJob();
                 for(int i = 0; i< mChosenPositions.length; i++){
                     Log.d("waarde op index: ", Integer.toString(i));
                     Log.d("waarde: ", Integer.toString(mChosenPositions[i]));
@@ -295,6 +295,7 @@ public class GrowSchedules extends Fragment {
     
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     private void Startiets(int [] chosenplants, int position, String plant){
+        scheduleJob();
         for(int i =0; i<4; i++){
             DatabaseReference myRefTime = database.getReference(CurrentName + "/" + pumps[i] + "/Time" );
             DatabaseReference myRefInter = database.getReference(CurrentName + "/" +  pumps[i] +  "/Interval" );
@@ -337,9 +338,13 @@ public class GrowSchedules extends Fragment {
     /// jobschedular nog nodig?
     public void scheduleJob() {
        final long ONE_WEEK_INTERVAL = 7 * 24 * 60 * 60 * 1000L; // 1 Week
-
         ComponentName componentName = new ComponentName(getActivity(), ExampleJobService.class);
+
+        PersistableBundle bundle = new PersistableBundle();
+        bundle.putString("CurrentName", CurrentName);
+
         JobInfo info = new JobInfo.Builder(123, componentName)
+                .setExtras(bundle)
                 .setRequiresCharging(true)
                 .setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY)
                 .setPersisted(true)

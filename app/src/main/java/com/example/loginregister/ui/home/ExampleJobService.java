@@ -11,6 +11,8 @@ public class ExampleJobService extends JobService {
     @Override
     public boolean onStartJob(JobParameters params) {
         Log.d(TAG, "Job started");
+
+        Log.d("CURRENTNAME", params.getExtras().getString("CurrentName"));
         doBackgroundWork(params);
         return true;
     }
