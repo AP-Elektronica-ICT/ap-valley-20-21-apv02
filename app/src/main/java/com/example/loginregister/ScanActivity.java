@@ -160,14 +160,14 @@ public class ScanActivity extends AppCompatActivity {
 
     private void setAddGrowbox(String naam){
 
-
-
+        Log.d("growboxnaam", naam);
         DocumentReference documentReference = mStore.collection("Growboxes").document(naam);
         documentReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
                 _naam = value.getString("naam");
-                _growing = value.getString("growing");
+              //  _growing = value.getString("growing");
+              //    _growing= "iets";
                 _url = value.getString("url");
                 int amount = getAmountGrowboxes();
                 amount++;
@@ -176,7 +176,7 @@ public class ScanActivity extends AppCompatActivity {
 
                 box.put("naam",_naam);
                 box.put("url", _url);
-                box.put("growing", _growing);
+              //  box.put("growing", _growing);
                 DocumentReference documentref = mStore.collection("Users").document(userID);
 
                 documentref.addSnapshotListener(new EventListener<DocumentSnapshot>() {
@@ -204,6 +204,7 @@ public class ScanActivity extends AppCompatActivity {
                 });
 
                 documentref.collection("0").document(aantal).set(box);
+                addGrowbox.setVisibility(View.INVISIBLE);
 
 
 

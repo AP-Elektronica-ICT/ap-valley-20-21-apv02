@@ -336,6 +336,8 @@ public class GrowSchedules extends Fragment {
 
     /// jobschedular nog nodig?
     public void scheduleJob() {
+       final long ONE_WEEK_INTERVAL = 7 * 24 * 60 * 60 * 1000L; // 1 Week
+
         ComponentName componentName = new ComponentName(getActivity(), ExampleJobService.class);
         JobInfo info = new JobInfo.Builder(123, componentName)
                 .setRequiresCharging(true)
