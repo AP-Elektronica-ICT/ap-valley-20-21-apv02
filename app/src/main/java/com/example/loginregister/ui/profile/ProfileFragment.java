@@ -15,6 +15,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.InputType;
 import android.text.TextUtils;
 import android.util.SparseIntArray;
 import android.view.LayoutInflater;
@@ -68,14 +69,18 @@ import com.squareup.picasso.Picasso;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.concurrent.Executor;
+import java.util.regex.Pattern;
 
 import io.grpc.Context;
+import jp.wasabeef.picasso.transformations.CropCircleTransformation;
 
 
 import java.util.List;
 import java.util.Locale;
+import java.util.regex.Matcher;
 
 import static android.app.Activity.RESULT_OK;
+import static com.google.firebase.storage.FirebaseStorage.getInstance;
 
 public class ProfileFragment extends Fragment {
 
@@ -142,6 +147,7 @@ public class ProfileFragment extends Fragment {
         // databaseReference = firebaseDatabase.getReference("Users");
 
         userID = mAuth.getCurrentUser().getUid();
+        storageReference = getInstance().getReference(); //fbase stor ref
 
         pd = new ProgressDialog(getActivity());
 
@@ -164,7 +170,7 @@ public class ProfileFragment extends Fragment {
                 String _naam = documentSnapshot.getString("uname");
                 String _gsm = documentSnapshot.getString("phone");
                 String _mail = documentSnapshot.getString("email");
-                String _foto = documentSnapshot.getString("email");
+                String _foto = documentSnapshot.getString("image");
                 String _amountBoxes = documentSnapshot.getString("amountBoxes");
                 String _amountHarvests = documentSnapshot.getString("amountHarvests");
                 naam.setText(_naam);
@@ -173,7 +179,9 @@ public class ProfileFragment extends Fragment {
                 amountBoxes.setText(_amountBoxes);
                 amountHarvests.setText((_amountHarvests));
                 try {
-                    Picasso.get().load(_foto).into(mprofilePic);
+                    Picasso.get().load(_foto).fit().transform(new CropCircleTransformation()).centerCrop().rotate(90).into(mprofilePic);
+                   // Picasso.get().load(_foto).into(mprofilePic);
+
                 } catch (Exception a) {
                     Picasso.get().load(R.drawable.ic_settings);
                 }
@@ -297,6 +305,7 @@ public class ProfileFragment extends Fragment {
                     case 3:
                         //edit email
                         pd.setMessage("updating mail");
+                        showNamePhoneUpdateDialog("email");
 
                         break;
                     default:
@@ -313,8 +322,10 @@ public class ProfileFragment extends Fragment {
 
     private void showNamePhoneUpdateDialog(final String key) {
 
+      String emailRegEx = "^[A-Za-z0-9._%+\\-]+@[A-Za-z0-9.\\-]+\\.[A-Za-z]{2,4}$";
+
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle("update"+ key);
+        builder.setTitle("update "+ key);
         //set layout of dialog
         LinearLayout linearLayout = new LinearLayout(getActivity());
         linearLayout.setOrientation(LinearLayout.VERTICAL);
@@ -322,6 +333,9 @@ public class ProfileFragment extends Fragment {
 
         //add edit text
         final EditText editText = new EditText(getActivity());
+        if (key == "phone"){
+            editText.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+        }
         editText.setHint("Enter"+key); //edit update name or photo
         linearLayout.addView(editText);
 
@@ -330,6 +344,9 @@ public class ProfileFragment extends Fragment {
         builder.setPositiveButton("update", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                //validation
+
+
                 //input text from edit text
                 String value = editText.getText().toString().trim();
 
@@ -476,9 +493,7 @@ public class ProfileFragment extends Fragment {
 
     }
 
-    private void uploadProfileCoverphoto(Uri uri) {
-
-
+    private void uploadProfileCoverphoto(final Uri uri) {
         //path and name of image t be stored in firebase storage
         String filePathandName = storagePath+ "" + "image" + "_"+ userID;
 
@@ -498,13 +513,13 @@ public class ProfileFragment extends Fragment {
                             //add/update url in users database
                             HashMap<String, Object> results = new HashMap<>();
                             results.put("image", downloadUti.toString());
-                            DocumentReference documentReference = mStore.collection("usersTest").document(userID);
+                            DocumentReference documentReference = mStore.collection("Users").document(userID);
                             documentReference.update("image", downloadUti.toString());
 
                         }
                         else {
                             //error
-                            Toast.makeText(getActivity(), "Some error occured", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext(), "Some error occured", Toast.LENGTH_SHORT).show();
 
 
                         }
@@ -514,7 +529,7 @@ public class ProfileFragment extends Fragment {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         pd.dismiss();
-                        Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
 
                     }
                 });

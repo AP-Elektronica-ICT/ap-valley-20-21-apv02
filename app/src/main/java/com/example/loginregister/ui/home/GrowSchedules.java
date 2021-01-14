@@ -279,6 +279,7 @@ public class GrowSchedules extends Fragment {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 Startiets(mChosenPositions, position, plant);
+                scheduleJob();
                 for(int i = 0; i< mChosenPositions.length; i++){
                     Log.d("waarde op index: ", Integer.toString(i));
                     Log.d("waarde: ", Integer.toString(mChosenPositions[i]));
@@ -300,7 +301,7 @@ public class GrowSchedules extends Fragment {
             DatabaseReference mRefLightinteval = database.getReference(CurrentName + "/light/INTERVAL");
             DatabaseReference mRefLighttime = database.getReference(CurrentName + "/light/TIME");
             DatabaseReference myRefCurrentGrow = database.getReference(CurrentName + "/CurrentGrowSchedule");
-            
+
             DocumentReference dr = mStore.collection("Growboxes").document(CurrentName);
             Map<String, Object> box = new HashMap<>();
             box.put("growing", mTitle);
@@ -308,6 +309,8 @@ public class GrowSchedules extends Fragment {
             box.put("url", "https://www.thespruceeats.com/thmb/qsrUxBu670oOJd26FgEPk0mFToU=/3333x3333/smart/filters:no_upscale()/various-fresh-herbs-907728974-cc6c2be53aac46de9e6a4b47a0e630e4.jpg");
             dr.set(box);
 
+            int [] Timingwater = {1000,2000,3000,4000};
+            int [] Timinglight = {1000,2000,3000,4000};
 
 
             myRefCurrentGrow.setValue(mTitle.get(position));
@@ -332,13 +335,15 @@ public class GrowSchedules extends Fragment {
 
 
     /// jobschedular nog nodig?
-    public void scheduleJob(View v) {
+    public void scheduleJob() {
+       final long ONE_WEEK_INTERVAL = 7 * 24 * 60 * 60 * 1000L; // 1 Week
+
         ComponentName componentName = new ComponentName(getActivity(), ExampleJobService.class);
         JobInfo info = new JobInfo.Builder(123, componentName)
                 .setRequiresCharging(true)
                 .setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY)
                 .setPersisted(true)
-                .setPeriodic(15 * 60 * 1000)
+                .setPeriodic(15 * 60 * 1000) //omzetten naar 1 week
                 .build();
         JobScheduler scheduler = (JobScheduler) getContext().getSystemService(JOB_SCHEDULER_SERVICE);
         int resultCode = scheduler.schedule(info);

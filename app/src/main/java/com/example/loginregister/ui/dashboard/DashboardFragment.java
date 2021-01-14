@@ -142,6 +142,7 @@ public class DashboardFragment extends Fragment {
             }
         });
 
+
         if(Count>0){
             //Wanneer er van de Activity naar het fragement een bericht gestuurd wordt, wordt er een groeibox toegevoegd
             String strtext=getArguments().getString("message");
@@ -152,6 +153,8 @@ public class DashboardFragment extends Fragment {
             }
         }
         Count++;
+
+
 
 
 
