@@ -295,53 +295,25 @@ public class GrowSchedules extends Fragment {
     
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     private void Startiets(int [] chosenplants, int position, String plant){
-        scheduleJob();
-        for(int i =0; i<4; i++){
-            DatabaseReference myRefTime = database.getReference(CurrentName + "/" + pumps[i] + "/Time" );
-            DatabaseReference myRefInter = database.getReference(CurrentName + "/" +  pumps[i] +  "/Interval" );
-            DatabaseReference mRefLightinteval = database.getReference(CurrentName + "/light/INTERVAL");
-            DatabaseReference mRefLighttime = database.getReference(CurrentName + "/light/TIME");
-            DatabaseReference myRefCurrentGrow = database.getReference(CurrentName + "/CurrentGrowSchedule");
+        scheduleJob(position, plant);
 
-            DocumentReference dr = mStore.collection("Growboxes").document(CurrentName);
-            Map<String, Object> box = new HashMap<>();
-            box.put("growing", mTitle);
-            box.put("naam", CurrentName);
-            box.put("url", "https://www.thespruceeats.com/thmb/qsrUxBu670oOJd26FgEPk0mFToU=/3333x3333/smart/filters:no_upscale()/various-fresh-herbs-907728974-cc6c2be53aac46de9e6a4b47a0e630e4.jpg");
-            dr.set(box);
-
-            int [] Timingwater = {1000,2000,3000,4000};
-            int [] Timinglight = {1000,2000,3000,4000};
-
-
-            myRefCurrentGrow.setValue(mTitle.get(position));
-            if (mChosenPositions[i] == 0){
-                myRefTime.setValue(0);
-                myRefInter.setValue(0);
-                mRefLightinteval.setValue(0);
-                Log.d("chosen: ", Integer.toString( mChosenPositions[i]));
-            }else if (mChosenPositions[i] != 0){
-                myRefTime.setValue(100);
-                myRefInter.setValue(300);
-                mRefLightinteval.setValue(400);
-                mRefLighttime.setValue(500);
-                myRefCurrentGrow.setValue(plant);
-                Log.d("not chosen: ", Integer.toString( mChosenPositions[i]));
-
-            }
-
-
-        }
     }
 
 
     /// jobschedular nog nodig?
-    public void scheduleJob() {
-       final long ONE_WEEK_INTERVAL = 7 * 24 * 60 * 60 * 1000L; // 1 Week
+    public void scheduleJob(int _position, String _plant) {
+        final long ONE_WEEK_INTERVAL = 7 * 24 * 60 * 60 * 1000L; // 1 Week
         ComponentName componentName = new ComponentName(getActivity(), ExampleJobService.class);
+        String[] sTitle = new String[mTitle.size()];
+        sTitle = mTitle.toArray(sTitle);
 
         PersistableBundle bundle = new PersistableBundle();
         bundle.putString("CurrentName", CurrentName);
+        bundle.putIntArray("mChosenPositions", mChosenPositions);
+        bundle.putStringArray("mTitle", sTitle);
+        bundle.putInt("position",_position);
+        bundle.putString("plant", _plant);
+
 
         JobInfo info = new JobInfo.Builder(123, componentName)
                 .setExtras(bundle)
