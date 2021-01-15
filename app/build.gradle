@@ -8,7 +8,7 @@ android {
     compileSdkVersion 29
     signingConfigs {
         release {
-            storeFile file("C:\\Users\\Stef Martens\\Desktop\\keystore\\uploud-keystore2.jks".replaceAll("%20"," "))
+            storeFile file("C:/Users\\Stef Martens/Desktop/keystore/uploud-keystore2.jks")
             storePassword 'stefstef'
             keyAlias 'upload'
             keyPassword 'stefstef2'
