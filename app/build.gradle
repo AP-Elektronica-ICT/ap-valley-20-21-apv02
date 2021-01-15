@@ -9,6 +9,7 @@ android {
     signingConfigs {
         release {
             //storeFile file("C:/Users/Public/uploud-keystore2.jks")
+            storeFile file("/home/travis/uploud-keystore2.jks")
             storePassword 'stefstef'
             keyAlias 'upload'
             keyPassword 'stefstef2'
