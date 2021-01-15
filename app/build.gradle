@@ -45,7 +45,7 @@ play {
     track = "alpha"
     userFraction = 1
     serviceAccountEmail = "stef-martens@pc-api-6352396222200478433-642.iam.gserviceaccount.com"
-    serviceAccountCredentials = file("C:\\Users\\Stef Martens\\Documents\\School 2020-2021\\Semester 1\\AP Valley\\service-account-key.p12")
+    serviceAccountCredentials = file("../service-account-key.p12")
     resolutionStrategy = "auto"
     outputProcessor { // this: ApkVariantOutput
         versionNameOverride = "$versionNameOverride.$versionCode"
