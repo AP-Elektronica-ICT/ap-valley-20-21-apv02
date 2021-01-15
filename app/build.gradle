@@ -1,3 +1,5 @@
+import android.net.Uri
+
 plugins {
     id 'com.android.application'
     id 'com.google.gms.google-services'
@@ -8,7 +10,8 @@ android {
     compileSdkVersion 29
     signingConfigs {
         release {
-            storeFile file("C:\\Users\\Stef Martens\\Desktop\\keystore\\uploud-keystore2.jks")
+            Uri uri=Uri.pasre("C:\\Users\\Stef Martens\\Desktop\\keystore\\uploud-keystore2.jks")
+            storeFile file(uri.getPath())
             storePassword 'stefstef'
             keyAlias 'upload'
             keyPassword 'stefstef2'
