@@ -38,26 +38,24 @@ public class ExampleJobService extends JobService {
         int position = params.getExtras().getInt("position");
         List<String> mTitle = new ArrayList<String>(Arrays.asList(params.getExtras().getString("mTitle"))); //new ArrayList is only needed if you absolutely need an ArrayList
         String plant = params.getExtras().getString("plant");
+        String [] titles = params.getExtras().getStringArray("mTitle");
 
         new Thread(new Runnable() {
             @Override
             public void run() {
-                //hier moet eig alles worden gestard --> alles van laatste alert moet worden doorgestuurd via parameter naar hier
-                // ook denken aan parameters van jobschedular
+                // hier worden de growschedules gestart om de zoveel tijd
+                DocumentReference dr = mStore.collection("Growboxes").document(params.getExtras().getString("CurrentName"));
+                Map<String, Object> box = new HashMap<>();
+                box.put("growing", titles[position]);
+                box.put("naam", params.getExtras().getString("CurrentName"));
+                box.put("url", "https://www.thespruceeats.com/thmb/qsrUxBu670oOJd26FgEPk0mFToU=/3333x3333/smart/filters:no_upscale()/various-fresh-herbs-907728974-cc6c2be53aac46de9e6a4b47a0e630e4.jpg");
+                dr.set(box);
                 for(int i =0; i<4; i++){
                     DatabaseReference myRefTime = database.getReference(CurrentName + "/" + pumps[i] + "/Time" );
                     DatabaseReference myRefInter = database.getReference(CurrentName + "/" +  pumps[i] +  "/Interval" );
                     DatabaseReference mRefLightinteval = database.getReference(CurrentName+ "/light/INTERVAL");
                     DatabaseReference mRefLighttime = database.getReference(CurrentName + "/light/TIME");
                     DatabaseReference myRefCurrentGrow = database.getReference(CurrentName + "/CurrentGrowSchedule");
-
-                    DocumentReference dr = mStore.collection("Growboxes").document(params.getExtras().getString("CurrentName"));
-                    Map<String, Object> box = new HashMap<>();
-                    box.put("growing", mTitle);
-                    box.put("naam", params.getExtras().getString("CurrentName"));
-                    box.put("url", "https://www.thespruceeats.com/thmb/qsrUxBu670oOJd26FgEPk0mFToU=/3333x3333/smart/filters:no_upscale()/various-fresh-herbs-907728974-cc6c2be53aac46de9e6a4b47a0e630e4.jpg");
-                    dr.set(box);
-
                     int [] Timingwater = {1000,2000,3000,4000};
                     int [] Timinglight = {1000,2000,3000,4000};
 
