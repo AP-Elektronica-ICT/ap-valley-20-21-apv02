@@ -24,7 +24,7 @@ android:
 script:
 - "./gradlew clean build"
 - if [ "$TRAVIS_PULL_REQUEST" == "false" ] && [ "$TRAVIS_BRANCH" == "master" ]; then
-  ./gradlew publishReleaseApk;
+  ./gradlew app:publishReleaseApk;
   fi
 before_install:
 - yes | sdkmanager "platforms;android-29"
