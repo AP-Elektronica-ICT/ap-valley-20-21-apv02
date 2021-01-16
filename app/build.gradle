@@ -11,6 +11,8 @@ if(isRunningOnTravisAndIsNotPRBuild) {
     apply plugin: 'com.github.triplet.play'
 }
 
+def buildVersionCode = Integer.parseInt(new Date().format("yyMMddHH"))
+
 android {
     compileSdkVersion 29
     signingConfigs {
@@ -36,8 +38,8 @@ android {
         applicationId 'com.Igrow.eersterelease'
         minSdkVersion 26
         targetSdkVersion 29
-        versionCode 4
-        versionName "4.0"
+        versionCode buildVersionCode
+        versionName buildVersionCode.toString()
         multiDexEnabled true
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
