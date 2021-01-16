@@ -64,7 +64,7 @@ android {
 
 //if (isRunningOnTravisAndIsNotPRBuild) {
 play {
-    track = "alpha"
+    track = "production"
     userFraction = 1
     serviceAccountEmail = "stef-martens@pc-api-6352396222200478433-642.iam.gserviceaccount.com"
     serviceAccountCredentials = file("../service-account-key.p12")
