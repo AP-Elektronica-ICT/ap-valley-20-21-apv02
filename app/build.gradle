@@ -1,7 +1,8 @@
 plugins {
     id 'com.android.application'
     id 'com.google.gms.google-services'
-    //id 'com.github.triplet.play'
+    id 'maven-publish'
+    id"com.github.triplet.play"
 }
 
 def isRunningOnTravisAndIsNotPRBuild = System.getenv("CI") == "true" && file('../service-account-key.p12').exists()
@@ -23,12 +24,12 @@ android {
         }
     }
 
-    if (isRunningOnTravisAndIsNotPRBuild) {
+   // if (isRunningOnTravisAndIsNotPRBuild) {
         signingConfigs.release.storeFile = file("./uploud-keystore2.jks")
         signingConfigs.release.storePassword = System.getenv("keystore_password")
         signingConfigs.release.keyAlias = System.getenv("key_alias")
         signingConfigs.release.keyPassword = System.getenv("key_password")
-    }
+   // }
 
 
     defaultConfig {
@@ -59,7 +60,7 @@ android {
 }
 
 
-if (isRunningOnTravisAndIsNotPRBuild) {
+//if (isRunningOnTravisAndIsNotPRBuild) {
 play {
     track = "alpha"
     userFraction = 1
@@ -70,7 +71,7 @@ play {
         versionNameOverride = "$versionNameOverride.$versionCode"
     }
 }
-}
+//}
 
 
 dependencies {
