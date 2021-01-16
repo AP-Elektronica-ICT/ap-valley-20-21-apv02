@@ -16,14 +16,20 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+
 public class ExampleJobService extends JobService {
     FirebaseDatabase database;
     String[] pumps = {"PUMP1", "PUMP2", "PUMP3", "PUMP4"};
+    //Basilicum
+    int[] BasilicumTime = {10, 20, 30, 40};
+    int[] BasilicumInterval = {10, 20, 30, 40};
+
 
     private static final String TAG = "ExampleJobService";
     private boolean jobCancelled = false;
     @Override
     public boolean onStartJob(JobParameters params) {
+
         Log.d(TAG, "Job started");
         database = FirebaseDatabase.getInstance();
         Log.d("CURRENTNAME", params.getExtras().getString("CurrentName"));
