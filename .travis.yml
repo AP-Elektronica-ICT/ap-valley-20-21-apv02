@@ -8,6 +8,7 @@ env:
   - ANDROID_TARGET=android-22
   - ANDROID_ABI=armeabi-v7a
   - ADB_INSTALL_TIMEOUT=12
+  - JAVA_HOME=/usr/lib/jvm/java-8-oracle
 jdk:
 - oraclejdk8
 android:
