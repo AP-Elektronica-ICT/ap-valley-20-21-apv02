@@ -8,8 +8,12 @@ env:
   - ANDROID_TARGET=android-22
   - ANDROID_ABI=armeabi-v7a
   - ADB_INSTALL_TIMEOUT=12
-jdk:
-- oraclejdk8
+jdk: openjdk10
+script:
+  - jdk_switcher use openjdk10
+  - export JAVA_HOME=$HOME/openjdk11
+  - $TRAVIS_BUILD_DIR/install-jdk.sh --install openjdk11 --target $JAVA_HOME
+
 android:
   components:
   - tools
