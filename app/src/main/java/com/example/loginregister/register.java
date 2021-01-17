@@ -24,6 +24,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class register extends AppCompatActivity implements View.OnClickListener {
 
@@ -98,9 +99,8 @@ public class register extends AppCompatActivity implements View.OnClickListener 
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()){
                             //versturen van verificatie email.
-                            mAuth.getCurrentUser().sendEmailVerification();
                             Toast.makeText(register.this, "USER CREATED.", Toast.LENGTH_SHORT).show();
-
+                            mAuth.getCurrentUser().sendEmailVerification();
                             //voor we naar login gaan eerst user profile gegevens wegschrijven naar de database
                             //userID nemen van de registerende user
                             userID = mAuth.getCurrentUser().getUid();
@@ -127,7 +127,8 @@ public class register extends AppCompatActivity implements View.OnClickListener 
                                 }
                             });
 
-                            documentReference.set(documentReference.collection("0"));
+                            //documentReference.set(documentReference.collection("0"));
+                            //documentReference.set(documentReference.collection("0"));
 
                             documentReference.set(user).addOnFailureListener(new OnFailureListener() {
                                 @Override
@@ -138,7 +139,7 @@ public class register extends AppCompatActivity implements View.OnClickListener 
 
 
                             //inloggen
-                            startActivity(new Intent(getApplicationContext(), login.class));
+                          //  startActivity(new Intent(getApplicationContext(), login.class));
                         }else {
                             //indien de user niet kon worden aangemaakt
                             Toast.makeText(register.this, "USER REGISTER FAILED.", Toast.LENGTH_LONG).show();
