@@ -56,6 +56,7 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import jp.wasabeef.picasso.transformations.CropCircleTransformation;
@@ -70,7 +71,7 @@ public class HomeFragment extends Fragment {
     String userID;
     ImageButton navigatie,btnLiveview, btnSettings ;
     NavController navc;
-    TextView currentGrowSchedule, txtcurrentgrowbox;
+    TextView currentGrowSchedule, txtcurrentgrowbox, txtwaterverbruik;
     String GrowboxName, Url,currentGrow,growpogingtot;
     ImageView currentGrowImage;
 
@@ -98,6 +99,7 @@ public class HomeFragment extends Fragment {
         setHasOptionsMenu(true);
 
         txtcurrentgrowbox=view.findViewById(R.id.txthuidige);
+        txtwaterverbruik=view.findViewById(R.id.txtwaterverbruik);
 
         AnyChartView anyChartView = view.findViewById(R.id.any_chart_view);
 
@@ -130,7 +132,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
 
-                List<Double> waterverbruikLijst = (List<Double>) documentSnapshot.get("waterverbruik");
+                List<Double> waterverbruikLijst = (List<Double>) documentSnapshot.get("waterusage");
 
                 List<DataEntry> seriesData = new ArrayList<>();
 
@@ -138,15 +140,42 @@ public class HomeFragment extends Fragment {
 
                 for (Double item : waterverbruikLijst){
                     String dag="";
-                    if(i==0) dag="Maandag";
-                    if(i==1) dag="Dinsdag";
-                    if(i==2) dag="Woensdag";
-                    if(i==3) dag="Donderdag";
-                    if(i==4) dag="Vrijdag";
-                    if(i==5) dag="Zaterdag";
-                    if(i==6) dag="Zondag";
+                    if(i==0) dag="Monday";
+                    if(i==1) dag="Tuesday";
+                    if(i==2) dag="Wednesday";
+                    if(i==3) dag="Thursday";
+                    if(i==4) dag="Friday";
+                    if(i==5) dag="Saturday";
+                    if(i==6) dag="Sunday";
                     seriesData.add(new CustomDataEntry(dag,waterverbruikLijst.get(i)));
                     i++;
+                }
+
+                Calendar calendar = Calendar.getInstance();
+                int day = calendar.get(Calendar.DAY_OF_WEEK);
+
+                switch (day) {
+                    case Calendar.SUNDAY:
+                        txtwaterverbruik.setText(waterverbruikLijst.get(6).toString()+" ml/d");
+                        break;
+                    case Calendar.SATURDAY:
+                        txtwaterverbruik.setText(waterverbruikLijst.get(5).toString()+" ml/d");
+                        break;
+                    case Calendar.FRIDAY:
+                        txtwaterverbruik.setText(waterverbruikLijst.get(4).toString()+" ml/d");
+                        break;
+                    case Calendar.THURSDAY:
+                        txtwaterverbruik.setText(waterverbruikLijst.get(3).toString()+" ml/d");
+                        break;
+                    case Calendar.WEDNESDAY:
+                        txtwaterverbruik.setText(waterverbruikLijst.get(2).toString()+" ml/d");
+                        break;
+                    case Calendar.TUESDAY:
+                        txtwaterverbruik.setText(waterverbruikLijst.get(1).toString()+" ml/d");
+                        break;
+                    case Calendar.MONDAY:
+                        txtwaterverbruik.setText(waterverbruikLijst.get(0).toString()+" ml/d");
+                        break;
                 }
 
                 Set set = Set.instantiate();
