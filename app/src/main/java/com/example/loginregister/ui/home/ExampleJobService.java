@@ -5,6 +5,9 @@ import android.app.job.JobParameters;
 import android.app.job.JobService;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentReference;
@@ -12,8 +15,11 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Map;
 
 
@@ -27,7 +33,7 @@ public class ExampleJobService extends JobService {
     int lightTime;
     int lightInterval;
     //Basilicum
-    int[] BasilicumTime = {1, 2, 3, 4};
+    int[] BasilicumTime = {7500, 10001, 15000, 10001};
     int[] BasilicumInterval = { 86400000,  86400000,  86400000, 43200000};
     int[] BasilLightTime = {28800000, 28800000, 28800000, 28800000};
     int[] BasilLightinterval = {57600000 , 57600000 , 57600000 , 57600000 };
@@ -53,6 +59,129 @@ public class ExampleJobService extends JobService {
     int[] ThijmLightTime = {28800000, 28800000, 28800000, 28800000};
     int[] ThijmLightinterval = {57600000 , 57600000 , 57600000 , 57600000 };
     Growschedule thijm = new Growschedule("MARJOLEIN",ThijmTime, ThijmInterval,4, ThijmLightTime, ThijmLightinterval);
+   List<Double> waterverbruikWeek = new List<Double>() {
+       @Override
+       public int size() {
+           return 0;
+       }
+
+       @Override
+       public boolean isEmpty() {
+           return false;
+       }
+
+       @Override
+       public boolean contains(@Nullable Object o) {
+           return false;
+       }
+
+       @NonNull
+       @Override
+       public Iterator<Double> iterator() {
+           return null;
+       }
+
+       @NonNull
+       @Override
+       public Object[] toArray() {
+           return new Object[0];
+       }
+
+       @NonNull
+       @Override
+       public <T> T[] toArray(@NonNull T[] a) {
+           return null;
+       }
+
+       @Override
+       public boolean add(Double aDouble) {
+           return false;
+       }
+
+       @Override
+       public boolean remove(@Nullable Object o) {
+           return false;
+       }
+
+       @Override
+       public boolean containsAll(@NonNull Collection<?> c) {
+           return false;
+       }
+
+       @Override
+       public boolean addAll(@NonNull Collection<? extends Double> c) {
+           return false;
+       }
+
+       @Override
+       public boolean addAll(int index, @NonNull Collection<? extends Double> c) {
+           return false;
+       }
+
+       @Override
+       public boolean removeAll(@NonNull Collection<?> c) {
+           return false;
+       }
+
+       @Override
+       public boolean retainAll(@NonNull Collection<?> c) {
+           return false;
+       }
+
+       @Override
+       public void clear() {
+
+       }
+
+       @Override
+       public Double get(int index) {
+           return null;
+       }
+
+       @Override
+       public Double set(int index, Double element) {
+           return null;
+       }
+
+       @Override
+       public void add(int index, Double element) {
+
+       }
+
+       @Override
+       public Double remove(int index) {
+           return null;
+       }
+
+       @Override
+       public int indexOf(@Nullable Object o) {
+           return 0;
+       }
+
+       @Override
+       public int lastIndexOf(@Nullable Object o) {
+           return 0;
+       }
+
+       @NonNull
+       @Override
+       public ListIterator<Double> listIterator() {
+           return null;
+       }
+
+       @NonNull
+       @Override
+       public ListIterator<Double> listIterator(int index) {
+           return null;
+       }
+
+       @NonNull
+       @Override
+       public List<Double> subList(int fromIndex, int toIndex) {
+           return null;
+       }
+   };
+   Double[] growshizlle = new Double[7];
 
 
 
@@ -70,51 +199,95 @@ public class ExampleJobService extends JobService {
     private void doBackgroundWork(final JobParameters params) {
         Week++;
         int [] mChosenpositions =  params.getExtras().getIntArray("mChosenPositions");
-        FirebaseFirestore mStore = FirebaseFirestore.getInstance();
         String CurrentName = params.getExtras().getString("CurrentName");
         int position = params.getExtras().getInt("position");
+        String [] titles = params.getExtras().getStringArray("mTitle");
        // List<String> mTitle = new ArrayList<String>(Arrays.asList(params.getExtras().getString("mTitle"))); //new ArrayList is only needed if you absolutely need an ArrayList
         String plant = params.getExtras().getString("plant");
-        String [] titles = params.getExtras().getStringArray("mTitle");
+
+        Boolean on_light = true;
+        Boolean off_light = false;
+
 
 
         new Thread(new Runnable() {
             @Override
             public void run() {
                 // hier worden de growschedules gestart om de zoveel tijd
-                DocumentReference dr = mStore.collection("Growboxes").document(params.getExtras().getString("CurrentName"));
-                Map<String, Object> box = new HashMap<>();
+
+
+        /*        Map<String, Object> box = new HashMap<>();
                 box.put("growing", titles[position]);
                 box.put("naam", params.getExtras().getString("CurrentName"));
                 box.put("url", "https://www.thespruceeats.com/thmb/qsrUxBu670oOJd26FgEPk0mFToU=/3333x3333/smart/filters:no_upscale()/various-fresh-herbs-907728974-cc6c2be53aac46de9e6a4b47a0e630e4.jpg");
-                dr.set(box);
-                if(Week == 4){
-                    Log.d(TAG, "Job finished");
-                    jobFinished(params, false);
-                }
-                setTimeAndInterval(Week, plant );
-                for(int i =0; i<4; i++){
-                    DatabaseReference myRefTime = database.getReference(CurrentName + "/" + pumps[i] + "/Time" );
-                    DatabaseReference myRefInter = database.getReference(CurrentName + "/" +  pumps[i] +  "/Interval" );
-                    DatabaseReference mRefLightinteval = database.getReference(CurrentName+ "/light/INTERVAL");
-                    DatabaseReference mRefLighttime = database.getReference(CurrentName + "/light/TIME");
-                    DatabaseReference myRefCurrentGrow = database.getReference(CurrentName + "/CurrentGrowSchedule");
+                box.put("waterusage", waterverbruikWeek);*/
 
-                    myRefCurrentGrow.setValue(titles[position]);
-                    if (mChosenpositions[i] == 0){
-                        myRefTime.setValue(0);
-                        myRefInter.setValue(0);
-                        mRefLightinteval.setValue(0);
-                     //   Log.d("chosen: ", Integer.toString( mChosenpositions[i]));
-                    }else if (mChosenpositions[i] != 0){
-                        myRefTime.setValue(time);
-                        myRefInter.setValue(interval);
-                        mRefLightinteval.setValue(lightInterval);
-                        mRefLighttime.setValue(lightTime);
-                        myRefCurrentGrow.setValue(plant);
-                      //  Log.d("not chosen: ", Integer.toString( mChosenpositions[i]));
+                /*
+                if(Week == 4){
+                    for(int i =0; i<4; i++) {
+                        DatabaseReference myRefTime = database.getReference(CurrentName + "/" + pumps[i] + "/Time");
+                        DatabaseReference myRefInter = database.getReference(CurrentName + "/" + pumps[i] + "/Interval");
+                        DatabaseReference mRefLightinteval = database.getReference(CurrentName + "/light/INTERVAL");
+                        DatabaseReference mRefLighttime = database.getReference(CurrentName + "/light/TIME");
+                        DatabaseReference myRefCurrentGrow = database.getReference(CurrentName + "/CurrentGrowSchedule");
+                        DatabaseReference isUpdated = database.getReference(CurrentName + "/" + pumps[i] + "/isUpdated");
+                        DatabaseReference on_off = database.getReference(CurrentName + "/" + pumps[i] + "/ON_OFF");
+                        DatabaseReference lighUpdate = database.getReference(CurrentName + "/light/isUpdated");
+                        DatabaseReference lighton_off = database.getReference(CurrentName + "/light/ON_OFF");
+
+                        myRefTime.setValue(100000000);
+                        myRefInter.setValue(100000000);
+                        mRefLightinteval.setValue(100000000);
+                        mRefLighttime.setValue(100000000);
+                        myRefCurrentGrow.setValue(100000000);
+                        isUpdated.setValue(true);
+                        on_off.setValue(false);
+                        lighUpdate.setValue(true);
+                        lighton_off.setValue(false);
+
 
                     }
+                        Log.d(TAG, "Job finished");
+                    jobFinished(params, false);
+                }else if(Week<4){
+
+                 */
+                    setTimeAndInterval(Week, plant, params );
+                    for(int i =0; i<4; i++){
+                        DatabaseReference myRefTime = database.getReference(CurrentName + "/" + pumps[i] + "/Time" );
+                        DatabaseReference myRefInter = database.getReference(CurrentName + "/" +  pumps[i] +  "/Interval" );
+                        DatabaseReference mRefLightinteval = database.getReference(CurrentName+ "/light/Interval");
+                        DatabaseReference mRefLighttime = database.getReference(CurrentName + "/light/Time");
+                        DatabaseReference myRefCurrentGrow = database.getReference(CurrentName + "/CurrentGrowSchedule");
+                        DatabaseReference isUpdated = database.getReference(CurrentName + "/" + pumps[i] + "/isUpdated" );
+                        DatabaseReference lighUpdate = database.getReference(CurrentName + "/light/isUpdated");
+                        DatabaseReference lighton_off = database.getReference(CurrentName + "/light/ON_OFF");
+
+
+                        myRefCurrentGrow.setValue(titles[position]);
+                        if (mChosenpositions[i] == 0){
+                            myRefTime.setValue(100000000);
+                            myRefInter.setValue(100000000);
+                            mRefLightinteval.setValue(100000000);
+                            isUpdated.setValue(Boolean.TRUE);
+                            lighUpdate.setValue(Boolean.TRUE);
+                            lighton_off.setValue(Boolean.TRUE);
+                            //   Log.d("chosen: ", Integer.toString( mChosenpositions[i]));
+                        }else if (mChosenpositions[i] != 0){
+                            myRefTime.setValue(time);
+                            myRefInter.setValue(interval);
+                            mRefLightinteval.setValue(lightInterval);
+                            mRefLighttime.setValue(lightTime);
+                            myRefCurrentGrow.setValue(plant);
+                            isUpdated.setValue(Boolean.FALSE);
+                            lighUpdate.setValue(Boolean.FALSE);
+                            lighton_off.setValue(Boolean.TRUE);
+                            //  Log.d("not chosen: ", Integer.toString( mChosenpositions[i]));
+
+                        }
+
+                  //  }
+
 
                 }
 
@@ -129,13 +302,25 @@ public class ExampleJobService extends JobService {
         return true;
     }
 
-    public void setTimeAndInterval(int week, String plant){
+    public void setTimeAndInterval(int week, String plant, final JobParameters params){
       Log.d("WEEK", "value = " + week);
         Log.d("PLANT", "value = " + plant);
-
+        FirebaseFirestore mStore = FirebaseFirestore.getInstance();
+        String url = "https://www.thespruceeats.com/thmb/qsrUxBu670oOJd26FgEPk0mFToU=/3333x3333/smart/filters:no_upscale()/various-fresh-herbs-907728974-cc6c2be53aac46de9e6a4b47a0e630e4.jpg";
+        int position = params.getExtras().getInt("position");
+        String [] titles = params.getExtras().getStringArray("mTitle");
 
         switch (plant){
             case "BASILICUM":
+                DocumentReference dr = mStore.collection("Growboxes").document(params.getExtras().getString("CurrentName"));
+                for (int i = 0; i<7; i++){
+                    growshizlle[i]= (double) (BasilicumTime[Week] / 1000);
+                    Log.d("WATERUSAGE", "" + growshizlle[i]);
+
+                }
+                Growbox grb = new Growbox(params.getExtras().getString("CurrentName"),url,  titles[position], Arrays.asList(7.5,7.5));
+                dr.set(grb);
+
                 switch (week){
                     case 1:
                         time = growBasil.Time[0];

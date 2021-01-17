@@ -170,11 +170,12 @@ public class ScanActivity extends AppCompatActivity {
               //    _growing= "iets";
                 _url = value.getString("url");
                 int amount = getAmountGrowboxes();
-                amount++;
+                amount+=1;
+                Log.d("AMOUNTBOXES", "value" + amount);
                 String aantal = String.valueOf(amount);
                 // onderstaande moet van realtime growbox worden gehaald
 
-                box.put("naam",_naam);
+                box.put("naam",naam);
                 box.put("url", _url);
                 box.put("growing", _growing);
 
@@ -192,7 +193,7 @@ public class ScanActivity extends AppCompatActivity {
 
                         DocumentReference dr = mStore.collection("Users").document(userID);
                         userd.put("amountBoxes", aantal);
-                        userd.put("currentGrowbox", _naam);
+                        userd.put("currentGrowbox", naam);
                         userd.put("uname", _uname);
                         userd.put("amountHarvests", _amountH);
                         userd.put("phone", _phone);
