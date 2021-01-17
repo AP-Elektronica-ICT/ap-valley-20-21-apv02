@@ -18,7 +18,8 @@ import java.util.Map;
 
 
 public class ExampleJobService extends JobService {
-    FirebaseDatabase database;
+    //FirebaseDatabase database;
+    FirebaseDatabase database = FirebaseDatabase.getInstance();
     String[] pumps = {"PUMP1", "PUMP2", "PUMP3", "PUMP4"};
     int Week = 0;
     int time;
@@ -26,11 +27,10 @@ public class ExampleJobService extends JobService {
     int lightTime;
     int lightInterval;
     //Basilicum
-    int[] BasilicumTime = {7500, 10000, 15000, 10000};
+    int[] BasilicumTime = {1, 2, 3, 4};
     int[] BasilicumInterval = { 86400000,  86400000,  86400000, 43200000};
     int[] BasilLightTime = {28800000, 28800000, 28800000, 28800000};
     int[] BasilLightinterval = {57600000 , 57600000 , 57600000 , 57600000 };
-
     Growschedule growBasil = new Growschedule("BASILICUM",BasilicumTime, BasilicumInterval,4, BasilLightTime, BasilLightinterval);
 
     //Tuinkers
@@ -61,19 +61,19 @@ public class ExampleJobService extends JobService {
     private boolean jobCancelled = false;
     @Override
     public boolean onStartJob(JobParameters params) {
-        Week++;
+
         Log.d(TAG, "Job started");
-        database = FirebaseDatabase.getInstance();
 
         doBackgroundWork(params);
         return true;
     }
     private void doBackgroundWork(final JobParameters params) {
+        Week++;
         int [] mChosenpositions =  params.getExtras().getIntArray("mChosenPositions");
         FirebaseFirestore mStore = FirebaseFirestore.getInstance();
         String CurrentName = params.getExtras().getString("CurrentName");
         int position = params.getExtras().getInt("position");
-        List<String> mTitle = new ArrayList<String>(Arrays.asList(params.getExtras().getString("mTitle"))); //new ArrayList is only needed if you absolutely need an ArrayList
+       // List<String> mTitle = new ArrayList<String>(Arrays.asList(params.getExtras().getString("mTitle"))); //new ArrayList is only needed if you absolutely need an ArrayList
         String plant = params.getExtras().getString("plant");
         String [] titles = params.getExtras().getStringArray("mTitle");
 
@@ -88,7 +88,10 @@ public class ExampleJobService extends JobService {
                 box.put("naam", params.getExtras().getString("CurrentName"));
                 box.put("url", "https://www.thespruceeats.com/thmb/qsrUxBu670oOJd26FgEPk0mFToU=/3333x3333/smart/filters:no_upscale()/various-fresh-herbs-907728974-cc6c2be53aac46de9e6a4b47a0e630e4.jpg");
                 dr.set(box);
-
+                if(Week == 4){
+                    Log.d(TAG, "Job finished");
+                    jobFinished(params, false);
+                }
                 setTimeAndInterval(Week, plant );
                 for(int i =0; i<4; i++){
                     DatabaseReference myRefTime = database.getReference(CurrentName + "/" + pumps[i] + "/Time" );
@@ -102,21 +105,20 @@ public class ExampleJobService extends JobService {
                         myRefTime.setValue(0);
                         myRefInter.setValue(0);
                         mRefLightinteval.setValue(0);
-                        Log.d("chosen: ", Integer.toString( mChosenpositions[i]));
+                     //   Log.d("chosen: ", Integer.toString( mChosenpositions[i]));
                     }else if (mChosenpositions[i] != 0){
                         myRefTime.setValue(time);
                         myRefInter.setValue(interval);
                         mRefLightinteval.setValue(lightInterval);
                         mRefLighttime.setValue(lightTime);
                         myRefCurrentGrow.setValue(plant);
-                        Log.d("not chosen: ", Integer.toString( mChosenpositions[i]));
+                      //  Log.d("not chosen: ", Integer.toString( mChosenpositions[i]));
 
                     }
 
-
                 }
-                Log.d(TAG, "Job finished");
-                jobFinished(params, false);
+
+
             }
         }).start();
     }
@@ -128,6 +130,10 @@ public class ExampleJobService extends JobService {
     }
 
     public void setTimeAndInterval(int week, String plant){
+      Log.d("WEEK", "value = " + week);
+        Log.d("PLANT", "value = " + plant);
+
+
         switch (plant){
             case "BASILICUM":
                 switch (week){
@@ -256,11 +262,6 @@ public class ExampleJobService extends JobService {
         }
 
 
-
-
-
-
     }
-
 
 }

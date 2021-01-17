@@ -61,6 +61,7 @@ public class GrowSchedules extends Fragment {
     List<String> mDescriptionlong = new ArrayList<>();
     String[] pumps = {"PUMP1", "PUMP2", "PUMP3", "PUMP4"};
     String CurrentName;
+    String plantje;
 
 
     FirebaseFirestore mStore;
@@ -306,21 +307,21 @@ public class GrowSchedules extends Fragment {
         ComponentName componentName = new ComponentName(getActivity(), ExampleJobService.class);
         String[] sTitle = new String[mTitle.size()];
         sTitle = mTitle.toArray(sTitle);
+        plantje = _plant;
 
         PersistableBundle bundle = new PersistableBundle();
         bundle.putString("CurrentName", CurrentName);
         bundle.putIntArray("mChosenPositions", mChosenPositions);
         bundle.putStringArray("mTitle", sTitle);
         bundle.putInt("position",_position);
-        bundle.putString("plant", _plant);
+        bundle.putString("plant", plantje);
 
 
         JobInfo info = new JobInfo.Builder(123, componentName)
                 .setExtras(bundle)
-                .setRequiresCharging(true)
                 .setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY)
                 .setPersisted(true)
-                .setPeriodic(15 * 60 * 1000) //omzetten naar 1 week
+                .setPeriodic(15 * 60 * 1000) //TODO:omzetten naar 1 WEEK
                 .build();
         JobScheduler scheduler = (JobScheduler) getContext().getSystemService(JOB_SCHEDULER_SERVICE);
         int resultCode = scheduler.schedule(info);
