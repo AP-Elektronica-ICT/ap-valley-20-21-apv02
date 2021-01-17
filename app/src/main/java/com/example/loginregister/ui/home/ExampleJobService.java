@@ -314,11 +314,11 @@ public class ExampleJobService extends JobService {
             case "BASILICUM":
                 DocumentReference dr = mStore.collection("Growboxes").document(params.getExtras().getString("CurrentName"));
                 for (int i = 0; i<7; i++){
-                    growshizlle[i]= (double) (BasilicumTime[Week] / 1000);
+                    growshizlle[i]= (double) (BasilicumTime[Week -1] / 1000.0);
                     Log.d("WATERUSAGE", "" + growshizlle[i]);
 
                 }
-                Growbox grb = new Growbox(params.getExtras().getString("CurrentName"),url,  titles[position], Arrays.asList(7.5,7.5));
+                Growbox grb = new Growbox(params.getExtras().getString("CurrentName"),url,  titles[position], Arrays.asList(growshizlle));
                 dr.set(grb);
 
                 switch (week){

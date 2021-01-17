@@ -5,9 +5,8 @@ import com.example.loginregister.ui.EmailValidator;
 import org.junit.Test;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-/**
- * Unit tests for the EmailValidator logic.
- */
+
+
 public class EmailValidatorTest {
     @Test
     public void emailValidator_CorrectEmailSimple_ReturnsTrue() {
