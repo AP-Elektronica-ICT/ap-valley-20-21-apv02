@@ -255,6 +255,7 @@ public class ExampleJobService extends JobService {
                     setTimeAndInterval(Week, plant, params );
                     for(int i =0; i<4; i++){
                         DatabaseReference myRefTime = database.getReference(CurrentName + "/" + pumps[i] + "/Time" );
+                        DatabaseReference myRefon_off = database.getReference(CurrentName + "/" + pumps[i] + "/ON_OFF" );
                         DatabaseReference myRefInter = database.getReference(CurrentName + "/" +  pumps[i] +  "/Interval" );
                         DatabaseReference mRefLightinteval = database.getReference(CurrentName+ "/light/Interval");
                         DatabaseReference mRefLighttime = database.getReference(CurrentName + "/light/Time");
@@ -266,14 +267,17 @@ public class ExampleJobService extends JobService {
 
                         myRefCurrentGrow.setValue(titles[position]);
                         if (mChosenpositions[i] == 0){
+
+                            myRefon_off.setValue(Boolean.FALSE);
+                            isUpdated.setValue(Boolean.TRUE);
+                           // lighUpdate.setValue(Boolean.FALSE);
+                          //  lighton_off.setValue(Boolean.TRUE);
+                            //myRefon_off.setValue(Boolean.FALSE);
+                            //   Log.d("chosen: ", Integer.toString( mChosenpositions[i]));
+                        }else if (mChosenpositions[i] != 0){
                             myRefTime.setValue(100000000);
                             myRefInter.setValue(100000000);
                             mRefLightinteval.setValue(100000000);
-                            isUpdated.setValue(Boolean.TRUE);
-                            lighUpdate.setValue(Boolean.TRUE);
-                            lighton_off.setValue(Boolean.TRUE);
-                            //   Log.d("chosen: ", Integer.toString( mChosenpositions[i]));
-                        }else if (mChosenpositions[i] != 0){
                             myRefTime.setValue(time);
                             myRefInter.setValue(interval);
                             mRefLightinteval.setValue(lightInterval);
@@ -282,6 +286,8 @@ public class ExampleJobService extends JobService {
                             isUpdated.setValue(Boolean.FALSE);
                             lighUpdate.setValue(Boolean.FALSE);
                             lighton_off.setValue(Boolean.TRUE);
+                            myRefon_off.setValue(Boolean.TRUE);
+
                             //  Log.d("not chosen: ", Integer.toString( mChosenpositions[i]));
 
                         }
