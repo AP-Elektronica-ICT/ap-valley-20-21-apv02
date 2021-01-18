@@ -78,8 +78,8 @@ public class HomeFragment extends Fragment {
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
 
+        super.onCreate(savedInstanceState);
 
 
     }
@@ -98,113 +98,136 @@ public class HomeFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         setHasOptionsMenu(true);
 
-        txtcurrentgrowbox=view.findViewById(R.id.txthuidige);
-        txtwaterverbruik=view.findViewById(R.id.txtwaterverbruik);
 
-        AnyChartView anyChartView = view.findViewById(R.id.any_chart_view);
-
-        ProgressBar progressBar = view.findViewById(R.id.progressBar2);
-        anyChartView.setProgressBar(progressBar);
-
-        Cartesian cartesian = AnyChart.line();
-
-        cartesian.animation(true);
-
-        cartesian.padding(10d, 20d, 15d, 20d);
-
-        cartesian.crosshair().enabled(true);
-        cartesian.crosshair()
-                .yLabel(false)
-                // TODO ystroke
-                .yStroke((Stroke) null, null, null, (String) null, (String) null);
-
-        cartesian.tooltip().positionMode(TooltipPositionMode.POINT);
-
-        cartesian.title("WATER USAGE (ml)");
-
-        cartesian.yAxis(0).title("");
-        cartesian.xAxis(0).labels().padding(5d, 5d, 5d, 5d);
-
+        mAuth = FirebaseAuth.getInstance();
         mStore = FirebaseFirestore.getInstance();
 
-        DocumentReference documentReference = mStore.collection("Growboxes").document("Growbox1");
-        documentReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+        userID = mAuth.getCurrentUser().getUid();
+        DocumentReference drf = mStore.collection("Users").document(userID);
+        drf.addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
-
-                List<Double> waterverbruikLijst = (List<Double>) documentSnapshot.get("waterusage");
-
-                List<DataEntry> seriesData = new ArrayList<>();
-
-                int i=0;
-
-                for (Double item : waterverbruikLijst){
-                    String dag="";
-                    if(i==0) dag="Monday";
-                    if(i==1) dag="Tuesday";
-                    if(i==2) dag="Wednesday";
-                    if(i==3) dag="Thursday";
-                    if(i==4) dag="Friday";
-                    if(i==5) dag="Saturday";
-                    if(i==6) dag="Sunday";
-                    seriesData.add(new CustomDataEntry(dag,waterverbruikLijst.get(i)));
-                    i++;
-                }
-
-                Calendar calendar = Calendar.getInstance();
-                int day = calendar.get(Calendar.DAY_OF_WEEK);
-
-                switch (day) {
-                    case Calendar.SUNDAY:
-                        txtwaterverbruik.setText(waterverbruikLijst.get(6).toString()+" ml/d");
-                        break;
-                    case Calendar.SATURDAY:
-                        txtwaterverbruik.setText(waterverbruikLijst.get(5).toString()+" ml/d");
-                        break;
-                    case Calendar.FRIDAY:
-                        txtwaterverbruik.setText(waterverbruikLijst.get(4).toString()+" ml/d");
-                        break;
-                    case Calendar.THURSDAY:
-                        txtwaterverbruik.setText(waterverbruikLijst.get(3).toString()+" ml/d");
-                        break;
-                    case Calendar.WEDNESDAY:
-                        txtwaterverbruik.setText(waterverbruikLijst.get(2).toString()+" ml/d");
-                        break;
-                    case Calendar.TUESDAY:
-                        txtwaterverbruik.setText(waterverbruikLijst.get(1).toString()+" ml/d");
-                        break;
-                    case Calendar.MONDAY:
-                        txtwaterverbruik.setText(waterverbruikLijst.get(0).toString()+" ml/d");
-                        break;
-                }
-
-                Set set = Set.instantiate();
-                set.data(seriesData);
-                Mapping series1Mapping = set.mapAs("{ x: 'x', value: 'value' }");
-
-                Area series1 = cartesian.area(series1Mapping);
-                series1.hovered().markers().enabled(true);
-                series1.color("#77B255");
-                series1.hovered().markers()
-                        .type(MarkerType.CIRCLE)
-                        .size(4d);
-                series1.tooltip()
-                        .position("right")
-                        .anchor(Anchor.LEFT_CENTER)
-                        .offsetX(5d)
-                        .offsetY(5d);
+                GrowboxName = documentSnapshot.getString("currentGrowbox");
 
 
 
+                txtcurrentgrowbox=view.findViewById(R.id.txthuidige);
+                txtwaterverbruik=view.findViewById(R.id.txtwaterverbruik);
 
-                cartesian.legend().enabled(false);
-                cartesian.legend().fontSize(13d);
-                cartesian.legend().padding(0d, 0d, 10d, 0d);
+                AnyChartView anyChartView = view.findViewById(R.id.any_chart_view);
 
-                anyChartView.setChart(cartesian);
-                cartesian.background().fill("white");
-                cartesian.background().cornerType("cut");
-                cartesian.background().corners(10);
+                ProgressBar progressBar = view.findViewById(R.id.progressBar2);
+                anyChartView.setProgressBar(progressBar);
+
+                Cartesian cartesian = AnyChart.line();
+
+                cartesian.animation(true);
+
+                cartesian.padding(10d, 20d, 15d, 20d);
+
+                cartesian.crosshair().enabled(true);
+                cartesian.crosshair()
+                        .yLabel(false)
+                        // TODO ystroke
+                        .yStroke((Stroke) null, null, null, (String) null, (String) null);
+
+                cartesian.tooltip().positionMode(TooltipPositionMode.POINT);
+
+                cartesian.title("WATER USAGE (ml)");
+
+                cartesian.yAxis(0).title("");
+                cartesian.xAxis(0).labels().padding(5d, 5d, 5d, 5d);
+
+                mStore = FirebaseFirestore.getInstance();
+
+                DocumentReference documentReference = mStore.collection("Growboxes").document(GrowboxName);
+                documentReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
+
+                        List<Double> waterverbruikLijst = (List<Double>) documentSnapshot.get("waterusage");
+
+                        List<DataEntry> seriesData = new ArrayList<>();
+
+                        int i=0;
+
+                        for (Double item : waterverbruikLijst){
+                            String dag="";
+                            if(i==0) dag="Monday";
+                            if(i==1) dag="Tuesday";
+                            if(i==2) dag="Wednesday";
+                            if(i==3) dag="Thursday";
+                            if(i==4) dag="Friday";
+                            if(i==5) dag="Saturday";
+                            if(i==6) dag="Sunday";
+                            seriesData.add(new CustomDataEntry(dag,waterverbruikLijst.get(i)));
+                            i++;
+                        }
+
+                        Calendar calendar = Calendar.getInstance();
+                        int day = calendar.get(Calendar.DAY_OF_WEEK);
+
+                        switch (day) {
+                            case Calendar.SUNDAY:
+                                txtwaterverbruik.setText(waterverbruikLijst.get(6).toString()+" ml/d");
+                                break;
+                            case Calendar.SATURDAY:
+                                txtwaterverbruik.setText(waterverbruikLijst.get(5).toString()+" ml/d");
+                                break;
+                            case Calendar.FRIDAY:
+                                txtwaterverbruik.setText(waterverbruikLijst.get(4).toString()+" ml/d");
+                                break;
+                            case Calendar.THURSDAY:
+                                txtwaterverbruik.setText(waterverbruikLijst.get(3).toString()+" ml/d");
+                                break;
+                            case Calendar.WEDNESDAY:
+                                txtwaterverbruik.setText(waterverbruikLijst.get(2).toString()+" ml/d");
+                                break;
+                            case Calendar.TUESDAY:
+                                txtwaterverbruik.setText(waterverbruikLijst.get(1).toString()+" ml/d");
+                                break;
+                            case Calendar.MONDAY:
+                                txtwaterverbruik.setText(waterverbruikLijst.get(0).toString()+" ml/d");
+                                break;
+                        }
+
+                        Set set = Set.instantiate();
+                        set.data(seriesData);
+                        Mapping series1Mapping = set.mapAs("{ x: 'x', value: 'value' }");
+
+                        Area series1 = cartesian.area(series1Mapping);
+                        series1.hovered().markers().enabled(true);
+                        series1.color("#77B255");
+                        series1.hovered().markers()
+                                .type(MarkerType.CIRCLE)
+                                .size(4d);
+                        series1.tooltip()
+                                .position("right")
+                                .anchor(Anchor.LEFT_CENTER)
+                                .offsetX(5d)
+                                .offsetY(5d);
+
+
+
+
+                        cartesian.legend().enabled(false);
+                        cartesian.legend().fontSize(13d);
+                        cartesian.legend().padding(0d, 0d, 10d, 0d);
+
+                        anyChartView.setChart(cartesian);
+                        cartesian.background().fill("white");
+                        cartesian.background().cornerType("cut");
+                        cartesian.background().corners(10);
+                    }
+                });
+
+
+
+
+
+
+
+
             }
         });
 
