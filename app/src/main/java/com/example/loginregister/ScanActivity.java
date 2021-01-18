@@ -11,6 +11,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.util.SparseArray;
 import android.view.SurfaceHolder;
@@ -42,7 +43,6 @@ import com.google.firebase.storage.StorageReference;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Handler;
 
 import static java.lang.Integer.parseInt;
 import static java.util.logging.Logger.global;
@@ -154,8 +154,17 @@ public class ScanActivity extends AppCompatActivity {
                 textView.setVisibility(View.INVISIBLE);
                 addGrowbox.setVisibility(View.INVISIBLE);
                // fm.beginTransaction().replace(R.id.scanActivity,fragment).commit();
-                startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                finish();
+
+
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                        finish();
+                    }
+                },2000);
+
 
                
             }
