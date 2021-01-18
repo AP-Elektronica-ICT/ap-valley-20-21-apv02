@@ -57,7 +57,7 @@ public class ScanActivity extends AppCompatActivity {
 
     //private Button camera;
     private Button addGrowbox;
-
+    String wegschrijven;
     // firebaseshizzle
     DatabaseReference reff;
     FirebaseUser muser;
@@ -67,7 +67,7 @@ public class ScanActivity extends AppCompatActivity {
     DatabaseReference databaseReference;
     StorageReference storageReference;
     String userID, _naam, _growing, _url,_uname,_phone,_image,_email,_currentGrow,_Coverimage,_amountH,_amountB;
-    int amount;
+    int amount, amount2;
     Map<String, Object> box = new HashMap<>();
     Map<String, Object> userd = new HashMap<>();
     @Override
@@ -160,10 +160,11 @@ public class ScanActivity extends AppCompatActivity {
                 handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
+
                         startActivity(new Intent(getApplicationContext(), MainActivity.class));
                         finish();
                     }
-                },2000);
+                },5000);
 
 
                
@@ -185,7 +186,7 @@ public class ScanActivity extends AppCompatActivity {
               //    _growing= "iets";
                 _url = value.getString("url");
                 int amount = getAmountGrowboxes();
-                amount+=1;
+                amount2 = amount+=2;
                 Log.d("AMOUNTBOXES", "value" + amount);
                 String aantal = String.valueOf(amount);
                 // onderstaande moet van realtime growbox worden gehaald
@@ -207,7 +208,8 @@ public class ScanActivity extends AppCompatActivity {
                         _email = value.getString("email");
 
                         DocumentReference dr = mStore.collection("Users").document(userID);
-                        userd.put("amountBoxes", aantal);
+                         wegschrijven = String.valueOf(amount2);
+                        userd.put("amountBoxes", wegschrijven);
                         userd.put("currentGrowbox", naam);
                         userd.put("uname", _uname);
                         userd.put("amountHarvests", _amountH);

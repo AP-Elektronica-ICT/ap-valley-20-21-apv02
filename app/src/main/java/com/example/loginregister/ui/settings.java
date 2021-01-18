@@ -243,4 +243,7 @@ public class settings extends Fragment {
         // Inflate the layout for this fragment
         return view;
     }
+    private void setChanges(double _pumptime, double _lighttime){
+
+    }
 }
