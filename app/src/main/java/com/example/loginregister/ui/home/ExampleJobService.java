@@ -267,7 +267,8 @@ public class ExampleJobService extends JobService {
 
                         myRefCurrentGrow.setValue(titles[position]);
                         if (mChosenpositions[i] == 0){
-
+                            myRefTime.setValue(100000000);
+                            myRefInter.setValue(100000000);
                             myRefon_off.setValue(Boolean.FALSE);
                             isUpdated.setValue(Boolean.TRUE);
                            // lighUpdate.setValue(Boolean.FALSE);
@@ -275,9 +276,7 @@ public class ExampleJobService extends JobService {
                             //myRefon_off.setValue(Boolean.FALSE);
                             //   Log.d("chosen: ", Integer.toString( mChosenpositions[i]));
                         }else if (mChosenpositions[i] != 0){
-                            myRefTime.setValue(100000000);
-                            myRefInter.setValue(100000000);
-                            mRefLightinteval.setValue(100000000);
+
                             myRefTime.setValue(time);
                             myRefInter.setValue(interval);
                             mRefLightinteval.setValue(lightInterval);
