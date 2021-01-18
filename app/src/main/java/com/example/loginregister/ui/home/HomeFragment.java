@@ -71,7 +71,7 @@ public class HomeFragment extends Fragment {
     String userID;
     ImageButton navigatie,btnLiveview, btnSettings ;
     NavController navc;
-    TextView currentGrowSchedule, txtcurrentgrowbox, txtwaterverbruik;
+    TextView currentGrowSchedule, txtwaterverbruik;
     String GrowboxName, Url,currentGrow,growpogingtot;
     ImageView currentGrowImage;
 
@@ -117,7 +117,6 @@ public class HomeFragment extends Fragment {
                     Log.d(TAG, "growboxname is none");
 
                 }else{
-                    txtcurrentgrowbox=view.findViewById(R.id.txthuidige);
                     txtwaterverbruik=view.findViewById(R.id.txtwaterverbruik);
 
                     AnyChartView anyChartView = view.findViewById(R.id.any_chart_view);
@@ -253,7 +252,6 @@ public class HomeFragment extends Fragment {
             @Override
             public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
                 GrowboxName = documentSnapshot.getString("currentGrowbox");
-                txtcurrentgrowbox.setText(GrowboxName);
                 if (GrowboxName.equals("None")) {
                     // None zal enkel voorkomen wanneer de user zich nog niet heeft aangemeld
                     // in dat geval zullen we een welcome shizzle laten afspelen alvorens we naar de Homefragment gaan
