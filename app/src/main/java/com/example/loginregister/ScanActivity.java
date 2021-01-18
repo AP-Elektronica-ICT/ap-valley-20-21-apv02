@@ -8,6 +8,7 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentManager;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
@@ -41,6 +42,7 @@ import com.google.firebase.storage.StorageReference;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Handler;
 
 import static java.lang.Integer.parseInt;
 import static java.util.logging.Logger.global;
@@ -144,14 +146,18 @@ public class ScanActivity extends AppCompatActivity {
                 setAddGrowbox(valueToegevoegd);
 
                 //set Fragmentclass Arguments
-                DashboardFragment fragobj=new DashboardFragment();
-                fragobj.setArguments(bundle);
-                FragmentManager fm= getSupportFragmentManager();
-                DashboardFragment fragment = new DashboardFragment();
+            //    DashboardFragment fragobj=new DashboardFragment();
+             //   fragobj.setArguments(bundle);
+              //  FragmentManager fm= getSupportFragmentManager();
+              //  DashboardFragment fragment = new DashboardFragment();
                 surfaceView.setVisibility(View.INVISIBLE);
                 textView.setVisibility(View.INVISIBLE);
                 addGrowbox.setVisibility(View.INVISIBLE);
-                fm.beginTransaction().replace(R.id.scanActivity,fragment).commit();
+               // fm.beginTransaction().replace(R.id.scanActivity,fragment).commit();
+                startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                finish();
+
+               
             }
         });
     }
