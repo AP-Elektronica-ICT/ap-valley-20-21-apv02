@@ -193,7 +193,7 @@ public class settings extends Fragment {
                     @Override
                     public void onClick(View v) {
                         Double getal=Double.parseDouble(lighttxt.getText().toString());
-                        getal++;
+                        getal--;
                         lighttxt.setText(getal.toString());
                     }
                 });
