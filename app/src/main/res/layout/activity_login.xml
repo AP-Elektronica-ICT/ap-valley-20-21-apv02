@@ -22,7 +22,18 @@
         android:layout_marginTop="194dp"
         android:text="Igrow"
         android:textColor="@color/black"
-        android:textSize="35sp" />
+        android:textSize="35sp"
+        android:visibility="invisible"/>
+
+    <ImageButton
+        android:id="@+id/lol"
+        android:layout_width="298dp"
+        android:layout_height="154dp"
+        android:layout_marginStart="69dp"
+        android:layout_marginTop="90dp"
+        android:background="@drawable/igrowlogointro"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
     <LinearLayout
@@ -62,6 +73,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="forgot password"
+            android:textSize="20dp"
+            android:layout_marginTop="20dp"
             android:textColor="@color/black"
             android:onClick="forget"/>
 
@@ -121,7 +134,7 @@
             android:layout_width="wrap_content"
             android:textColor="@color/black"
             android:layout_height="wrap_content"
-            android:text="or" />
+            android:text=" " />
 
 
 
@@ -143,6 +156,7 @@
             android:layout_height="40dp"
             android:layout_marginLeft="35dp"
             android:layout_marginStart="35dp"
+            android:visibility="invisible"
              />
 
     </LinearLayout>
