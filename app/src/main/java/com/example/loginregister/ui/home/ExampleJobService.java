@@ -40,26 +40,58 @@ public class ExampleJobService extends JobService {
     Growschedule growBasil = new Growschedule("BASILICUM",BasilicumTime, BasilicumInterval,4, BasilLightTime, BasilLightinterval);
 
     //Tuinkers
-    int[] TuinkersTime = {5000, 10000, 10000, 10000};
+    int[] TuinkersTime = {5001, 10001, 10001, 10001};
     int[] TuinkersInterval = { 86400000,  86400000,  86400000, 86400000};
     int[] TuinkersLightTime = {28800000, 28800000, 28800000, 28800000};
     int[] TuinkersLightinterval = {57600000 , 57600000 , 57600000 , 57600000 };
     Growschedule tuinkers = new Growschedule("TUINKERS",TuinkersTime, TuinkersInterval,4, TuinkersLightTime, TuinkersLightinterval);
 
     //Marjolein
-    int[] MarjoleinTime = {5000, 10000, 10000, 10000};
+    int[] MarjoleinTime = {5001, 7500, 10001, 12000};
     int[] MarjoleinInterval = { 86400000,  86400000,  86400000, 86400000};
     int[] MarjoleinLightTime = {28800000, 28800000, 28800000, 28800000};
     int[] MarjoleinLightinterval = {57600000 , 57600000 , 57600000 , 57600000 };
     Growschedule marjolein = new Growschedule("MARJOLEIN",MarjoleinTime, MarjoleinInterval,4, MarjoleinLightTime, MarjoleinLightinterval);
 
     //Thijm
-    int[] ThijmTime = {7500, 10000, 10000, 15000};
+    int[] ThijmTime = {7500, 10001, 10001, 15000};
     int[] ThijmInterval = { 86400000,  86400000,  43200000, 43200000};
     int[] ThijmLightTime = {28800000, 28800000, 28800000, 28800000};
     int[] ThijmLightinterval = {57600000 , 57600000 , 57600000 , 57600000 };
     Growschedule thijm = new Growschedule("MARJOLEIN",ThijmTime, ThijmInterval,4, ThijmLightTime, ThijmLightinterval);
-   List<Double> waterverbruikWeek = new List<Double>() {
+    //Salie
+    int[] SalieTime = {5001, 7001, 10001, 12000};
+    int[] SalieInterval = { 86400000,  86400000,  86400000, 86400000};
+    int[] SalieLightTime = {28800000, 28800000, 28800000, 28800000};
+    int[] SalieLightinterval = {57600000 , 57600000 , 57600000 , 57600000 };
+    Growschedule salie = new Growschedule("MARJOLEIN",SalieTime, SalieInterval,4, SalieLightTime, SalieLightinterval);
+
+    //Munt
+    int[] MuntTime = {5001, 10001, 10001, 15000};
+    int[] MuntInterval = { 86400000,  86400000,  43200000, 43200000};
+    int[] MuntLightTime = {28800000, 28800000, 28800000, 28800000};
+    int[] MuntLightinterval = {57600000 , 57600000 , 57600000 , 57600000 };
+    Growschedule munt = new Growschedule("MARJOLEIN",MuntTime, MuntInterval,4, MuntLightTime, MuntLightinterval);
+
+    //Bieslook
+    int[] BieslookTime = {5001, 7001, 10001, 10001};
+    int[] BieslookInterval = { 86400000,  86400000,  86400000, 86400000};
+    int[] BieslookLightTime = {28800000, 28800000, 28800000, 28800000};
+    int[] BieslookLightinterval = {57600000 , 57600000 , 57600000 , 57600000 };
+    Growschedule bieslook = new Growschedule("MARJOLEIN",BieslookTime, BieslookInterval,4, BieslookLightTime,BieslookLightinterval);
+
+    //Rozemarijn
+    int[]RozemarijnTime = {5001, 10001, 10001, 11000};
+    int[] RozemarijnInterval = { 86400000,  86400000,  43200000, 43200000};
+    int[] RozemarijnLightTime = {28800000, 28800000, 28800000, 28800000};
+    int[] RozemarijnLightinterval = {57600000 , 57600000 , 57600000 , 57600000 };
+    Growschedule rozemarijn = new Growschedule("MARJOLEIN",RozemarijnTime, RozemarijnInterval,4, RozemarijnLightTime,RozemarijnLightinterval);
+
+
+
+
+
+    List<Double> waterverbruikWeek = new List<Double>() {
        @Override
        public int size() {
            return 0;
@@ -222,7 +254,7 @@ public class ExampleJobService extends JobService {
                 box.put("url", "https://www.thespruceeats.com/thmb/qsrUxBu670oOJd26FgEPk0mFToU=/3333x3333/smart/filters:no_upscale()/various-fresh-herbs-907728974-cc6c2be53aac46de9e6a4b47a0e630e4.jpg");
                 box.put("waterusage", waterverbruikWeek);*/
 
-                /*
+
                 if(Week == 4){
                     for(int i =0; i<4; i++) {
                         DatabaseReference myRefTime = database.getReference(CurrentName + "/" + pumps[i] + "/Time");
@@ -251,7 +283,7 @@ public class ExampleJobService extends JobService {
                     jobFinished(params, false);
                 }else if(Week<4){
 
-                 */
+
                     setTimeAndInterval(Week, plant, params );
                     for(int i =0; i<4; i++){
                         DatabaseReference myRefTime = database.getReference(CurrentName + "/" + pumps[i] + "/Time" );
@@ -291,10 +323,10 @@ public class ExampleJobService extends JobService {
 
                         }
 
-                  //  }
+                      }
 
 
-                }
+                     }
 
 
             }
@@ -314,19 +346,22 @@ public class ExampleJobService extends JobService {
         String url = "https://www.thespruceeats.com/thmb/qsrUxBu670oOJd26FgEPk0mFToU=/3333x3333/smart/filters:no_upscale()/various-fresh-herbs-907728974-cc6c2be53aac46de9e6a4b47a0e630e4.jpg";
         int position = params.getExtras().getInt("position");
         String [] titles = params.getExtras().getStringArray("mTitle");
+        Growbox grb = new Growbox(params.getExtras().getString("CurrentName"),url,  titles[position], Arrays.asList(growshizlle));
+       DocumentReference dr = mStore.collection("Growboxes").document(params.getExtras().getString("CurrentName"));
 
         switch (plant){
             case "BASILICUM":
-                DocumentReference dr = mStore.collection("Growboxes").document(params.getExtras().getString("CurrentName"));
+               // DocumentReference dr = mStore.collection("Growboxes").document(params.getExtras().getString("CurrentName"));
                 for (int i = 0; i<7; i++){
                     growshizlle[i]= (double) (BasilicumTime[Week -1] / 1000.0);
                     Log.d("WATERUSAGE", "" + growshizlle[i]);
 
                 }
-                Growbox grb = new Growbox(params.getExtras().getString("CurrentName"),url,  titles[position], Arrays.asList(growshizlle));
+                //Growbox grb = new Growbox(params.getExtras().getString("CurrentName"),url,  titles[position], Arrays.asList(growshizlle));
                 dr.set(grb);
 
                 switch (week){
+
                     case 1:
                         time = growBasil.Time[0];
                         interval = growBasil.Interval[0];
@@ -357,7 +392,16 @@ public class ExampleJobService extends JobService {
                 }
                 break;
             case "TUINKERS":
+            //    DocumentReference dr = mStore.collection("Growboxes").document(params.getExtras().getString("CurrentName"));
+                for (int i = 0; i<7; i++){
+                    growshizlle[i]= (double) (TuinkersTime[Week -1] / 1000.0);
+                    Log.d("WATERUSAGE", "" + growshizlle[i]);
+
+                }
+                dr.set(grb);
+
                 switch (week){
+                  //  Growbox grb = new Growbox(params.getExtras().getString("CurrentName"),url,  titles[position], Arrays.asList(growshizlle));
                     case 1:
                         time = tuinkers.Time[0];
                         interval = tuinkers.Interval[0];
@@ -388,7 +432,16 @@ public class ExampleJobService extends JobService {
                 }
                 break;
             case "MARJOLEIN":
+                //    DocumentReference dr = mStore.collection("Growboxes").document(params.getExtras().getString("CurrentName"));
+                for (int i = 0; i<7; i++){
+                    growshizlle[i]= (double) (MarjoleinTime[Week -1] / 1000.0);
+                    Log.d("WATERUSAGE", "" + growshizlle[i]);
+
+                }
+                dr.set(grb);
+
                 switch (week){
+
                     case 1:
                         time = marjolein.Time[0];
                         interval = marjolein.Interval[0];
@@ -419,6 +472,14 @@ public class ExampleJobService extends JobService {
                 }
                 break;
             case "THIJM":
+                //    DocumentReference dr = mStore.collection("Growboxes").document(params.getExtras().getString("CurrentName"));
+                for (int i = 0; i<7; i++){
+                    growshizlle[i]= (double) (ThijmTime[Week -1] / 1000.0);
+                    Log.d("WATERUSAGE", "" + growshizlle[i]);
+
+                }
+                dr.set(grb);
+
                 switch (week){
                     case 1:
                         time = thijm.Time[0];
@@ -449,6 +510,166 @@ public class ExampleJobService extends JobService {
                         break;
                 }
                 break;
+            case "SALIE":
+                //    DocumentReference dr = mStore.collection("Growboxes").document(params.getExtras().getString("CurrentName"));
+                for (int i = 0; i<7; i++){
+                    growshizlle[i]= (double) (SalieTime[Week -1] / 1000.0);
+                    Log.d("WATERUSAGE", "" + growshizlle[i]);
+
+                }
+                dr.set(grb);
+
+                switch (week){
+                    case 1:
+                        time = salie.Time[0];
+                        interval = salie.Interval[0];
+                        lightTime = salie.LightInterval[0];
+                        lightInterval = salie.LightInterval[0];
+                        break;
+                    case 2:
+                        time = salie.Time[1];
+                        interval = salie.Interval[1];
+                        lightTime = salie.LightInterval[1];
+                        lightInterval = salie.LightInterval[1];
+                        break;
+                    case 3:
+                        time = salie.Time[2];
+                        interval = salie.Interval[2];
+                        lightTime = salie.LightInterval[2];
+                        lightInterval = salie.LightInterval[2];
+                        break;
+                    case 4:
+                        time = salie.Time[3];
+                        interval = salie.Interval[3];
+                        lightTime = salie.LightInterval[3];
+                        lightInterval = salie.LightInterval[3];
+                        break;
+                    default:
+                        Log.d("NOTPOSSIBLE", "ERROR 404");
+                        break;
+                }
+                break;
+
+            case "MUNT":
+                //    DocumentReference dr = mStore.collection("Growboxes").document(params.getExtras().getString("CurrentName"));
+                for (int i = 0; i<7; i++){
+                    growshizlle[i]= (double) (MuntTime[Week -1] / 1000.0);
+                    Log.d("WATERUSAGE", "" + growshizlle[i]);
+
+                }
+                dr.set(grb);
+
+                switch (week){
+                    case 1:
+                        time = munt.Time[0];
+                        interval = munt.Interval[0];
+                        lightTime = munt.LightInterval[0];
+                        lightInterval = munt.LightInterval[0];
+                        break;
+                    case 2:
+                        time = munt.Time[1];
+                        interval = munt.Interval[1];
+                        lightTime = munt.LightInterval[1];
+                        lightInterval = munt.LightInterval[1];
+                        break;
+                    case 3:
+                        time = munt.Time[2];
+                        interval = munt.Interval[2];
+                        lightTime = munt.LightInterval[2];
+                        lightInterval = munt.LightInterval[2];
+                        break;
+                    case 4:
+                        time = munt.Time[3];
+                        interval = munt.Interval[3];
+                        lightTime = munt.LightInterval[3];
+                        lightInterval = munt.LightInterval[3];
+                        break;
+                    default:
+                        Log.d("NOTPOSSIBLE", "ERROR 404");
+                        break;
+                }
+                break;
+
+            case "BIESLOOK":
+                //    DocumentReference dr = mStore.collection("Growboxes").document(params.getExtras().getString("CurrentName"));
+                for (int i = 0; i<7; i++){
+                    growshizlle[i]= (double) (BieslookTime[Week -1] / 1000.0);
+                    Log.d("WATERUSAGE", "" + growshizlle[i]);
+
+                }
+                dr.set(grb);
+
+                switch (week){
+                    case 1:
+                        time = bieslook.Time[0];
+                        interval = bieslook.Interval[0];
+                        lightTime = bieslook.LightInterval[0];
+                        lightInterval = bieslook.LightInterval[0];
+                        break;
+                    case 2:
+                        time = bieslook.Time[1];
+                        interval = bieslook.Interval[1];
+                        lightTime = bieslook.LightInterval[1];
+                        lightInterval = bieslook.LightInterval[1];
+                        break;
+                    case 3:
+                        time = bieslook.Time[2];
+                        interval = bieslook.Interval[2];
+                        lightTime = bieslook.LightInterval[2];
+                        lightInterval = bieslook.LightInterval[2];
+                        break;
+                    case 4:
+                        time = bieslook.Time[3];
+                        interval = bieslook.Interval[3];
+                        lightTime = bieslook.LightInterval[3];
+                        lightInterval = bieslook.LightInterval[3];
+                        break;
+                    default:
+                        Log.d("NOTPOSSIBLE", "ERROR 404");
+                        break;
+                }
+                break;
+
+            case "ROZEMARIJN":
+                //    DocumentReference dr = mStore.collection("Growboxes").document(params.getExtras().getString("CurrentName"));
+                for (int i = 0; i<7; i++){
+                    growshizlle[i]= (double) (RozemarijnTime[Week -1] / 1000.0);
+                    Log.d("WATERUSAGE", "" + growshizlle[i]);
+
+                }
+                dr.set(grb);
+
+                switch (week){
+                    case 1:
+                        time = rozemarijn.Time[0];
+                        interval = rozemarijn.Interval[0];
+                        lightTime = rozemarijn.LightInterval[0];
+                        lightInterval = rozemarijn.LightInterval[0];
+                        break;
+                    case 2:
+                        time = rozemarijn.Time[1];
+                        interval = rozemarijn.Interval[1];
+                        lightTime = rozemarijn.LightInterval[1];
+                        lightInterval = rozemarijn.LightInterval[1];
+                        break;
+                    case 3:
+                        time = rozemarijn.Time[2];
+                        interval = rozemarijn.Interval[2];
+                        lightTime = rozemarijn.LightInterval[2];
+                        lightInterval = rozemarijn.LightInterval[2];
+                        break;
+                    case 4:
+                        time = rozemarijn.Time[3];
+                        interval = rozemarijn.Interval[3];
+                        lightTime = rozemarijn.LightInterval[3];
+                        lightInterval = rozemarijn.LightInterval[3];
+                        break;
+                    default:
+                        Log.d("NOTPOSSIBLE", "ERROR 404");
+                        break;
+                }
+                break;
+
         }
 
 

@@ -65,6 +65,8 @@ public class settings extends Fragment {
     String _naam;
     String _url;
     String GrowboxName;
+    String userID;
+    String[] pumps = {"PUMP1", "PUMP2", "PUMP3", "PUMP4"};
 
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -217,6 +219,9 @@ public class settings extends Fragment {
                 btnSave.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+
+                        setChanges(Double.parseDouble(watertxt.getText().toString()),Double.parseDouble(lighttxt.getText().toString()));
+
                         HomeFragment homeFragment = new HomeFragment();
 
                         // Add the new tab fragment
@@ -242,5 +247,56 @@ public class settings extends Fragment {
 
         // Inflate the layout for this fragment
         return view;
+    }
+    private void setChanges(double _pumptime, double _lighttime){
+
+        int pumpTime = Integer.valueOf((int) (_pumptime * 1000));
+        int lightTime = Integer.valueOf((int) (_lighttime * 1000));
+        mAuth = FirebaseAuth.getInstance();
+        mStore = FirebaseFirestore.getInstance();
+        userID = mAuth.getCurrentUser().getUid();
+
+
+        DocumentReference documentReference2 = mStore.collection("Users").document(userID);
+        documentReference2.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
+                GrowboxName = documentSnapshot.getString("currentGrowbox");
+                for(int i =0; i<4; i++){
+                    DatabaseReference myRefTime = database.getReference(GrowboxName + "/" + pumps[i] + "/Time" );
+                    DatabaseReference myRefOn_off = database.getReference(GrowboxName + "/" + pumps[i] + "/ON_OFF");
+                    DatabaseReference mRefLighttime = database.getReference(GrowboxName + "/light/Time");
+                    DatabaseReference isUpdated = database.getReference(GrowboxName + "/" + pumps[i] + "/isUpdated" );
+                    DatabaseReference lighUpdate = database.getReference(GrowboxName + "/light/isUpdated");
+
+                    myRefOn_off.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            Boolean value = dataSnapshot.getValue(Boolean.class);
+                            if (value == Boolean.TRUE){
+                                myRefTime.setValue(pumpTime);
+                                isUpdated.setValue(Boolean.TRUE);
+                            }
+
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+
+                    mRefLighttime.setValue(lightTime);
+                    lighUpdate.setValue(Boolean.TRUE);
+
+
+                }
+
+            }
+        });
+
+
+
+
     }
 }
