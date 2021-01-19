@@ -186,7 +186,7 @@ public class ScanActivity extends AppCompatActivity {
               //    _growing= "iets";
                 _url = value.getString("url");
                 int amount = getAmountGrowboxes();
-                amount2 = amount+=1;
+                amount2 = amount+=2;
                 Log.d("AMOUNTBOXES", "value" + amount);
                 String aantal = String.valueOf(amount);
                 // onderstaande moet van realtime growbox worden gehaald
